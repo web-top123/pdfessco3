@@ -2600,15 +2600,6 @@ var render = function render() {
   }, [_c("i", {
     staticClass: "pdfglue-icon upload-file"
   })]), _vm._v(" "), _c("button", {
-    staticClass: "button-base simple flex-button button-base__remove-selected",
-    on: {
-      click: function click($event) {
-        return _vm.$store.commit("dashboard/removeItemsConfirm");
-      }
-    }
-  }, [_c("i", {
-    staticClass: "fa fa-trash-o"
-  })]), _vm._v(" "), _c("button", {
     staticClass: "button-base simple button-icon flex-button",
     on: {
       click: _vm.moveDown

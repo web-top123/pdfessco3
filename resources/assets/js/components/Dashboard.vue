@@ -159,7 +159,7 @@
                         <button class="button-base simple flex-button" @click="$store.commit('dashboard/openModal', 'addDivider')">Insert Divider</button>
                         <button class="button-base simple flex-button button-base__upload-file" @click="$store.commit('dashboard/openModal', 'uploadFileDashboard')"><i class="pdfglue-icon upload-file"></i></button>
                         <!-- <button v-if="width > 550" class="button-base simple flex-button" @click="$store.commit('dashboard/removeItemsConfirm')">Remove</button> -->
-                        <button class="button-base simple flex-button button-base__remove-selected" @click="$store.commit('dashboard/removeItemsConfirm')"><i class="fa fa-trash-o"></i></button>
+                        <!-- <button class="button-base simple flex-button button-base__remove-selected" @click="$store.commit('dashboard/removeItemsConfirm')"><i class="fa fa-trash-o"></i></button> -->
                         <button class="button-base simple button-icon flex-button" @click="moveDown"><i class="fa fa-arrow-down"></i></button>
                         <button class="button-base simple button-icon flex-button" @click="moveUp"><i class="fa fa-arrow-up"></i></button>
                     </div>
