@@ -110,7 +110,7 @@ Route::middleware('auth')->group(function () {
             // Mail::to(request()->to)->send(new TestMail(request()->url, request()->subject));
             // return json_encode([ 'success' => true ]);
 
-            $subject = 'Test Email';
+            $subject = request()->subject;
             $body = 'Here is Created Document';
             
             // Send the email
