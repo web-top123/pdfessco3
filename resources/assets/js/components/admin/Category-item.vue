@@ -1,90 +1,272 @@
 <template>
     <transition name="fade-item" mode="out-in">
-<div>
-    <div class="category-wrapper" :style="'padding-left:' +  padLeft">
-        <div class="category-border-bottom columns" :class="{main: topLevel, 'no-items' : noItems, 'is-last' : !topLevel && isLast, 'not-expanded': !expanded}" >
-            <div class="column is-narrow left-action-col">
+        <div>
+            <div class="category-wrapper" :style="'padding-left:' + padLeft">
+                <div
+                    class="category-border-bottom columns"
+                    :class="{
+                        main: topLevel,
+                        'no-items': noItems,
+                        'is-last': !topLevel && isLast,
+                        'not-expanded': !expanded,
+                    }"
+                >
+                    <div class="column is-narrow left-action-col">
+                        <span
+                            class="expand-icon"
+                            :class="{
+                                'no-items':
+                                    !data.children_count && !data.files_count,
+                            }"
+                            @click="expandCat"
+                        >
+                            <i
+                                class="fa caret fa-caret-right fa-stack-1x"
+                                :class="{ expanded: expanded }"
+                            ></i>
+                            <!-- <i v-if="expanded" class="fa caret fa-caret-down fa-stack-1x"></i> -->
+                        </span>
 
-                <span class="expand-icon" :class="{'no-items': (!data.children_count && !data.files_count)}" @click="expandCat">
-                        <i class="fa caret fa-caret-right fa-stack-1x" :class="{expanded: expanded}"></i>
-                        <!-- <i v-if="expanded" class="fa caret fa-caret-down fa-stack-1x"></i> -->
-                </span>
+                        <input
+                            :id="checkId + '-d'"
+                            class="styled-checkbox"
+                            v-if="parentChecked"
+                            type="checkbox"
+                            checked
+                            disabled
+                        />
+                        <input
+                            :id="checkId + '-a'"
+                            class="styled-checkbox"
+                            v-if="!parentChecked"
+                            type="checkbox"
+                            :checked="checked"
+                            @click="toggle"
+                        />
+                        <label
+                            class="disabled"
+                            v-if="parentChecked"
+                            :for="checkId + '-d'"
+                        ></label>
+                        <label
+                            v-if="!parentChecked"
+                            :for="checkId + '-a'"
+                        ></label>
+                    </div>
+                    <div class="column" @click="expandCat">
+                        <p
+                            class="category-name column"
+                            :class="{
+                                'is-file': isFile,
+                                checked: checked || parentChecked,
+                                expand: data.children_count || data.files_count,
+                            }"
+                            ref="categoryName"
+                        >
+                            {{ data.name }}
+                        </p>
+                    </div>
+                    <div class="column is-narrow">
+                        <div class="category-action">
+                            <a
+                                v-if="isFile && width > 1024"
+                                :href="data.path"
+                                target="_blank"
+                                ><i
+                                    class="fa fa-eye"
+                                    aria-hidden="true"
+                                    @mouseenter="openpreview(data.id)"
+                                    @mouseleave="hidepreview(data.id)"
+                                ></i
+                            ></a>
 
-                <input :id="checkId + '-d'" class="styled-checkbox" v-if="parentChecked" type="checkbox" checked disabled>
-                <input :id="checkId + '-a'" class="styled-checkbox" v-if="!parentChecked" type="checkbox" :checked="checked" @click="toggle">
-                <label class="disabled" v-if="parentChecked" :for="checkId + '-d'"></label>
-                <label v-if="!parentChecked" :for="checkId + '-a'"></label>
+                            <i
+                                v-if="!isFile && width > 1024"
+                                class="pdfglue-icon upload-file"
+                                aria-hidden="true"
+                                @click="
+                                    $store.commit('manageFiles/openModal', {
+                                        name: 'upload',
+                                        data: data,
+                                    })
+                                "
+                            ></i>
 
-            </div>
-            <div class="column" @click="expandCat">
-                <p class="category-name column" :class="{'is-file' : isFile, 'checked' : checked || parentChecked, 'expand' : data.children_count || data.files_count}" ref="categoryName">{{ data.name }}</p>
-                
-            </div>
-            <div class="column is-narrow">
-                <div class="category-action">
-                    <a v-if="isFile && width > 1024" :href="data.path" target="_blank"><i class="fa fa-eye" aria-hidden="true" @mouseenter="openpreview(data.id)" 
-                    @mouseleave="hidepreview(data.id)"></i></a>
+                            <i
+                                @click="toggleDropdown()"
+                                :data-id="dropdownId"
+                                class="pdfglue-icon context-menu"
+                                :class="{ active: menu }"
+                                aria-hidden="true"
+                            ></i>
 
-                    <i v-if="!isFile && width > 1024" class="pdfglue-icon upload-file" aria-hidden="true"  @click="$store.commit('manageFiles/openModal', { name: 'upload', data: data})"></i>
+                            <div class="menu-icon"></div>
 
-                    <i @click="toggleDropdown()" :data-id="dropdownId" class="pdfglue-icon context-menu" :class="{active: menu}" aria-hidden="true"></i>
+                            <div
+                                v-if="menu"
+                                :id="dropdownId"
+                                class="drop-down-menu"
+                            >
+                                <div
+                                    v-if="!isFile && data.depth < 3"
+                                    class="drop-down-menu-item"
+                                    @click="
+                                        $store.commit('manageFiles/openModal', {
+                                            name: 'create',
+                                            data: data,
+                                        })
+                                    "
+                                >
+                                    <div class="drop-down-menu-item-wrapper">
+                                        Add Category
+                                    </div>
+                                </div>
 
-                    <div class="menu-icon"></div>
+                                <div
+                                    v-if="!isFile && !topLevel"
+                                    class="drop-down-menu-item"
+                                    @click="moveUp"
+                                >
+                                    <div class="drop-down-menu-item-wrapper">
+                                        Move Up
+                                    </div>
+                                </div>
 
-                    <div v-if="menu" :id="dropdownId" class="drop-down-menu">
+                                <div
+                                    class="drop-down-menu-item"
+                                    @click="
+                                        $store.commit('manageFiles/openModal', {
+                                            name: 'move',
+                                            data: Object.assign(
+                                                { isFile: isFile },
+                                                data
+                                            ),
+                                        })
+                                    "
+                                >
+                                    <div class="drop-down-menu-item-wrapper">
+                                        Move To
+                                    </div>
+                                </div>
 
-                        <div v-if="!isFile && data.depth < 3" class="drop-down-menu-item" @click="$store.commit('manageFiles/openModal', {name: 'create', data: data})">
-                            <div class="drop-down-menu-item-wrapper"> Add Category </div>
+                                <div
+                                    v-if="isFile"
+                                    class="drop-down-menu-item"
+                                    @click="
+                                        $store.commit('manageFiles/openModal', {
+                                            name: 'copy',
+                                            data: Object.assign(
+                                                { isFile: isFile },
+                                                data
+                                            ),
+                                        })
+                                    "
+                                >
+                                    <div class="drop-down-menu-item-wrapper">
+                                        Copy To
+                                    </div>
+                                </div>
+
+                                <div
+                                    v-if="isFile && data.count > 1"
+                                    class="drop-down-menu-item"
+                                    @click="
+                                        $store.commit('manageFiles/openModal', {
+                                            name: 'explode',
+                                            data: data,
+                                        })
+                                    "
+                                >
+                                    <div class="drop-down-menu-item-wrapper">
+                                        Explode
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="drop-down-menu-item"
+                                    @click="
+                                        $store.commit('manageFiles/openModal', {
+                                            name: !isFile
+                                                ? 'edit-category'
+                                                : 'edit-pdf',
+                                            data: data,
+                                        })
+                                    "
+                                >
+                                    <div class="drop-down-menu-item-wrapper">
+                                        Edit
+                                    </div>
+                                </div>
+
+                                <div
+                                    v-if="isFile && width <= 1024"
+                                    class="drop-down-menu-item"
+                                >
+                                    <div class="drop-down-menu-item-wrapper">
+                                        <a :href="data.path" target="_blank"
+                                            >View File
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="drop-down-menu-item danger"
+                                    @click="
+                                        $store.commit('manageFiles/openModal', {
+                                            name: 'delete',
+                                            data: Object.assign(
+                                                { isFile: isFile },
+                                                data
+                                            ),
+                                        })
+                                    "
+                                >
+                                    <div class="drop-down-menu-item-wrapper">
+                                        Delete
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                        <div v-if="!isFile && !topLevel" class="drop-down-menu-item" @click="moveUp">
-                            <div class="drop-down-menu-item-wrapper"> Move Up</div>
-                        </div>
-
-                        <div class="drop-down-menu-item" @click="$store.commit('manageFiles/openModal', { name: 'move', data: Object.assign({isFile: isFile}, data)})">
-                            <div class="drop-down-menu-item-wrapper"> Move To</div>
-                        </div>
-
-                        <div v-if="isFile" class="drop-down-menu-item" @click="$store.commit('manageFiles/openModal', { name: 'copy', data: Object.assign({isFile: isFile}, data)})">
-                            <div class="drop-down-menu-item-wrapper" > Copy To </div>
-                        </div>
-
-                        <div v-if="isFile && data.count > 1" class="drop-down-menu-item" @click="$store.commit('manageFiles/openModal', { name: 'explode', data: data})">
-                            <div class="drop-down-menu-item-wrapper" > Explode </div>
-                        </div>
-
-                        <div class="drop-down-menu-item" @click="$store.commit('manageFiles/openModal', { name: (!isFile ? 'edit-category' : 'edit-pdf'), data: data})">
-                            <div class="drop-down-menu-item-wrapper"> Edit </div>
-                        </div>
-
-                        <div v-if="isFile && width <= 1024" class="drop-down-menu-item">
-                            <div class="drop-down-menu-item-wrapper" > <a :href="data.path" target="_blank">View File </a></div>
-                        </div>
-
-
-                        <div class="drop-down-menu-item danger" @click="$store.commit('manageFiles/openModal', {name: 'delete', data: Object.assign({isFile: isFile}, data)})">
-                            <div class="drop-down-menu-item-wrapper"> Delete </div>
-                        </div>
-
                     </div>
                 </div>
+                <div
+                    :id="'iframe-' + this.data.id"
+                    class="iframe-preview file columns hide"
+                    v-if="data.path"
+                >
+                    <iframe :src="data.path" height="300"></iframe>
+                </div>
+            </div>
+            <div class="category-level" v-if="expanded">
+                <category-item
+                    v-if="category.hide !== true"
+                    v-for="(category, index) in data.children"
+                    :key="category.id"
+                    :data="category"
+                    :parent="data"
+                    :parent-checked="checked || parentChecked"
+                    :last="
+                        last &&
+                        index === data.children.length - 1 &&
+                        (!data.files || !data.files.length)
+                    "
+                ></category-item>
+                <category-item
+                    v-for="(file, index) in data.files"
+                    :key="file.id"
+                    :data="file"
+                    :parent="data"
+                    :parent-checked="checked || parentChecked"
+                    :is-file="true"
+                    :last="last && index === data.files.length - 1"
+                ></category-item>
             </div>
         </div>
-        <div :id="'iframe-' + this.data.id" class="iframe-preview file columns hide"  v-if="data.path">
-            <iframe :src="data.path" height="300"></iframe>
-        </div>  
-    </div>
-    <div class="category-level" v-if="expanded">
-        <category-item v-if="category.hide !== true" v-for="(category, index) in data.children" :key="category.id" :data="category" :parent="data" :parent-checked="checked || parentChecked" :last="last && (index === data.children.length - 1) && (!data.files || !data.files.length)"></category-item>
-        <category-item v-for="(file, index) in data.files" :key="file.id" :data="file" :parent="data" :parent-checked="checked || parentChecked" :is-file="true" :last="last && (index === data.files.length - 1)"></category-item>
-    </div>
-</div>
-</transition>
+    </transition>
 </template>
 
 <script>
 export default {
-
     props: {
         data: {
             type: Object,
@@ -114,7 +296,7 @@ export default {
         },
         lastInArray: {
             type: Boolean,
-        }
+        },
     },
     data() {
         return {
@@ -124,18 +306,21 @@ export default {
             expanded: false,
             expandedLoaded: false,
             width: 0,
-        }
+        };
     },
     mounted() {
-        if (!this.isFile && this.selected.categories.indexOf(this.data.id) > -1) {
+        if (
+            !this.isFile &&
+            this.selected.categories.indexOf(this.data.id) > -1
+        ) {
             this.checked = true;
         }
         this.width = document.body.clientWidth;
-        window.addEventListener('resize', (e) => {
+        window.addEventListener("resize", (e) => {
             this.width = document.body.clientWidth;
-        })
+        });
 
-        if(this.isFile && this.data.count === undefined) {
+        if (this.isFile && this.data.count === undefined) {
             this.getPages();
         }
     },
@@ -148,27 +333,34 @@ export default {
             this.checked = true;
         }
     },
-    beforeCreate: function() {
-        this.$options.components.CategoryItem = require('./Category-item.vue').default;
+    beforeCreate: function () {
+        this.$options.components.CategoryItem =
+            require("./Category-item.vue").default;
     },
     computed: {
         checkId() {
-            return 'check-' + (this.isFile ? 'file-' : 'cat-') + this.data.id;
+            return "check-" + (this.isFile ? "file-" : "cat-") + this.data.id;
         },
         dropdownId() {
-            return 'dropdown-' + this.data.id;
+            return "dropdown-" + this.data.id;
         },
         categoryText() {
-            return this.isFile ? 'file-text' : 'sub-category-text-' + this.data.depth;
+            return this.isFile
+                ? "file-text"
+                : "sub-category-text-" + this.data.depth;
         },
         padLeft() {
             if (this.topLevel) {
                 return 0;
             }
             if (this.isFile) {
-                return (this.padding * (this.parent.top ? 1 : (this.parent.depth + 1))) + 'px';
+                return (
+                    this.padding *
+                        (this.parent.top ? 1 : this.parent.depth + 1) +
+                    "px"
+                );
             } else {
-                return (this.padding * this.data.depth || 0) + 'px';
+                return (this.padding * this.data.depth || 0) + "px";
             }
         },
         // noItems() {
@@ -179,10 +371,20 @@ export default {
         //     return this.last && this.lastInArray;
         // },
         isLast() {
-            return this.last && (!this.data.children || !this.data.children.length) && (!this.data.files || !this.data.files.length);
+            return (
+                this.last &&
+                (!this.data.children || !this.data.children.length) &&
+                (!this.data.files || !this.data.files.length)
+            );
         },
         noItems() {
-            return !this.isFile && ((this.expandedLoaded && !this.expanded) || (this.topLevel && (!this.data.files || !this.data.files.length) && (!this.data.children|| !this.data.children.length)));
+            return (
+                !this.isFile &&
+                ((this.expandedLoaded && !this.expanded) ||
+                    (this.topLevel &&
+                        (!this.data.files || !this.data.files.length) &&
+                        (!this.data.children || !this.data.children.length)))
+            );
         },
         // isLast() {
         //     return this.isFile ? this.parentLast && this.last : !this.topLevel && ((this.last && this.parentLast)); //this.last && this.parentLast && ( (this.expandedLoaded && !this.expanded) ||  ((!this.data.files || !this.data.files.length) && (!this.data.children || !this.data.children.length)));
@@ -218,13 +420,15 @@ export default {
             this.menu = false;
         },
         selected() {
-            if (!this.selected.categories.length && !this.selected.files.length) {
+            if (
+                !this.selected.categories.length &&
+                !this.selected.files.length
+            ) {
                 this.checked = false;
             }
         },
     },
     methods: {
-
         toggle() {
             this.checked = !this.checked;
             if (this.checked) {
@@ -243,78 +447,85 @@ export default {
             return this.isFile ? this.selected.files : this.selected.categories;
         },
         closeMenu() {
-            return this.menu = false;
+            return (this.menu = false);
         },
         openModal(type, data) {
             this.menu = false;
-            return this.$emit('open', {
+            return this.$emit("open", {
                 type: type,
-                data: data
+                data: data,
             });
         },
         menuClose(ev) {
             if (ev.target.dataset.id !== this.dropdownId) {
                 this.menu = false;
-                window.removeEventListener('click', this.menuClose);
+                window.removeEventListener("click", this.menuClose);
             }
         },
         toggleDropdown() {
             if (this.menu) {
-                window.removeEventListener('click', this.menuClose);
+                window.removeEventListener("click", this.menuClose);
                 this.menu = false;
             } else {
-                window.addEventListener('click', this.menuClose);
+                window.addEventListener("click", this.menuClose);
                 this.menu = true;
             }
         },
         moveUp() {
-            this.$store.dispatch('manageFiles/deleteCategory', this.data)
-            .then( () =>
-            axios.patch('/admin/categories/moveUp', {category: this.data.id})
-                .then(({data}) => this.$store.dispatch('manageFiles/moveCategory', data) )
-            );
+            this.$store
+                .dispatch("manageFiles/deleteCategory", this.data)
+                .then(() =>
+                    axios
+                        .patch("/admin/categories/moveUp", {
+                            category: this.data.id,
+                        })
+                        .then(({ data }) =>
+                            this.$store.dispatch(
+                                "manageFiles/moveCategory",
+                                data
+                            )
+                        )
+                );
         },
         expandCat() {
             if (!this.data.children_count && !this.data.files_count) {
-                return
+                return;
             }
 
             if (!this.expandedLoaded) {
-                this.$store.dispatch('manageFiles/loadCategory', this.data)
-                .then( () => {
-                    this.expanded = !this.expanded;
-                    this.expandedLoaded = true;
-                })
+                this.$store
+                    .dispatch("manageFiles/loadCategory", this.data)
+                    .then(() => {
+                        this.expanded = !this.expanded;
+                        this.expandedLoaded = true;
+                    });
             } else {
                 this.expanded = !this.expanded;
             }
 
-            this.$emit('expanded')
+            this.$emit("expanded");
         },
         getPages() {
-            axios.get('/dashboard/page-count/' + this.data.id)
-                .then(resp => {
+            axios
+                .get("/dashboard/page-count/" + this.data.id)
+                .then((resp) => {
                     this.data.count = resp.data.count;
-
                 })
-                .catch(err => {
-                    console.error(err)
-                })
+                .catch((err) => {
+                    console.error(err);
+                });
         },
-        openpreview(id)
-        {
+        openpreview(id) {
             console.log(id);
-            const el = document.querySelector('#iframe-'+id);
+            const el = document.querySelector("#iframe-" + id);
             el.classList.remove("hide");
         },
-        hidepreview(id)
-        {
-            const el = document.querySelector('#iframe-'+id);
+        hidepreview(id) {
+            const el = document.querySelector("#iframe-" + id);
             el.classList.add("hide");
-      
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -332,7 +543,6 @@ export default {
     .is-narrow {
         @include flex-grow(0);
     }
-
 }
 
 .category-wrapper {
@@ -350,10 +560,10 @@ export default {
     margin-right: 20px;
     padding-bottom: 7px;
     overflow: visible;
-    @include fine-border(#e6e6e6, 'bottom');
+    @include fine-border(#e6e6e6, "bottom");
 
     &.main {
-        @include fine-border(#cccccc, 'bottom');
+        @include fine-border(#cccccc, "bottom");
         padding-left: 20px;
         padding-top: 12px;
         margin-left: 0;
@@ -373,7 +583,6 @@ export default {
         border-bottom: none;
         margin-bottom: 0px;
         padding-bottom: 15px;
-
     }
 }
 
@@ -385,7 +594,6 @@ export default {
         float: left;
         margin-top: 4px;
     }
-
 
     .expand-icon {
         // width: 100%;
@@ -403,15 +611,15 @@ export default {
             color: $color-primary;
         }
         .caret {
-            @include transition(all .1s linear);
+            @include transition(all 0.1s linear);
             transform: rotate(0deg);
         }
         .caret.expanded {
-                transform: rotate(90deg);
-                // left: 3px;
-                // top: -2px;
-                top: 1px;
-                // left: -4px;
+            transform: rotate(90deg);
+            // left: 3px;
+            // top: -2px;
+            top: 1px;
+            // left: -4px;
         }
 
         &.no-items {
@@ -419,12 +627,10 @@ export default {
             pointer-events: none;
             opacity: 0;
         }
-
     }
 }
 
 .category-name {
-
     font-family: $font-family;
     color: $color-text-primary;
     font-size: 16px;
@@ -432,7 +638,6 @@ export default {
     margin: 0;
     padding-top: 4px;
     margin-left: -2px;
-
 
     &.is-file {
         font-weight: 400;
@@ -460,10 +665,10 @@ export default {
         cursor: pointer;
         font-size: 16px;
         color: $color-text-light;
-        &:hover, &.active {
+        &:hover,
+        &.active {
             color: $color-secondary;
         }
-
 
         &.large {
             margin-left: 5px;
@@ -491,11 +696,10 @@ export default {
         }
 
         &.context-menu {
-            float:right;
+            float: right;
             position: relative;
             // margin-left: 7px;
             top: -3px;
-
         }
 
         // @media (max-width: 550px) {
@@ -504,7 +708,6 @@ export default {
         //         font-size: 10px;
         //     }
         // }
-
     }
 }
 
@@ -514,51 +717,46 @@ export default {
 
 .drop-down-menu {
     z-index: 1;
-    font-family: 'Raleway';
+    font-family: "Raleway";
     font-style: normal;
     font-weight: 400;
     color: #8f8f8f;
     position: absolute;
     margin-top: 0;
     background: #fff;
-    @include context-menu-box-shadow ;
+    @include context-menu-box-shadow;
     border-radius: 8px;
     border: 1px #cccccc solid;
     min-width: 130px;
     right: -20px;
-    top:  30px;
+    top: 30px;
     .drop-down-menu-item {
         color: #4c4c4c;
         text-align: right;
         cursor: pointer;
 
         .drop-down-menu-item-wrapper {
-
             margin-left: 15px;
             margin-right: 15px;
             padding-top: 5px;
             padding-bottom: 5px;
-            @include fine-border(#e6e6e6, 'bottom');
+            @include fine-border(#e6e6e6, "bottom");
 
             @media (max-width: 1024px) {
                 padding-top: 10px;
                 padding-bottom: 10px;
             }
             a {
-                color :#4c4c4c;
+                color: #4c4c4c;
             }
         }
     }
     .drop-down-menu-item:first-child {
         margin-top: 8px;
-
-
     }
     .drop-down-menu-item:last-child {
         .drop-down-menu-item-wrapper {
-
             border-bottom: none;
-
         }
         margin-bottom: 8px;
     }
@@ -567,18 +765,16 @@ export default {
         color: $color-primary;
         &.danger {
             color: #ff3019;
-
         }
 
         a {
             color: $color-primary;
         }
-
     }
 
     &::after {
         position: absolute;
-        content: '';
+        content: "";
         width: 0;
         height: 0;
         border-left: 14px solid transparent;
@@ -588,9 +784,8 @@ export default {
         right: 25px;
     }
     &::before {
-
         position: absolute;
-        content: '';
+        content: "";
         width: 0;
         height: 0;
         border-left: 14px solid transparent;

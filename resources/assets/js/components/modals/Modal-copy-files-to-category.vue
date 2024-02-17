@@ -9,7 +9,7 @@
         <div class="form-group">
             <label>Category</label>
             <multiselect style="margin-bottom:-8px;" v-model="category" :show-labels="false" :max-height="250" placeholder="Select a category..." label="name" :options="listLimit">
-                <template slot="option" slot-scope="props">
+                <template slot="option" slot-scope="props"> 
                     <div v-bind:style="{'margin-left': (props.option.depth * 20) + 'px', 'font-weight' : 700 - (props.option.depth * 100)}">
                         {{props.option.name}}
                     </div>

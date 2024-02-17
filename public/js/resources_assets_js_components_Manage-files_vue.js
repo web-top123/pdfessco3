@@ -906,7 +906,7 @@ __webpack_require__.r(__webpack_exports__);
       this.checked = true;
     }
     this.width = document.body.clientWidth;
-    window.addEventListener('resize', function (e) {
+    window.addEventListener("resize", function (e) {
       _this.width = document.body.clientWidth;
     });
     if (this.isFile && this.data.count === undefined) {
@@ -926,22 +926,22 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     checkId: function checkId() {
-      return 'check-' + (this.isFile ? 'file-' : 'cat-') + this.data.id;
+      return "check-" + (this.isFile ? "file-" : "cat-") + this.data.id;
     },
     dropdownId: function dropdownId() {
-      return 'dropdown-' + this.data.id;
+      return "dropdown-" + this.data.id;
     },
     categoryText: function categoryText() {
-      return this.isFile ? 'file-text' : 'sub-category-text-' + this.data.depth;
+      return this.isFile ? "file-text" : "sub-category-text-" + this.data.depth;
     },
     padLeft: function padLeft() {
       if (this.topLevel) {
         return 0;
       }
       if (this.isFile) {
-        return this.padding * (this.parent.top ? 1 : this.parent.depth + 1) + 'px';
+        return this.padding * (this.parent.top ? 1 : this.parent.depth + 1) + "px";
       } else {
-        return (this.padding * this.data.depth || 0) + 'px';
+        return (this.padding * this.data.depth || 0) + "px";
       }
     },
     // noItems() {
@@ -1019,7 +1019,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     openModal: function openModal(type, data) {
       this.menu = false;
-      return this.$emit('open', {
+      return this.$emit("open", {
         type: type,
         data: data
       });
@@ -1027,26 +1027,26 @@ __webpack_require__.r(__webpack_exports__);
     menuClose: function menuClose(ev) {
       if (ev.target.dataset.id !== this.dropdownId) {
         this.menu = false;
-        window.removeEventListener('click', this.menuClose);
+        window.removeEventListener("click", this.menuClose);
       }
     },
     toggleDropdown: function toggleDropdown() {
       if (this.menu) {
-        window.removeEventListener('click', this.menuClose);
+        window.removeEventListener("click", this.menuClose);
         this.menu = false;
       } else {
-        window.addEventListener('click', this.menuClose);
+        window.addEventListener("click", this.menuClose);
         this.menu = true;
       }
     },
     moveUp: function moveUp() {
       var _this2 = this;
-      this.$store.dispatch('manageFiles/deleteCategory', this.data).then(function () {
-        return axios.patch('/admin/categories/moveUp', {
+      this.$store.dispatch("manageFiles/deleteCategory", this.data).then(function () {
+        return axios.patch("/admin/categories/moveUp", {
           category: _this2.data.id
         }).then(function (_ref) {
           var data = _ref.data;
-          return _this2.$store.dispatch('manageFiles/moveCategory', data);
+          return _this2.$store.dispatch("manageFiles/moveCategory", data);
         });
       });
     },
@@ -1056,18 +1056,18 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
       if (!this.expandedLoaded) {
-        this.$store.dispatch('manageFiles/loadCategory', this.data).then(function () {
+        this.$store.dispatch("manageFiles/loadCategory", this.data).then(function () {
           _this3.expanded = !_this3.expanded;
           _this3.expandedLoaded = true;
         });
       } else {
         this.expanded = !this.expanded;
       }
-      this.$emit('expanded');
+      this.$emit("expanded");
     },
     getPages: function getPages() {
       var _this4 = this;
-      axios.get('/dashboard/page-count/' + this.data.id).then(function (resp) {
+      axios.get("/dashboard/page-count/" + this.data.id).then(function (resp) {
         _this4.data.count = resp.data.count;
       })["catch"](function (err) {
         console.error(err);
@@ -1075,11 +1075,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     openpreview: function openpreview(id) {
       console.log(id);
-      var el = document.querySelector('#iframe-' + id);
+      var el = document.querySelector("#iframe-" + id);
       el.classList.remove("hide");
     },
     hidepreview: function hidepreview(id) {
-      var el = document.querySelector('#iframe-' + id);
+      var el = document.querySelector("#iframe-" + id);
       el.classList.add("hide");
     }
   }
@@ -2857,7 +2857,7 @@ var render = function render() {
       checked: _vm.checked || _vm.parentChecked,
       expand: _vm.data.children_count || _vm.data.files_count
     }
-  }, [_vm._v(_vm._s(_vm.data.name))])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                        " + _vm._s(_vm.data.name) + "\n                    ")])]), _vm._v(" "), _c("div", {
     staticClass: "column is-narrow"
   }, [_c("div", {
     staticClass: "category-action"
@@ -2925,14 +2925,14 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "drop-down-menu-item-wrapper"
-  }, [_vm._v(" Add Category ")])]) : _vm._e(), _vm._v(" "), !_vm.isFile && !_vm.topLevel ? _c("div", {
+  }, [_vm._v("\n                                    Add Category\n                                ")])]) : _vm._e(), _vm._v(" "), !_vm.isFile && !_vm.topLevel ? _c("div", {
     staticClass: "drop-down-menu-item",
     on: {
       click: _vm.moveUp
     }
   }, [_c("div", {
     staticClass: "drop-down-menu-item-wrapper"
-  }, [_vm._v(" Move Up")])]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                                    Move Up\n                                ")])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "drop-down-menu-item",
     on: {
       click: function click($event) {
@@ -2946,7 +2946,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "drop-down-menu-item-wrapper"
-  }, [_vm._v(" Move To")])]), _vm._v(" "), _vm.isFile ? _c("div", {
+  }, [_vm._v("\n                                    Move To\n                                ")])]), _vm._v(" "), _vm.isFile ? _c("div", {
     staticClass: "drop-down-menu-item",
     on: {
       click: function click($event) {
@@ -2960,7 +2960,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "drop-down-menu-item-wrapper"
-  }, [_vm._v(" Copy To ")])]) : _vm._e(), _vm._v(" "), _vm.isFile && _vm.data.count > 1 ? _c("div", {
+  }, [_vm._v("\n                                    Copy To\n                                ")])]) : _vm._e(), _vm._v(" "), _vm.isFile && _vm.data.count > 1 ? _c("div", {
     staticClass: "drop-down-menu-item",
     on: {
       click: function click($event) {
@@ -2972,11 +2972,11 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "drop-down-menu-item-wrapper"
-  }, [_vm._v(" Explode ")])]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                                    Explode\n                                ")])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "drop-down-menu-item",
     on: {
       click: function click($event) {
-        _vm.$store.commit("manageFiles/openModal", {
+        return _vm.$store.commit("manageFiles/openModal", {
           name: !_vm.isFile ? "edit-category" : "edit-pdf",
           data: _vm.data
         });
@@ -2984,7 +2984,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "drop-down-menu-item-wrapper"
-  }, [_vm._v(" Edit ")])]), _vm._v(" "), _vm.isFile && _vm.width <= 1024 ? _c("div", {
+  }, [_vm._v("\n                                    Edit\n                                ")])]), _vm._v(" "), _vm.isFile && _vm.width <= 1024 ? _c("div", {
     staticClass: "drop-down-menu-item"
   }, [_c("div", {
     staticClass: "drop-down-menu-item-wrapper"
@@ -2993,7 +2993,7 @@ var render = function render() {
       href: _vm.data.path,
       target: "_blank"
     }
-  }, [_vm._v("View File ")])])]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("View File\n                                    ")])])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "drop-down-menu-item danger",
     on: {
       click: function click($event) {
@@ -3007,7 +3007,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "drop-down-menu-item-wrapper"
-  }, [_vm._v(" Delete ")])])]) : _vm._e()])])]), _vm._v(" "), _vm.data.path ? _c("div", {
+  }, [_vm._v("\n                                    Delete\n                                ")])])]) : _vm._e()])])]), _vm._v(" "), _vm.data.path ? _c("div", {
     staticClass: "iframe-preview file columns hide",
     attrs: {
       id: "iframe-" + this.data.id

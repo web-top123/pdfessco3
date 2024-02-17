@@ -104,7 +104,7 @@ Route::middleware('auth')->group(function () {
         Route::post('create', [DocumentController::class,'store']);
         Route::get('categories', [CategoriesMenuController::class,'index']);
         Route::post('email', function () {
-            \Mail::to(request()->to)->send(new \App\Mail\TestMail(request()->url, request()->subject));
+            Mail::to(request()->to)->send(new \App\Mail\TestMail(request()->url, request()->subject));
             return json_encode([ 'success' => true ]);
         });
 
