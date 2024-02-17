@@ -115,14 +115,14 @@ Route::middleware('auth')->group(function () {
             
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
-                // $pdfUrl = request()->url;
-                // $pdfContent = Http::get($pdfUrl)->body();
+                $pdfUrl = request()->url;
+                $pdfContent = Http::get($pdfUrl)->body();
 
                 $message->to('webtopc2021@gmail.com')
                     ->subject($subject)
                     ->setBody($body);
                 // Attach the PDF file
-                // $message->attachData($pdfContent, 'filename.pdf');
+                $message->attachData($pdfContent, 'filename.pdf');
             });
             return json_encode([ 'success' => true ]);
         });
