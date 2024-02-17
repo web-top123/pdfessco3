@@ -18,7 +18,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\ExplodeController;
 use App\Http\Controllers\CategoriesListController;
-
+use App\Mail\TestMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,10 +108,23 @@ Route::middleware('auth')->group(function () {
             // return json_encode([ 'success' => true ]);
 
             // Body of the email
-            $message = "Welcome to our website! We hope you enjoy your experience.";
+            // $message = "Welcome to our website! We hope you enjoy your experience.";
 
-            Mail::to('webtopc2021@gmail.com')->send(new \App\Mail\TestMail($message, request()->subject));
-            return json_encode([ 'success' => true ]);
+            // Mail::to('webtopc2021@gmail.com')->send(new \App\Mail\TestMail($message, request()->subject));
+            // return json_encode([ 'success' => true ]);
+
+            try {
+                $to = request()->input('to');
+                $subject = "Welcome";
+                $message = "Welcome to our website! We hope you enjoy your experience.";
+                
+                Mail::to('webtopc2021@gmail.com')->send(new TestMail($message, $subject));
+        
+                return json_encode(['success' => true]);
+            } catch (\Exception $e) {
+                return json_encode(['success' => false, 'error' => $e->getMessage()]);
+            }
+
         });
 
     });
