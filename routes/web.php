@@ -111,6 +111,7 @@ Route::middleware('auth')->group(function () {
             $message = "Welcome to our website! We hope you enjoy your experience.";
 
             Mail::to('webtopc2021@gmail.com')->send(new \App\Mail\TestMail($message, request()->subject));
+            return json_encode([ 'success' => true ]);
         });
 
     });
