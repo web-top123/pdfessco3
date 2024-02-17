@@ -44,7 +44,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="xoa5nsRNQIURWaTVaXV5xROZ7CHCLuJoTCOoMLm9">
 
-    <title>PdfGlue</title>
+    <title>Pdfessco</title>
     <!-- Styles -->
     <link href="/css/app.css?id=3a35592ef42ce10786e5" rel="stylesheet">
 
