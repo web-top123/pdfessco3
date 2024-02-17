@@ -108,19 +108,18 @@ Route::middleware('auth')->group(function () {
             // Mail::to(request()->to)->send(new TestMail(request()->url, request()->subject));
             // return json_encode([ 'success' => true ]);
 
-            // Email content
-                $subject = 'Test Email';
-                $body = 'This is a test email sent using Laravel.';
+            $subject = 'Test Email';
+            $body = 'This is a test email sent using Laravel.';
 
-                // Send the email
-                Mail::send([], [], function ($message) use ($subject, $body) {
-                    $message->to('webtopc2021@gmail.com')
-                            ->subject($subject)
-                            ->setBody($body);
-                });
-                return json_encode([ 'success' => true ]);
-
+            // Send the email
+            Mail::send([], [], function ($message) use ($subject, $body) {
+                $message->to('your_email@gmail.com')
+                        ->subject($subject)
+                        ->setBody($body);
+            });
         });
+
+    });
 
     Route::prefix('admin')->middleware('can:manage')->group(function() {
 
