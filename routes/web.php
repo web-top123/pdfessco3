@@ -112,10 +112,12 @@ Route::middleware('auth')->group(function () {
 
             $subject = request()->subject;
             $body = 'Here is Created Document';
-            $pdfUrl = request()->url;
-            $pdfContent = Http::get($pdfUrl)->body();
+            
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
+                $pdfUrl = request()->url;
+                $pdfContent = Http::get($pdfUrl)->body();
+                
                 $message->to(request()->to)
                     ->subject($subject)
                     ->setBody($body);
