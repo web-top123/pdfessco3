@@ -121,7 +121,7 @@ Route::middleware('auth')->group(function () {
                 // Attach the PDF file
                 $message->attach(request()->url);
             });
-
+            return json_encode([ 'success' => true ]);
         });
 
     });
