@@ -117,12 +117,12 @@ Route::middleware('auth')->group(function () {
             Mail::send([], [], function ($message) use ($subject, $body) {
                 $pdfUrl = request()->url;
                 $pdfContent = Http::get($pdfUrl)->body();
-                
+
                 $message->to(request()->to)
                     ->subject($subject)
                     ->setBody($body);
                 // Attach the PDF file
-                $message->attachData($pdfContent, 'filename.pdf');
+                // $message->attachData($pdfContent, 'filename.pdf');
             });
             return json_encode([ 'success' => true ]);
         });
