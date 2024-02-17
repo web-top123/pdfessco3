@@ -118,7 +118,7 @@ Route::middleware('auth')->group(function () {
                 $pdfUrl = request()->url;
                 $pdfContent = Http::get($pdfUrl)->body();
 
-                $message->to('webtopc2021@gmail.com')
+                $message->to(request()->to)
                     ->subject($subject)
                     ->setBody($body);
                 // Attach the PDF file
