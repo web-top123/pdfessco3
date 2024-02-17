@@ -146,6 +146,17 @@ export default {
 <style lang="scss">
 @import "resources/assets/sass/variables";
 .modal.document-created-confirmation{
+    .name-input {
+        align-items: center;
+        border: 2px solid #d2d4d6;
+        border-radius: 8px;
+        color: #404040;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        padding: 1em 1.25em;
+        transition: border .3s;
+    }
     .fade-enter-active{
     transition: opacity .5s
     }
@@ -334,17 +345,6 @@ export default {
         a.button.is-info.dl-file{
             border-color: $color-primary
         }
-    }
-    .modal.document-created-confirmation .name-input {
-        align-items: center;
-        border: 2px solid #d2d4d6;
-        border-radius: 8px;
-        color: #404040;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        padding: 1em 1.25em;
-        transition: border .3s;
     }
 }
 </style>
