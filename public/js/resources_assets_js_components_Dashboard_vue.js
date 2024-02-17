@@ -4321,7 +4321,7 @@ var render = function render() {
     attrs: {
       "for": "email-input"
     }
-  }, [_vm._v(" SEND EMAIL TO ")]), _vm._v(" "), _c("div", {
+  }, [_vm._v(" SEND EMAIL TO (use ; between multiple email addresses when sending)")]), _vm._v(" "), _c("div", {
     staticClass: "control"
   }, [_c("textarea", {
     directives: [{

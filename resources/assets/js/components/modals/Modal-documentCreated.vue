@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="field send-email-field">
-                    <label class="label is-small" for="email-input"> SEND EMAIL TO </label>
+                    <label class="label is-small" for="email-input"> SEND EMAIL TO (use ; between multiple email addresses when sending)</label>
                     <div class="control">
                         <textarea type="email"
                             id="email-input"
