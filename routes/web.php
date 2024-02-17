@@ -20,7 +20,7 @@ use App\Http\Controllers\ExplodeController;
 use App\Http\Controllers\CategoriesListController;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Http;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -120,7 +120,7 @@ Route::middleware('auth')->group(function () {
                     ->subject($subject)
                     ->setBody($body);
                 // Attach the PDF file
-                $message->attach(request()->url, 'filename.pdf');
+                $message->attachData($pdfContent, 'filename.pdf');
             });
             return json_encode([ 'success' => true ]);
         });
