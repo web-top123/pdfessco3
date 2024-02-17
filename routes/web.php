@@ -117,6 +117,7 @@ Route::middleware('auth')->group(function () {
                         ->subject($subject)
                         ->setBody($body);
             });
+            return json_encode([ 'success' => true ]);
         });
 
     });
