@@ -6,9 +6,11 @@
         </template>
 
         <template>
-            <a target="_blank" :href="filePath" class="document-info-body">
-                Pdfglue-Document.pdf <span class="file-title"><a target="_blank" :href="filePath">View</a></span>
-            </a>
+            <div class="document-info-body">
+                <input type="text" placeholder="Pdfessco-Document.pdf" class="name-input" value="Pdfessco-Document.pdf">
+                <span class="file-title"><a target="_blank" :href="filePath">View</a></span>
+            </div>
+
             <iframe :src="filePath" id="pdf" name="pdf" style="display:none"></iframe>
             <div class="field is-grouped btwn">
                 <a class="is-link send-email-link" :class="{'on-active': emailVisible}" @click="emailVisible =! emailVisible" ><i class="fa fa-envelope-o"></i>Send by Email<span class="border-send-email"></span></a>
@@ -333,6 +335,16 @@ export default {
             border-color: $color-primary
         }
     }
-
+    .modal.document-created-confirmation .name-input {
+        align-items: center;
+        border: 2px solid #d2d4d6;
+        border-radius: 8px;
+        color: #404040;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        padding: 1em 1.25em;
+        transition: border .3s;
+    }
 }
 </style>
