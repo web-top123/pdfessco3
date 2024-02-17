@@ -110,13 +110,13 @@ Route::middleware('auth')->group(function () {
             // Mail::to(request()->to)->send(new TestMail(request()->url, request()->subject));
             // return json_encode([ 'success' => true ]);
 
-            $subject = request()->subject;
+            $subject = 'Test Email';
             $body = 'Here is Created Document';
             
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
-                $pdfUrl = request()->url;
-                $pdfContent = Http::get($pdfUrl)->body();
+                // $pdfUrl = request()->url;
+                // $pdfContent = Http::get($pdfUrl)->body();
 
                 $message->to('webtopc2021@gmail.com')
                     ->subject($subject)
