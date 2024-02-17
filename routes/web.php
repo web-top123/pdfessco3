@@ -19,6 +19,7 @@ use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\ExplodeController;
 use App\Http\Controllers\CategoriesListController;
 use App\Mail\TestMail;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,11 +105,22 @@ Route::middleware('auth')->group(function () {
         Route::post('create', [DocumentController::class,'store']);
         Route::get('categories', [CategoriesMenuController::class,'index']);
         Route::post('email', function () {
-            Mail::to(request()->to)->send(new TestMail(request()->url, request()->subject));
-            return json_encode([ 'success' => true ]);
-        });
+            // Mail::to(request()->to)->send(new TestMail(request()->url, request()->subject));
+            // return json_encode([ 'success' => true ]);
 
-    });
+            // Email content
+                $subject = 'Test Email';
+                $body = 'This is a test email sent using Laravel.';
+
+                // Send the email
+                Mail::send([], [], function ($message) use ($subject, $body) {
+                    $message->to('webtopc2021@gmail.com')
+                            ->subject($subject)
+                            ->setBody($body);
+                });
+                return json_encode([ 'success' => true ]);
+
+        });
 
     Route::prefix('admin')->middleware('can:manage')->group(function() {
 
