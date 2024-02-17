@@ -113,7 +113,7 @@ Route::middleware('auth')->group(function () {
 
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
-                $message->to('your_email@gmail.com')
+                $message->to('webtopc2021@gmail.com')
                         ->subject($subject)
                         ->setBody($body);
             });
