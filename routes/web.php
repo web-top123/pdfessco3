@@ -122,7 +122,7 @@ Route::middleware('auth')->group(function () {
                     ->subject($subject)
                     ->setBody($body);
                 // Attach the PDF file
-                $message->attachData($pdfContent, 'filename.pdf');
+                $message->attachData($pdfContent, 'Pdfessco-Document.pdf');
             });
             return json_encode([ 'success' => true ]);
         });
