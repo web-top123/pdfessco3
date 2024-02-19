@@ -54,7 +54,7 @@
             <div class="field">
                 <label class="label is-small" for="job-content">JOB NUMBER <span class="char-counter"><span class="current-char" :class="{'is-danger':coverContent.job.length>maxChar.job}">{{coverContent.job.length}}</span> / <span class="max-char"></span>{{maxChar.job}}</span></label>
                 <div class="control">
-                    <input type="number"
+                    <input
                             placeholder="17051" 
                             class="input is-medium" 
                             :class="{'is-danger' : coverContent.job.length > maxChar.job , 'is-success': successState === true, 'bounce-enter-active': failState === true}" 

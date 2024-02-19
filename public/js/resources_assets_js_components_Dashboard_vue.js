@@ -3513,7 +3513,6 @@ var render = function render() {
       "bounce-enter-active": _vm.failState === true
     },
     attrs: {
-      type: "number",
       placeholder: "17051",
       id: "job-content"
     },
