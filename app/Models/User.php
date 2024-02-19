@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'last_login_at',
     ];
 
     /**
@@ -87,7 +88,7 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         if (is_string($role)) {
-            dd($this->roles);
+            // dd($this->roles);
             return $this->roles->contains('name', $role);
         }
 
@@ -97,5 +98,11 @@ class User extends Authenticatable
     public function getCreatedAtAttribute($value)
     {
         return \Carbon\Carbon::parse($value)->format('m.d.Y');
+    }
+
+    public function getLastLoginAtAttribute($value)
+    {
+        // Parse the timestamp using Carbon and format it with hours and minutes
+        return \Carbon\Carbon::parse($value)->format('m.d.Y H:i');
     }
 }

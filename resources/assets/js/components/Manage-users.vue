@@ -297,7 +297,7 @@ export default {
                         data: 'documents_count',
                     },
                     {
-                        data: 'created_at',
+                        data: 'last_login_at',
                     },
                     {
                         data: 'created_at',
