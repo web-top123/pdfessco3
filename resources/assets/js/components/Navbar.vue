@@ -48,7 +48,7 @@
                 </div> -->
                 <div class="text" style="color:red;text-align: center;">
                      
-                    <p><small>Last Update</small><br/> 12/12/2022</p>
+                    <p><small>Last Update</small><br/> 02/21/2024</p>
                 </div>
             </router-link>
             

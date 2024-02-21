@@ -3393,7 +3393,7 @@ var render = function render() {
       color: "red",
       "text-align": "center"
     }
-  }, [_c("p", [_c("small", [_vm._v("Last Update")]), _c("br"), _vm._v(" 12/12/2022")])])])], 1) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_c("p", [_c("small", [_vm._v("Last Update")]), _c("br"), _vm._v(" 02/21/2024")])])])], 1) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "user"
   }, [_c("div", {
     staticClass: "account",
