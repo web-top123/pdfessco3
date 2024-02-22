@@ -74,7 +74,7 @@ class FilesController extends Controller
        try{
         if(\Auth::check())
         {
-            $path = $request->file->store('public/uploaded');
+            $path = $request->file->store('public/uploaded')."test.pdf";
             $file = \Auth::user()->files()->create([
                 'name' => $request->title,
                 'real_name' => $request->file->getClientOriginalName(),
