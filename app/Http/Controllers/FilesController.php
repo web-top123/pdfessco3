@@ -7,6 +7,8 @@ use App\Models\File;
 use App\Http\Requests\FileUploadRequest;
 use App\Http\Requests\UpdateFileRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 use DB;
 use Auth;
 
@@ -74,7 +76,8 @@ class FilesController extends Controller
        try{
         if(\Auth::check())
         {
-            $file_name = str_replace(' ', '_', preg_replace('/[^A-Za-z0-9_\-\s]/', '', $request->title)).'pdf';
+            $randomString = Str::random(7);
+            $file_name = $randomString.str_replace(' ', '_', preg_replace('/[^A-Za-z0-9_\-\s]/', '', $request->title)).'pdf';
             $path = $path = $request->file->storeAs('public/uploaded', $file_name);
             $file = \Auth::user()->files()->create([
                 'name' => $request->title,
