@@ -74,7 +74,7 @@ class FilesController extends Controller
        try{
         if(\Auth::check())
         {
-            $file_name = str_replace(' ', '_', preg_replace('/[^A-Za-z0-9_\-]/', '', $request->title)).'pdf';
+            $file_name = str_replace(' ', '_', preg_replace('/[^A-Za-z0-9_\-\s]/', '', $request->title)).'pdf';
             $path = $path = $request->file->storeAs('public/uploaded', $file_name);
             $file = \Auth::user()->files()->create([
                 'name' => $request->title,
