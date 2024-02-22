@@ -46,8 +46,7 @@ class CopyToController extends Controller
         $requestFiles = collect($request->data['files'])->map(function($id){
             return File::findOrFail($id);
         })->each(function($file) use ($request, $storagePath, &$newFiles){
-            // $newPath = 'public/uploaded/'.str_random(40).'.pdf';
-            $newPath = 'public/uploaded/'.'uploadedfile'.'.pdf';
+            $newPath = 'public/uploaded/'.str_random(40).'.pdf';
             $newFile;
             Storage::copy($file->getOriginal('path'), $newPath);           
             $newFile = \Auth::user()->files()->create([

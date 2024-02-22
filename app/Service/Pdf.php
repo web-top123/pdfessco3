@@ -238,8 +238,8 @@ class Pdf extends TCPDI
 
     protected function _generatePath()
     {
-        return 'public/' . config('pdf.folder') . '/' . \Str::random(40) . '.pdf';
-        // return'public/' . config('pdf.folder') . '/' . 'test' . '.pdf';
+        //return 'public/' . config('pdf.folder') . '/' . \Str::random(40) . '.pdf';
+        return'public/' . config('pdf.folder') . '/' . 'test' . '.pdf';
     }
 
     protected function _getSize($size)
