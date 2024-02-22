@@ -241,8 +241,8 @@ class Pdf extends Fpdi
 
     protected function _generatePath()
     {
-        return 'public/' . config('pdf.folder') . '/' . Str::random(40) . '.pdf';
-        // return'public/' . config('pdf.folder') . '/' . 'test' . '.pdf';
+        //return 'public/' . config('pdf.folder') . '/' . Str::random(40) . '.pdf';
+        return'public/' . config('pdf.folder') . '/' . 'fileuploadnametest' . '.pdf';
     }
 
     protected function _getSize($size)
