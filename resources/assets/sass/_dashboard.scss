@@ -737,6 +737,12 @@
                 }
             }
         }
+        button {
+            margin: 0 20px;
+            box-sizing: border-box;
+            width: 150px;
+            margin-bottom: 20px;
+        }
     }
     .ok-button,.save-button{
         line-height: $button-height;

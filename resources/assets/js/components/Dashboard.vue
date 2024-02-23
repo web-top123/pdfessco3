@@ -138,6 +138,7 @@
                     <button type="button" class="button-base" :class="{borderless: st.modals.addHeader.exists}" @click="$store.commit('dashboard/openModal', 'addHeader')">{{headerState}} Header</button>
                     <button type="button" class="button-base" :class="{borderless: st.modals.addFooter.exists}" @click="$store.commit('dashboard/openModal', 'addFooter')">{{footerState}} Footer</button>
                     <button type="button" class="button-base" :class="{borderless: st.modals.addCover.exists}" @click="$store.commit('dashboard/openModal', 'addCover')">{{coverState}} Cover</button>
+                    <button type="button" class="button-base" :class="{borderless: st.modals.addOperation.exists}" @click="$store.commit('dashboard/openModal', 'addOperation')">{{operationState}} O & M</button>
                 </div>
 
                 <div class="dashboard-action-list">
@@ -190,12 +191,14 @@
             <modal-add-header v-if="modals.addHeader.show" @delete="$store.commit('dashboard/openModal','deleteHeader')" @close="$store.commit('dashboard/closeModal','addHeader')" :key="'addHeader'"></modal-add-header>
             <modal-add-footer v-if="modals.addFooter.show" @delete="$store.commit('dashboard/openModal','deleteFooter')" @close="$store.commit('dashboard/closeModal','addFooter')" :key="'addFooter'"></modal-add-footer>
             <modal-add-cover v-if="modals.addCover.show" @delete="$store.commit('dashboard/openModal','deleteCover')" @close="$store.commit('dashboard/closeModal','addCover')" :key="'addCover'"></modal-add-cover>
+            <modal-add-operation v-if="modals.addOperation.show" @delete="$store.commit('dashboard/openModal','deleteOperation')" @close="$store.commit('dashboard/closeModal','addOperation')" :key="'addOperation'"></modal-add-operation>
             <modal-add-divider v-if="modals.addDivider.show" @close="$store.commit('dashboard/closeModal','addDivider')" :key="'addDiv'"></modal-add-divider>
             <modal-upload-file-dashboard v-if="modals.uploadFileDashboard.show" @close="$store.commit('dashboard/closeModal','uploadFileDashboard')" :width="this.width" :key="'uploadFile'"></modal-upload-file-dashboard>
             <modal-document-created v-if="modals.documentCreated" @save="$store.commit('dashboard/closeModal')" @close="$store.commit('dashboard/closeModal','documentCreated')" :key="'docCreate'"></modal-document-created>
             <modal-delete-header v-if="modals.deleteHeader" @save="$store.commit('dashboard/deleteHFC', 'addHeader')" @close="$store.commit('dashboard/closeModal','deleteHeader')" :key="'delheader'"></modal-delete-header>
             <modal-delete-footer v-if="modals.deleteFooter" @save="$store.commit('dashboard/deleteHFC', 'addFooter')" @close="$store.commit('dashboard/closeModal','deleteFooter')" :key="'delFooter'"></modal-delete-footer>
             <modal-delete-cover v-if="modals.deleteCover" @save="$store.commit('dashboard/deleteHFC', 'addCover')" @close="$store.commit('dashboard/closeModal','deleteCover')" :key="'delCover'"></modal-delete-cover>
+            <modal-delete-operation v-if="modals.deleteOperation" @save="$store.commit('dashboard/deleteHFC', 'addOperation')" @close="$store.commit('dashboard/closeModal','deleteOperation')" :key="'delOperation'"></modal-delete-operation>
             <modal-remove-item v-if="modals.removeItem" @save="removeItem" @close="$store.commit('dashboard/closeModal','removeItem')" :key="'removeItem'"></modal-remove-item>
             <modal-remove-items v-if="modals.removeItems" @save="removeItems" @close="$store.commit('dashboard/closeModal','removeItems')" :key="'removeItems'"></modal-remove-items>
             <modal-start-over v-if="modals.startOver" @save="startOver" @close="$store.commit('dashboard/closeModal','startOver')" :key="'startOver'"></modal-start-over>
@@ -218,6 +221,7 @@
     import ModalAddHeader from './modals/Modal-addHeader.vue';
     import ModalAddFooter from './modals/Modal-addFooter.vue';
     import ModalAddCover from './modals/Modal-addCover.vue';
+    import ModalAddOperation from './modals/Modal-addOperation.vue';
     import ModalAddDivider from './modals/Modal-addDivider.vue';
     import ModalUploadFileDashboard from './modals/Modal-uploadFileDashboard.vue';
     import ModalDocumentCreated from './modals/Modal-documentCreated.vue';
@@ -236,6 +240,7 @@
                 addHeader: {show:false, exists:false, content:"", verb:"Add"},
                 addFooter: {show:false, exists:false, content:"", verb:"Add"},
                 addCover: {show:false, exists:false, content:{project:"",projectType:"",customer:"",job:""}, verb:"Add"},
+                addOperation: {show:false, exists:false, content:{project:"",projectType:"OPERATION AND MAINTENANCE MANUAL",customer:"",job:""}, verb:"Add"},
                 addDivider: {show:false, exists:false, data:{name:"",content:""}},
                 uploadFileDashboard: {show: false, exists: false, data:{}},
                 myAccount: false,
@@ -472,6 +477,7 @@
             ModalAddHeader,
             ModalAddFooter,
             ModalAddCover,
+            ModalAddOperation,
             ModalUploadFileDashboard,
             ModalDocumentCreated,
             ModalDeleteHeader,
@@ -524,6 +530,9 @@
             },
             coverState(){
                 return !this.$store.state.dashboard.modals.addCover.exists ? 'Add' : 'Edit';
+            },
+            operationState(){
+                return !this.$store.state.dashboard.modals.addOperation.exists ? 'Add' : 'Edit';
             },
             selectedFiles(){
                 return this.$store.state.dashboard.selectedFiles
@@ -677,6 +686,9 @@
                     if(this.$store.state.dashboard.modals.addCover.content.project.length || this.$store.state.dashboard.modals.addCover.content.customer.length || this.$store.state.dashboard.modals.addCover.content.projectType.length){
                         postBody.cover = this.$store.state.dashboard.modals.addCover.content;
                     }
+                    if(this.$store.state.dashboard.modals.addOperation.content.project.length || this.$store.state.dashboard.modals.addOperation.content.customer.length || this.$store.state.dashboard.modals.addOperation.content.projectType.length){
+                        postBody.operation = this.$store.state.dashboard.modals.addOperation.content;
+                    }
                     if(this.$store.state.dashboard.modals.addFooter.content.length){
                         postBody.footer = this.$store.state.dashboard.modals.addFooter.content;
                     }
@@ -711,6 +723,7 @@
                 this.$store.commit('dashboard/deleteHFC', 'addHeader');
                 this.$store.commit('dashboard/deleteHFC', 'addFooter');
                 this.$store.commit('dashboard/deleteHFC', 'addCover');
+                this.$store.commit('dashboard/deleteHFC', 'addOperation');
             },
             search() {
                 if (this.searchTimeout) {clearTimeout(this.searchTimeout)}
@@ -898,6 +911,13 @@
 
     }
 
+}
+.dashboard-action .dashboard-action-buttons {
+    margin: 20px 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 </style>

@@ -15,12 +15,14 @@ import ModalChangePass from './components/modals/Modal-changePass.vue'
 import ModalAddHeader from './components/modals/Modal-addHeader.vue'
 import ModalAddFooter from './components/modals/Modal-addFooter.vue'
 import ModalAddCover from './components/modals/Modal-addCover.vue'
+import ModalAddOperation from './components/modals/Modal-addOperation.vue'
 import ModalAddDivider from './components/modals/Modal-addDivider.vue'
 import ModalEditDivider from './components/modals/Modal-editDivider.vue'
 import ModalDocumentCreated from './components/modals/Modal-documentCreated.vue'
 import ModalDeleteHeader from './components/modals/Modal-deleteHeader.vue'
 import ModalDeleteFooter from './components/modals/Modal-deleteFooter.vue'
 import ModalDeleteCover from './components/modals/Modal-deleteCover.vue'
+import ModalDeleteOperation from './components/modals/Modal-deleteOperation.vue'
 import ModalStartOver from './components/modals/Modal-startOver.vue'
 import ModalRemoveItem from './components/modals/Modal-removeItem.vue'
 import ModalRemoveItems from './components/modals/Modal-removeItems.vue'
@@ -45,10 +47,12 @@ const app = new Vue({
         ModalAddHeader,
         ModalAddFooter,
         ModalAddCover,
+        ModalAddOperation,
         ModalDocumentCreated,
         ModalDeleteHeader,
         ModalDeleteFooter,
         ModalDeleteCover,
+        ModalDeleteOperation,
         ModalAddDivider,
         ModalEditDivider,
         ModalStartOver,
@@ -77,6 +81,9 @@ const app = new Vue({
         coverExists: false,
         coverContent: "",
         successCoverState: false,
+        operationExists: false,
+        operationContent: "",
+        successOperationState: false,
         /** states vuex */
         filePath: "",
         dividerData: {name:"", content:""},
@@ -86,6 +93,7 @@ const app = new Vue({
             addHeader: false,
             addFooter: false,
             addCover: false,
+            addOperation: false,
             addDivider: false,
             editDivider: false,
             myAccount: false,
@@ -94,6 +102,7 @@ const app = new Vue({
             deleteHeader: false,
             deleteFooter: false,
             deleteCover: false,
+            deleteOperation: false,
             startOver: false,
             removeItem: false,
             removeItems: false
@@ -114,6 +123,9 @@ const app = new Vue({
         },
         coverState(){
             return !this.coverExists ? 'Add' : 'Edit';
+        },
+        operationState(){
+            return !this.operationExists ? 'Add' : 'Edit';
         }
     },
     mounted() {
@@ -318,10 +330,25 @@ const app = new Vue({
                 this.modals.addCover = false;
             }
         },
+        saveOperation(data){
+            if(!data.length){
+                this.deleteOperation();
+            }else{
+                this.operationContent = data;
+                this.operationExists = true;
+                this.modals.addOperation = false;
+            }
+        },
         deleteCover(){
             this.successCoverState = false;
             this.coverContent = "";
             this.coverExists = false;
+            this.closeModals();
+        },
+        deleteOperation(){
+            this.successOperationState = false;
+            this.operationContent = "";
+            this.operationExists = false;
             this.closeModals();
         },
         insertDivider(data){
@@ -360,6 +387,9 @@ const app = new Vue({
                 }
                 if(this.coverContent.length){
                     postBody.cover = this.coverContent
+                }
+                if(this.operationContent.length){
+                    postBody.operation = this.operationContent
                 }
                 if(this.footerContent.length){
                     postBody.footer = this.footerContent
@@ -423,6 +453,7 @@ const app = new Vue({
             this.deleteHeader();
             this.deleteFooter();
             this.deleteCover();
+            this.deleteOperation();
         }
     },
 });

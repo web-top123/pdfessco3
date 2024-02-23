@@ -37,6 +37,9 @@ class DocumentController extends Controller
         if($request->cover){
             $document->addCover($request->cover);
         }
+        if($request->operation) {
+            $document->addOperation($request->operation);
+        }
 
         foreach($request->items as $item) {
 

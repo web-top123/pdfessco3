@@ -138,8 +138,64 @@ class Pdf extends TCPDI
         $this->setCellHeightRatio(1.5);
         $this->setCellPadding(6, 0, 6, 0);
         $this->MultiCell(0, 0, $cover['job'], 0, 'C', 0, '');
-     }
+    }
+    
+    public function addOperation($operation)
+    {
+        $this->_skip[] = $this->PageNo() + 1;
 
+        $this->AddPage('P', 'LETTER');
+        $this->useTemplate($this->_template);
+        $this->SetY(config('pdf.cover.margin-top'));
+
+        $this->SetTextColor(config('pdf.cover.title.color.r'), config('pdf.cover.title.color.g'), config('pdf.cover.title.color.b'));
+        $this->SetFont(config('pdf.cover.title.font-family'), '', config('pdf.cover.title.font-size'));
+        $this->setCellHeightRatio(1.5);
+        $this->setCellPadding(6, 0, 6, 0);
+        $this->MultiCell(0, 0, $operation['projectType'], 0, 'C', 0, '');
+
+        $this->SetY(config('pdf.cover.margin-top') + 30);
+        $this->SetTextColor(config('pdf.cover.title.color.r'), config('pdf.cover.title.color.g'), config('pdf.cover.title.color.b'));
+        $this->SetFont(config('pdf.cover.title.font-family'), '', config('pdf.cover.title.font-size'));
+        $this->setCellHeightRatio(1.5);
+        $this->setCellPadding(6, 0, 6, 0);
+        $this->MultiCell(0, 0, strtoupper('Project Name:'), 0, 'C', 0, '');
+
+        $this->SetY(config('pdf.cover.margin-top') + 40);
+        $this->SetTextColor(config('pdf.cover.color.r'), config('pdf.cover.color.g'), config('pdf.cover.color.b'));
+        $this->SetFont(config('pdf.cover.font-family'), '', config('pdf.cover.font-size'));
+        $this->setCellHeightRatio(1.5);
+        $this->setCellPadding(6, 0, 6, 0);
+        $this->MultiCell(0, 0, $operation['project'], 0, 'C', 0, '');
+
+        $this->SetY(config('pdf.cover.margin-top') + 80);
+        $this->SetTextColor(config('pdf.cover.title.color.r'), config('pdf.cover.title.color.g'), config('pdf.cover.title.color.b'));
+        $this->SetFont(config('pdf.cover.title.font-family'), '', config('pdf.cover.title.font-size'));
+        $this->setCellHeightRatio(1.5);
+        $this->setCellPadding(6, 0, 6, 0);
+        $this->MultiCell(0, 0, strtoupper('Customer Name:'), 0, 'C', 0, '');
+
+        $this->SetY(config('pdf.cover.margin-top') + 90);
+        $this->SetTextColor(config('pdf.cover.color.r'), config('pdf.cover.color.g'), config('pdf.cover.color.b'));
+        $this->SetFont(config('pdf.cover.font-family'), '', config('pdf.cover.font-size'));
+        $this->setCellHeightRatio(1.5);
+        $this->setCellPadding(6, 0, 6, 0);
+        $this->MultiCell(0, 0, $operation['customer'], 0, 'C', 0, '');
+
+        $this->SetY(config('pdf.cover.margin-top') + 130);
+        $this->SetTextColor(config('pdf.cover.title.color.r'), config('pdf.cover.title.color.g'), config('pdf.cover.title.color.b'));
+        $this->SetFont(config('pdf.cover.title.font-family'), '', config('pdf.cover.title.font-size'));
+        $this->setCellHeightRatio(1.5);
+        $this->setCellPadding(6, 0, 6, 0);
+        $this->MultiCell(0, 0, strtoupper('Essco Job #:'), 0, 'C', 0, '');
+
+        $this->SetY(config('pdf.cover.margin-top') + 140);
+        $this->SetTextColor(config('pdf.cover.color.r'), config('pdf.cover.color.g'), config('pdf.cover.color.b'));
+        $this->SetFont(config('pdf.cover.font-family'), '', config('pdf.cover.font-size'));
+        $this->setCellHeightRatio(1.5);
+        $this->setCellPadding(6, 0, 6, 0);
+        $this->MultiCell(0, 0, $operation['job'], 0, 'C', 0, '');
+    }
     public function addFile($file, $selectedPages)
     {
         $pages = $this->setSourceFile($this->_filePath($file)) + 1;

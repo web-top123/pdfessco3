@@ -1380,6 +1380,12 @@ button::-moz-focus-inner {
     margin-left: 2px;
   }
 }
+.dashboard-action .dashboard-action-buttons button {
+  margin: 0 20px;
+  box-sizing: border-box;
+  width: 150px;
+  margin-bottom: 20px;
+}
 .dashboard-action .ok-button, .dashboard-action .save-button {
   line-height: 50px;
 }

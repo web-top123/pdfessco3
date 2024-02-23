@@ -10,6 +10,7 @@ export default new Vuex.Store({
             addHeader: {show:false, exists:false, content:"", verb:"Add"},
             addFooter: {show:false, exists:false, content:"", verb:"Add"},
             addCover: {show:false, exists:false, content:{project:"",projectType:"",customer:"",job:""}, verb:"Add"},
+            addOperation: {show:false, exists:false, content:{project:"",projectType:"OPERATION AND MAINTENANCE MANUAL",customer:"",job:""}, verb:"Add"},
             addDivider: {show:false, exists:false, data:{name:"",content:""}},
             uploadFileDashboard: {show: false, exists: false, data:{}},
             myAccount: false,
