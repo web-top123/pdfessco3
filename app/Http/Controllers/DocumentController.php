@@ -37,8 +37,8 @@ class DocumentController extends Controller
         if($request->cover){
             $document->addCover($request->cover);
         }
-        
-        if($request->operation) {
+
+        if($request->operation['project']) {            
             $document->addOperation($request->operation);
         }
 
