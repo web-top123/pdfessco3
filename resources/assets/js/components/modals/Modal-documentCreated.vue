@@ -7,8 +7,8 @@
 
         <template>
             <div class="document-info-body">
-                <input type="text" placeholder="Pdfessco-Document.pdf" class="name-input" value="Pdfessco-Document.pdf">
-                <span class="file-title"><a target="_blank" :href="filePath">View</a></span>
+                <input type="text" placeholder="Pdfessco-Document.pdf" class="name-input" v-model="newFileName">
+                <span class="file-title" v-if="pathView"><a target="_blank" :href="filePath">View</a></span>
             </div>
 
             <iframe :src="filePath" id="pdf" name="pdf" style="display:none"></iframe>
@@ -53,8 +53,9 @@
         </template>
 
         <template slot="footer">
-            <button class="button" @click="$emit('close')">Cancel</button>
-            <a class="button is-info dl-file" :href="filePath" download="Pdfglue-Document.pdf">Download</a>
+            <button class="button-base" @click="$emit('close')">Cancel</button>
+            <a class="button-base is-info dl-file" :href="filePath" :download="newFileName">Download</a>
+            <button class="button-base" @click="createFile">Create on Server</button>
         </template>
 
     </modal>
@@ -74,8 +75,10 @@ export default {
             emailString: '',
             emailSubject: '',
             emailList: [],
+            newFileName: 'Pdfessco-Document',
             emailSuccess: false,
-            sending: false
+            sending: false,
+            pathView: false,
 
         };
     },
@@ -137,6 +140,54 @@ export default {
         },
         resetStates(){
             this.$store.dispatch('dashboard/resetStatesAction')
+        },
+        createFile() {
+            var that = this;
+            var token = document.head.querySelector('meta[name="csrf-token"]');
+            var postBody = {
+                _token: token.content,
+                removeNumbering: this.$store.state.dashboard.removeNumbering,
+            }
+            if (this.$store.state.dashboard.removeNumbering) {
+                postBody.removeNumbering = this.$store.state.dashboard.removeNumbering;
+            }
+            if (this.$store.state.dashboard.modals.addHeader.content.length) {
+                postBody.header = this.$store.state.dashboard.modals.addHeader.content;
+            }
+            if (this.$store.state.dashboard.modals.addCover.content.project.length || this.$store.state.dashboard.modals.addCover.content.customer.length || this.$store.state.dashboard.modals.addCover.content.projectType.length) {
+                postBody.cover = this.$store.state.dashboard.modals.addCover.content;
+            }
+            if (this.$store.state.dashboard.modals.addOperation.content.project.length || this.$store.state.dashboard.modals.addOperation.content.customer.length || this.$store.state.dashboard.modals.addOperation.content.projectType.length) {
+                postBody.operation = this.$store.state.dashboard.modals.addOperation.content;
+            }
+            if (this.$store.state.dashboard.modals.addFooter.content.length) {
+                postBody.footer = this.$store.state.dashboard.modals.addFooter.content;
+            }
+            if (this.newFileName) {
+                postBody.newFileName = this.newFileName;
+            }
+            if (this.filePath) {
+                postBody.oldFilePath = this.filePath;
+            }
+
+            postBody.items = this.$store.state.dashboard.selectedFiles.map(
+                (item) => {
+                    return (item.type === "divider") ? { type: item.type, text: item.content } : { type: item.type, id: item.id, pages: item.pages ? item.pages : [] }
+                }
+            );           
+            axios.post('/dashboard/createNameFile', postBody, {
+                onUploadProgress: ev => {
+                    that.percent = parseInt(ev.loaded * 100 / ev.total);
+                }
+            }).then(function ({ data }) {
+                that.loadingState = false;
+                that.percent = 0;
+                that.filePath = data;
+                that.pathView = true;
+                console.log(data);
+            }).catch((error) => {
+                console.error(error);
+            });
         }
     },
 }
@@ -305,7 +356,7 @@ export default {
         }
     }
     .modal-card{
-        width: 520px;
+        width: 620px;
         max-width: 100%;
         overflow: auto;
         .modal-card-head{
@@ -345,6 +396,7 @@ export default {
         a.button.is-info.dl-file{
             border-color: $color-primary
         }
+        justify-content: space-around;
     }
 }
 </style>

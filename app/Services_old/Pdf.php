@@ -157,10 +157,10 @@ class Pdf extends TCPDI
         $this->_items[] = ['type' => 'divider', 'text' => $divider];
     }
 
-    public function save()
+    public function save($fileName)
     {
         $this->_assemble();
-        return $this->_store($this->_generatePath());
+        return $this->_store($this->_generatePath($fileName));
     }
 
 
@@ -238,10 +238,17 @@ class Pdf extends TCPDI
         return storage_path() .'/app' .'/public/uploaded/'  . basename($file->getOriginal()["path"]);
     }
 
-    protected function _generatePath()
+    protected function _generatePath($fileName = null)
     {
-        return 'public/' . config('pdf.folder') . '/' . Str::random(40) . '.pdf';
+        //return 'public/' . config('pdf.folder') . '/' . Str::random(40) . '.pdf';
         //return'public/' . config('pdf.folder') . '/' . 'test' . '.pdf';
+        $basePath = 'public/' . config('pdf.folder') . '/';
+
+        if ($fileName) {
+            return $basePath . $fileName . '_'.Str::random(4).'.pdf';
+        } else {
+            return $basePath . Str::random(40) . '.pdf';
+        }
     }
 
     protected function _getSize($size)

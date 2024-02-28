@@ -872,20 +872,23 @@ window.Store.registerModule('dashboard', {
           };
         });
         var that = this;
-        axios.post('/dashboard/create', postBody, {
-          onUploadProgress: function onUploadProgress(ev) {
-            that.percent = parseInt(ev.loaded * 100 / ev.total);
-          }
-        }).then(function (_ref4) {
-          var data = _ref4.data;
-          that.loadingState = false;
-          that.percent = 0;
-          that.documentState = false;
-          that.$store.commit('dashboard/filePathMutation', data);
-          that.$store.commit('dashboard/openModal', 'documentCreated');
-        })["catch"](function (error) {
-          console.error(error);
-        });
+        // that.$store.commit('dashboard/filePathMutation', data);
+        that.$store.commit('dashboard/openModal', 'documentCreated');
+        this.documentState = false;
+        this.loadingState = false;
+        // axios.post('/dashboard/create', postBody, {
+        //     onUploadProgress: ev => {
+        //         that.percent = parseInt(ev.loaded * 100 / ev.total);
+        //     }
+        // }).then(function ({ data }) {
+        //     that.loadingState = false;
+        //     that.percent = 0;
+        //     that.documentState = false;
+        //     that.$store.commit('dashboard/filePathMutation', data);
+        //     that.$store.commit('dashboard/openModal', 'documentCreated');
+        // }).catch((error) => {
+        //     console.error(error);
+        // });
       }
     },
     startOver: function startOver() {
@@ -985,8 +988,8 @@ window.Store.registerModule('dashboard', {
           cat: this.selected.id,
           page: this.page
         }
-      }).then(function (_ref5) {
-        var data = _ref5.data;
+      }).then(function (_ref4) {
+        var data = _ref4.data;
         callback(data);
       })["catch"](function (error) {
         console.error(error);
@@ -1918,8 +1921,10 @@ __webpack_require__.r(__webpack_exports__);
       emailString: '',
       emailSubject: '',
       emailList: [],
+      newFileName: 'Pdfessco-Document',
       emailSuccess: false,
-      sending: false
+      sending: false,
+      pathView: false
     };
   },
   computed: {
@@ -1986,6 +1991,59 @@ __webpack_require__.r(__webpack_exports__);
     },
     resetStates: function resetStates() {
       this.$store.dispatch('dashboard/resetStatesAction');
+    },
+    createFile: function createFile() {
+      var that = this;
+      var token = document.head.querySelector('meta[name="csrf-token"]');
+      var postBody = {
+        _token: token.content,
+        removeNumbering: this.$store.state.dashboard.removeNumbering
+      };
+      if (this.$store.state.dashboard.removeNumbering) {
+        postBody.removeNumbering = this.$store.state.dashboard.removeNumbering;
+      }
+      if (this.$store.state.dashboard.modals.addHeader.content.length) {
+        postBody.header = this.$store.state.dashboard.modals.addHeader.content;
+      }
+      if (this.$store.state.dashboard.modals.addCover.content.project.length || this.$store.state.dashboard.modals.addCover.content.customer.length || this.$store.state.dashboard.modals.addCover.content.projectType.length) {
+        postBody.cover = this.$store.state.dashboard.modals.addCover.content;
+      }
+      if (this.$store.state.dashboard.modals.addOperation.content.project.length || this.$store.state.dashboard.modals.addOperation.content.customer.length || this.$store.state.dashboard.modals.addOperation.content.projectType.length) {
+        postBody.operation = this.$store.state.dashboard.modals.addOperation.content;
+      }
+      if (this.$store.state.dashboard.modals.addFooter.content.length) {
+        postBody.footer = this.$store.state.dashboard.modals.addFooter.content;
+      }
+      if (this.newFileName) {
+        postBody.newFileName = this.newFileName;
+      }
+      if (this.filePath) {
+        postBody.oldFilePath = this.filePath;
+      }
+      postBody.items = this.$store.state.dashboard.selectedFiles.map(function (item) {
+        return item.type === "divider" ? {
+          type: item.type,
+          text: item.content
+        } : {
+          type: item.type,
+          id: item.id,
+          pages: item.pages ? item.pages : []
+        };
+      });
+      axios.post('/dashboard/createNameFile', postBody, {
+        onUploadProgress: function onUploadProgress(ev) {
+          that.percent = parseInt(ev.loaded * 100 / ev.total);
+        }
+      }).then(function (_ref3) {
+        var data = _ref3.data;
+        that.loadingState = false;
+        that.percent = 0;
+        that.filePath = data;
+        that.pathView = true;
+        console.log(data);
+      })["catch"](function (error) {
+        console.error(error);
+      });
     }
   }
 });
@@ -2443,7 +2501,7 @@ var render = function render() {
     on: {
       click: _vm.toggleLeft
     }
-  }, [_vm._v("View Categories")]), _vm._v(" "), _c("button", {
+  }, [_vm._v("View\n                                Categories")]), _vm._v(" "), _c("button", {
     staticClass: "button-base fill toggle-right",
     attrs: {
       type: "button"
@@ -2451,7 +2509,7 @@ var render = function render() {
     on: {
       click: _vm.toggleRight
     }
-  }, [_vm._v("View Document")])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("View\n                                Document")])]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-search",
     "class": {
       focus: _vm.focus
@@ -2757,7 +2815,7 @@ var render = function render() {
     "class": {
       "is-danger": _vm.emptyState === true
     }
-  }, [_vm._v("Please select the files you want to merge into a new document")]) : _vm._e()], 1), _vm._v(" "), _c("div", {
+  }, [_vm._v("Please select the files you want to merge into a\n                        new\n                        document")]) : _vm._e()], 1), _vm._v(" "), _c("div", {
     staticClass: "dashboard-list-action"
   }, [_c("button", {
     staticClass: "button-base simple flex-button",
@@ -2849,7 +2907,7 @@ var render = function render() {
         return _vm.$refs.rmbMe.click();
       }
     }
-  }, [_vm._v("Apply page numbering")])])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Apply page\n                                numbering")])])])])]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-list-main-action"
   }, [_c("button", {
     staticClass: "button-base fill",
@@ -4744,20 +4802,34 @@ var render = function render() {
   }, [_vm._v("Document Created")])]), _vm._v(" "), [_c("div", {
     staticClass: "document-info-body"
   }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.newFileName,
+      expression: "newFileName"
+    }],
     staticClass: "name-input",
     attrs: {
       type: "text",
-      placeholder: "Pdfessco-Document.pdf",
-      value: "Pdfessco-Document.pdf"
+      placeholder: "Pdfessco-Document.pdf"
+    },
+    domProps: {
+      value: _vm.newFileName
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.newFileName = $event.target.value;
+      }
     }
-  }), _vm._v(" "), _c("span", {
+  }), _vm._v(" "), _vm.pathView ? _c("span", {
     staticClass: "file-title"
   }, [_c("a", {
     attrs: {
       target: "_blank",
       href: _vm.filePath
     }
-  }, [_vm._v("View")])])]), _vm._v(" "), _c("iframe", {
+  }, [_vm._v("View")])]) : _vm._e()]), _vm._v(" "), _c("iframe", {
     staticStyle: {
       display: "none"
     },
@@ -4898,19 +4970,24 @@ var render = function render() {
   })]) : _vm._e()]) : _vm._e()], _vm._v(" "), _c("template", {
     slot: "footer"
   }, [_c("button", {
-    staticClass: "button",
+    staticClass: "button-base",
     on: {
       click: function click($event) {
         return _vm.$emit("close");
       }
     }
   }, [_vm._v("Cancel")]), _vm._v(" "), _c("a", {
-    staticClass: "button is-info dl-file",
+    staticClass: "button-base is-info dl-file",
     attrs: {
       href: _vm.filePath,
-      download: "Pdfglue-Document.pdf"
+      download: _vm.newFileName
     }
-  }, [_vm._v("Download")])])], 2);
+  }, [_vm._v("Download")]), _vm._v(" "), _c("button", {
+    staticClass: "button-base",
+    on: {
+      click: _vm.createFile
+    }
+  }, [_vm._v("Create on Server")])])], 2);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -5511,7 +5588,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* custom colors */\n/* text color */\n/* bg color */\n/* decoration color */\n.modal.document-created-confirmation .name-input {\n  align-items: center;\n  border: 2px solid #d2d4d6;\n  border-radius: 8px;\n  color: #404040;\n  cursor: pointer;\n  display: flex;\n  justify-content: space-between;\n  padding: 1em 1.25em;\n  transition: border 0.3s;\n}\n.modal.document-created-confirmation .fade-enter-active {\n  transition: opacity 0.5s;\n}\n.modal.document-created-confirmation .fade-leave-active {\n  display: none;\n}\n.modal.document-created-confirmation .fade-enter, .modal.document-created-confirmation .fade-leave-to {\n  opacity: 0;\n}\n.modal.document-created-confirmation .email-sent-success {\n  border: 1px solid #7acca3;\n  color: #1bb267;\n  text-align: center;\n  margin-top: 24px;\n  padding: 9px;\n  border-radius: 8px;\n  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1);\n}\n.modal.document-created-confirmation .email-sent-success span {\n  color: #cccccc;\n  cursor: pointer;\n  margin-left: 5px;\n}\n.modal.document-created-confirmation .send-by-email {\n  border: 1px solid #e1e2e5;\n  border-radius: 0 8px 8px 8px;\n  background: #f7f7f7;\n  padding: 23px 23px 35px;\n  margin-top: -1px;\n  position: relative;\n  z-index: 1;\n}\n.modal.document-created-confirmation .send-by-email .send-by-email-button, .modal.document-created-confirmation .send-by-email .send-by-email-input {\n  width: 100%;\n}\n.modal.document-created-confirmation .send-by-email textarea.send-by-email-input {\n  padding-top: 14px;\n  overflow: hidden;\n  font-size: 14px;\n}\n.modal.document-created-confirmation .send-by-email .send-by-email-button {\n  height: 40px;\n  border-radius: 8px;\n  color: #fff;\n  padding: 0;\n  text-align: center;\n  font-weight: 700;\n  transition: all 0.3s;\n  background-color: #c39000;\n  box-shadow: 0 3px 7.84px 0.16px rgba(0, 0, 0, 0.15);\n}\n.modal.document-created-confirmation .send-by-email .send-by-email-button:hover {\n  background-color: #1247b3;\n  box-shadow: 0 4px 7.84px 0.16px rgba(0, 0, 0, 0.2);\n}\n.modal.document-created-confirmation .send-by-email .send-by-email-button .save-button {\n  font-size: 14px;\n  line-height: 40px;\n  position: absolute;\n  left: 0;\n  right: 0;\n}\n.modal.document-created-confirmation .field:not(:last-child).send-email-field {\n  margin-bottom: 24px;\n}\n.modal.document-created-confirmation .field:not(:last-child).is-grouped.btwn {\n  margin-bottom: 0;\n}\n.modal.document-created-confirmation .modal-card-body .field.is-grouped .is-link {\n  border-bottom: 1px solid #f7f7f7;\n  padding: 5px;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn {\n  margin-bottom: 0;\n  position: relative;\n  z-index: 2;\n  justify-content: space-between;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link {\n  border-radius: 8px 8px 0 0;\n  color: #c39000;\n  padding: 5px;\n  font-size: 16px;\n  position: relative;\n  margin: 0;\n  width: 50%;\n  text-align: center;\n  padding: 10px;\n  border-top: 1px solid transparent;\n  border-right: 1px solid transparent;\n  border-left: 1px solid transparent;\n  border-bottom: 1px solid transparent;\n}\n@media (max-width: 550px) {\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link {\n    font-size: 0;\n}\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.send-email-link, .modal.document-created-confirmation .field.is-grouped.btwn .is-link.send-printer-link {\n  padding: 14px;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.send-email-link .border-send-email {\n  width: 134px;\n  height: 2px;\n  background-color: #fff;\n  position: absolute;\n  margin: 0 auto;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link .fa {\n  font-size: 21px;\n  margin-right: 7px;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.on-active {\n  border-top: 1px solid #e1e2e5;\n  border-right: 1px solid #e1e2e5;\n  border-left: 1px solid #e1e2e5;\n  border-bottom: 1px solid #f7f7f7;\n  background: #f7f7f7;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.on-active.send-email-link:after {\n  content: \"\";\n  position: absolute;\n  height: 1px;\n  width: 1px;\n  background: #e1e2e5;\n  bottom: -1px;\n  right: -1px;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.on-active.send-email-link:before {\n  content: \"\";\n  position: absolute;\n  height: 1px;\n  width: 1px;\n  background: #e1e2e5;\n  bottom: -1px;\n  left: -1px;\n}\n.modal.document-created-confirmation .modal-card {\n  width: 520px;\n  max-width: 100%;\n  overflow: auto;\n}\n.modal.document-created-confirmation .modal-card .modal-card-head {\n  padding: 65px 80px 60px;\n}\n.modal.document-created-confirmation .document-info-body {\n  align-items: center;\n  border: 2px solid #d2d4d6;\n  border-radius: 8px;\n  cursor: pointer;\n  color: #404040;\n  display: flex;\n  justify-content: space-between;\n  padding: 1em 1.25em;\n  margin-bottom: 35px;\n  transition: border 0.3s;\n}\n@media (max-width: 550px) {\n.modal.document-created-confirmation .document-info-body {\n    margin-bottom: 15px;\n}\n}\n.modal.document-created-confirmation .document-info-body:hover {\n  border: 2px solid #c39000;\n}\n.modal.document-created-confirmation .document-info-body:hover .file-title a {\n  color: #c39000;\n}\n.modal.document-created-confirmation .document-info-body .file-title {\n  margin-left: 30px;\n}\n.modal.document-created-confirmation .document-info-body .file-title a {\n  color: #808080;\n  font-size: 14px;\n  transition: color 0.3s;\n}\n.modal.document-created-confirmation .modal-card-foot a.button.is-info.dl-file {\n  border-color: #c39000;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* custom colors */\n/* text color */\n/* bg color */\n/* decoration color */\n.modal.document-created-confirmation .name-input {\n  align-items: center;\n  border: 2px solid #d2d4d6;\n  border-radius: 8px;\n  color: #404040;\n  cursor: pointer;\n  display: flex;\n  justify-content: space-between;\n  padding: 1em 1.25em;\n  transition: border 0.3s;\n}\n.modal.document-created-confirmation .fade-enter-active {\n  transition: opacity 0.5s;\n}\n.modal.document-created-confirmation .fade-leave-active {\n  display: none;\n}\n.modal.document-created-confirmation .fade-enter, .modal.document-created-confirmation .fade-leave-to {\n  opacity: 0;\n}\n.modal.document-created-confirmation .email-sent-success {\n  border: 1px solid #7acca3;\n  color: #1bb267;\n  text-align: center;\n  margin-top: 24px;\n  padding: 9px;\n  border-radius: 8px;\n  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1);\n}\n.modal.document-created-confirmation .email-sent-success span {\n  color: #cccccc;\n  cursor: pointer;\n  margin-left: 5px;\n}\n.modal.document-created-confirmation .send-by-email {\n  border: 1px solid #e1e2e5;\n  border-radius: 0 8px 8px 8px;\n  background: #f7f7f7;\n  padding: 23px 23px 35px;\n  margin-top: -1px;\n  position: relative;\n  z-index: 1;\n}\n.modal.document-created-confirmation .send-by-email .send-by-email-button, .modal.document-created-confirmation .send-by-email .send-by-email-input {\n  width: 100%;\n}\n.modal.document-created-confirmation .send-by-email textarea.send-by-email-input {\n  padding-top: 14px;\n  overflow: hidden;\n  font-size: 14px;\n}\n.modal.document-created-confirmation .send-by-email .send-by-email-button {\n  height: 40px;\n  border-radius: 8px;\n  color: #fff;\n  padding: 0;\n  text-align: center;\n  font-weight: 700;\n  transition: all 0.3s;\n  background-color: #c39000;\n  box-shadow: 0 3px 7.84px 0.16px rgba(0, 0, 0, 0.15);\n}\n.modal.document-created-confirmation .send-by-email .send-by-email-button:hover {\n  background-color: #1247b3;\n  box-shadow: 0 4px 7.84px 0.16px rgba(0, 0, 0, 0.2);\n}\n.modal.document-created-confirmation .send-by-email .send-by-email-button .save-button {\n  font-size: 14px;\n  line-height: 40px;\n  position: absolute;\n  left: 0;\n  right: 0;\n}\n.modal.document-created-confirmation .field:not(:last-child).send-email-field {\n  margin-bottom: 24px;\n}\n.modal.document-created-confirmation .field:not(:last-child).is-grouped.btwn {\n  margin-bottom: 0;\n}\n.modal.document-created-confirmation .modal-card-body .field.is-grouped .is-link {\n  border-bottom: 1px solid #f7f7f7;\n  padding: 5px;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn {\n  margin-bottom: 0;\n  position: relative;\n  z-index: 2;\n  justify-content: space-between;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link {\n  border-radius: 8px 8px 0 0;\n  color: #c39000;\n  padding: 5px;\n  font-size: 16px;\n  position: relative;\n  margin: 0;\n  width: 50%;\n  text-align: center;\n  padding: 10px;\n  border-top: 1px solid transparent;\n  border-right: 1px solid transparent;\n  border-left: 1px solid transparent;\n  border-bottom: 1px solid transparent;\n}\n@media (max-width: 550px) {\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link {\n    font-size: 0;\n}\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.send-email-link, .modal.document-created-confirmation .field.is-grouped.btwn .is-link.send-printer-link {\n  padding: 14px;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.send-email-link .border-send-email {\n  width: 134px;\n  height: 2px;\n  background-color: #fff;\n  position: absolute;\n  margin: 0 auto;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link .fa {\n  font-size: 21px;\n  margin-right: 7px;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.on-active {\n  border-top: 1px solid #e1e2e5;\n  border-right: 1px solid #e1e2e5;\n  border-left: 1px solid #e1e2e5;\n  border-bottom: 1px solid #f7f7f7;\n  background: #f7f7f7;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.on-active.send-email-link:after {\n  content: \"\";\n  position: absolute;\n  height: 1px;\n  width: 1px;\n  background: #e1e2e5;\n  bottom: -1px;\n  right: -1px;\n}\n.modal.document-created-confirmation .field.is-grouped.btwn .is-link.on-active.send-email-link:before {\n  content: \"\";\n  position: absolute;\n  height: 1px;\n  width: 1px;\n  background: #e1e2e5;\n  bottom: -1px;\n  left: -1px;\n}\n.modal.document-created-confirmation .modal-card {\n  width: 620px;\n  max-width: 100%;\n  overflow: auto;\n}\n.modal.document-created-confirmation .modal-card .modal-card-head {\n  padding: 65px 80px 60px;\n}\n.modal.document-created-confirmation .document-info-body {\n  align-items: center;\n  border: 2px solid #d2d4d6;\n  border-radius: 8px;\n  cursor: pointer;\n  color: #404040;\n  display: flex;\n  justify-content: space-between;\n  padding: 1em 1.25em;\n  margin-bottom: 35px;\n  transition: border 0.3s;\n}\n@media (max-width: 550px) {\n.modal.document-created-confirmation .document-info-body {\n    margin-bottom: 15px;\n}\n}\n.modal.document-created-confirmation .document-info-body:hover {\n  border: 2px solid #c39000;\n}\n.modal.document-created-confirmation .document-info-body:hover .file-title a {\n  color: #c39000;\n}\n.modal.document-created-confirmation .document-info-body .file-title {\n  margin-left: 30px;\n}\n.modal.document-created-confirmation .document-info-body .file-title a {\n  color: #808080;\n  font-size: 14px;\n  transition: color 0.3s;\n}\n.modal.document-created-confirmation .modal-card-foot {\n  justify-content: space-around;\n}\n.modal.document-created-confirmation .modal-card-foot a.button.is-info.dl-file {\n  border-color: #c39000;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

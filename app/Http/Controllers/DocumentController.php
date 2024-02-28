@@ -61,4 +61,38 @@ class DocumentController extends Controller
 
         return url(\Storage::url($path));
     }
+    public function storeNameFile(CreatePdfRequest $request) {
+        $document = new Pdf;
+        if ($request->removeNumbering) {
+            $document->removeNumbering();
+        }
+        $document->addHeader($request->header);
+        $document->addFooter($request->footer);
+
+        if($request->cover){
+            $document->addCover($request->cover);
+        }
+
+        if($request->operation['project']) {            
+            $document->addOperation($request->operation);
+        }
+
+        foreach($request->items as $item) {
+
+            if ($item['type'] === 'file') {
+                $pages = array_key_exists('pages', $item) ? $item['pages'] : [];
+                $document->addFile(File::findOrFail($item['id']), $pages);
+            }
+            if ($item['type'] === 'divider') {$document->addDivider($item['text']);}
+            
+        }
+        $fileName = $request->newFileName??"Pdfessco-Document";
+        $path = $document->save($fileName);
+
+        Document::create([
+            'path' => $path,
+            'user_id' => auth()->user()->id,
+        ]);
+        return url(\Storage::url($path));
+    }
 }
