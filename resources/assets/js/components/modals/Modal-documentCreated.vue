@@ -356,7 +356,7 @@ export default {
         }
     }
     .modal-card{
-        width: 620px;
+        width: 540px;
         max-width: 100%;
         overflow: auto;
         .modal-card-head{
