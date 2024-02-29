@@ -10,6 +10,10 @@ use App\Services\PdfCounter;
 use TCPDF;
 use setasign\Fpdi\Tcpdf\Fpdi;
 use Illuminate\Http\Request;
+use App\Models\User;
+use DataTables;
+use Auth;
+
 
 class DocumentController extends Controller
 {
@@ -92,7 +96,33 @@ class DocumentController extends Controller
         Document::create([
             'path' => $path,
             'user_id' => auth()->user()->id,
+            'name' => $fileName,
         ]);
         return url(\Storage::url($path));
+    }
+
+    public function data()
+    {
+        $user = Auth::user();
+
+        // if ($user) {
+        //     // Retrieve the documents belonging to the user and format them as an array
+        //     $documentsArray = Document::whereHas('user', function ($query) use ($user) {
+        //         $query->where('id', $user->id);
+        //     })->select('name', 'path', 'created_at')->get()->toArray();
+
+        //     // Return the array of documents
+        //     $responseData = ['data' => $documentsArray];
+
+        //     // Return the response as JSON
+        //     return response()->json($responseData);
+        // }
+        if ($user) {
+            // Retrieve the documents belonging to the user
+            $documentsQuery = Document::where('user_id', $user->id);
+        
+            // Return the response in DataTables' format
+            return DataTables::eloquent($documentsQuery)->make(true);
+        }
     }
 }

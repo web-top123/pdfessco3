@@ -106,6 +106,7 @@ Route::middleware('auth')->group(function () {
         Route::get('page-count/{id}', [DocumentController::class, 'index']);
         Route::post('create', [DocumentController::class, 'store']);
         Route::post('createNameFile', [DocumentController::class, 'storeNameFile']);
+        Route::get('manage-recall/data', [DocumentController::class, 'data']);
         Route::get('categories', [CategoriesMenuController::class, 'index']);
         Route::post('email', function () {
             // Mail::to(request()->to)->send(new TestMail(request()->url, request()->subject));

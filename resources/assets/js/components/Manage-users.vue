@@ -415,6 +415,4 @@ export default {
 @import "resources/assets/sass/variables";
 @import "resources/assets/sass/mixins";
 @import "~bulma/bulma";
-
-
 </style>

@@ -55,7 +55,7 @@
         <template slot="footer">
             <button class="button-base" @click="$emit('close')">Cancel</button>
             <a class="button-base is-info dl-file" :href="filePath" :download="newFileName">Download</a>
-            <button class="button-base" @click="createFile">Create on Server</button>
+            <button class="button-base" @click="createFile">Create and Save</button>
         </template>
 
     </modal>

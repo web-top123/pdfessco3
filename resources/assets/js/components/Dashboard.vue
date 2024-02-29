@@ -226,6 +226,11 @@
                             <div class="ok-button" v-if="documentState === true" key="saved">Creating Document</div>
                         </transition>
                     </button>
+                    <button type="button" class="button-base fill">
+                        <transition name="fade" mode="out-in">
+                            <div class="" key="recalling" @click="recallPdf">Recall Document</div>
+                        </transition>
+                    </button>
                 </div>
                 <span class="dashboard-action-background" @click="toggleRight">
                 </span>
@@ -249,6 +254,9 @@
             <modal-document-created v-if="modals.documentCreated" @save="$store.commit('dashboard/closeModal')"
                 @close="$store.commit('dashboard/closeModal', 'documentCreated')"
                 :key="'docCreate'"></modal-document-created>
+            <modal-document-recall v-if="modals.documentRecall" @save="$store.commit('dashboard/closeModal')"
+                @close="$store.commit('dashboard/closeModal', 'documentRecall')"
+                :key="'docRecall'"></modal-document-recall>
             <modal-delete-header v-if="modals.deleteHeader" @save="$store.commit('dashboard/deleteHFC', 'addHeader')"
                 @close="$store.commit('dashboard/closeModal', 'deleteHeader')" :key="'delheader'"></modal-delete-header>
             <modal-delete-footer v-if="modals.deleteFooter" @save="$store.commit('dashboard/deleteHFC', 'addFooter')"
@@ -288,6 +296,7 @@ import ModalAddOperation from './modals/Modal-addOperation.vue';
 import ModalAddDivider from './modals/Modal-addDivider.vue';
 import ModalUploadFileDashboard from './modals/Modal-uploadFileDashboard.vue';
 import ModalDocumentCreated from './modals/Modal-documentCreated.vue';
+import ModalDocumentRecall from './modals/Modal-documentRecall.vue';
 import ModalDeleteHeader from './modals/Modal-deleteHeader.vue';
 import ModalDeleteFooter from './modals/Modal-deleteFooter.vue';
 import ModalDeleteCover from './modals/Modal-deleteCover.vue';
@@ -309,6 +318,7 @@ window.Store.registerModule('dashboard', {
             myAccount: false,
             changePass: false,
             documentCreated: false,
+            documentRecall: false,
             deleteHeader: false,
             deleteFooter: false,
             deleteCover: false,
@@ -543,6 +553,7 @@ export default {
         ModalAddOperation,
         ModalUploadFileDashboard,
         ModalDocumentCreated,
+        ModalDocumentRecall,
         ModalDeleteHeader,
         ModalDeleteFooter,
         ModalDeleteCover,
@@ -781,6 +792,9 @@ export default {
 
             }
 
+        },
+        recallPdf() {
+            this.$store.commit('dashboard/openModal', 'documentRecall');
         },
         startOver() {
             this.$store.commit('dashboard/updateSelectedFiles', []);

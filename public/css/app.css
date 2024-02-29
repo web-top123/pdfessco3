@@ -1558,6 +1558,8 @@ button::-moz-focus-inner {
   line-height: 1.5;
 }
 .dashboard-action .dashboard-list-main-action .button-base.fill {
+  padding: 0 10px;
+  width: auto;
   font-weight: 700;
 }
 .dashboard-action .dashboard-list-main-action .button-base.fill:hover {
@@ -3102,13 +3104,13 @@ button::-moz-focus-inner {
   margin: 0 auto;
 }
 
-.manage-users {
+.manage-users, .manage-recall {
   flex-direction: column;
   margin: 0 !important;
   margin-top: 0 !important;
   flex-grow: 1;
 }
-.manage-users .action {
+.manage-users .action, .manage-recall .action {
   display: flex;
   flex-shrink: 0;
   flex-direction: row;
@@ -3124,17 +3126,17 @@ button::-moz-focus-inner {
   margin-bottom: 0 !important;
   margin-top: 0 !important;
 }
-.manage-users .action .scrolled {
+.manage-users .action .scrolled, .manage-recall .action .scrolled {
   border-bottom: 1px solid #cacbbc;
   box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
 }
-.manage-users .action .col {
+.manage-users .action .col, .manage-recall .action .col {
   padding: 0;
 }
-.manage-users .action .col button {
+.manage-users .action .col button, .manage-recall .action .col button {
   font-family: "Raleway";
 }
-.manage-users .action .col:first-child .manage-users-dropdown {
+.manage-users .action .col:first-child .manage-users-dropdown, .manage-recall .action .col:first-child .manage-users-dropdown {
   background: none;
   overflow: hidden;
   transition: all 0.08s ease-in-out;
@@ -3147,19 +3149,19 @@ button::-moz-focus-inner {
   height: 50px;
   box-shadow: none;
 }
-.manage-users .action .col:first-child .manage-users-dropdown.admin {
+.manage-users .action .col:first-child .manage-users-dropdown.admin, .manage-recall .action .col:first-child .manage-users-dropdown.admin {
   width: 195px;
 }
-.manage-users .action .col:first-child .manage-users-dropdown.active {
+.manage-users .action .col:first-child .manage-users-dropdown.active, .manage-recall .action .col:first-child .manage-users-dropdown.active {
   width: 230px;
   height: 100px;
   background: #fff;
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.22), 0 6px 10px rgba(0, 0, 0, 0.08), 0 1px 18px rgba(0, 0, 0, 0.06);
 }
-.manage-users .action .col:first-child .manage-users-dropdown.active .selected {
+.manage-users .action .col:first-child .manage-users-dropdown.active .selected, .manage-recall .action .col:first-child .manage-users-dropdown.active .selected {
   position: relative;
 }
-.manage-users .action .col:first-child .manage-users-dropdown.active .selected::after {
+.manage-users .action .col:first-child .manage-users-dropdown.active .selected::after, .manage-recall .action .col:first-child .manage-users-dropdown.active .selected::after {
   content: " ";
   width: calc(100% - 40px);
   height: 1px;
@@ -3167,22 +3169,22 @@ button::-moz-focus-inner {
   position: absolute;
   bottom: 0;
 }
-.manage-users .action .col:first-child .manage-users-dropdown.active.admin {
+.manage-users .action .col:first-child .manage-users-dropdown.active.admin, .manage-recall .action .col:first-child .manage-users-dropdown.active.admin {
   width: 195px;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .selected {
+.manage-users .action .col:first-child .manage-users-dropdown .selected, .manage-recall .action .col:first-child .manage-users-dropdown .selected {
   background: none;
   border-color: #5c87ff;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .selected i:first-child {
+.manage-users .action .col:first-child .manage-users-dropdown .selected i:first-child, .manage-recall .action .col:first-child .manage-users-dropdown .selected i:first-child {
   font-size: 18px;
   margin-right: 5px;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .selected i:last-child {
+.manage-users .action .col:first-child .manage-users-dropdown .selected i:last-child, .manage-recall .action .col:first-child .manage-users-dropdown .selected i:last-child {
   margin-left: 20px;
   color: #5c87ff;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .selected, .manage-users .action .col:first-child .manage-users-dropdown .item {
+.manage-users .action .col:first-child .manage-users-dropdown .selected, .manage-users .action .col:first-child .manage-users-dropdown .item, .manage-recall .action .col:first-child .manage-users-dropdown .selected, .manage-recall .action .col:first-child .manage-users-dropdown .item {
   padding-left: 20px;
   padding-right: 20px;
   cursor: pointer;
@@ -3194,53 +3196,53 @@ button::-moz-focus-inner {
   text-align: center;
   padding-top: 16px;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .selected:hover, .manage-users .action .col:first-child .manage-users-dropdown .item:hover {
+.manage-users .action .col:first-child .manage-users-dropdown .selected:hover, .manage-users .action .col:first-child .manage-users-dropdown .item:hover, .manage-recall .action .col:first-child .manage-users-dropdown .selected:hover, .manage-recall .action .col:first-child .manage-users-dropdown .item:hover {
   background: none;
   color: #1247b3;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .selected:hover i:last-child, .manage-users .action .col:first-child .manage-users-dropdown .item:hover i:last-child {
+.manage-users .action .col:first-child .manage-users-dropdown .selected:hover i:last-child, .manage-users .action .col:first-child .manage-users-dropdown .item:hover i:last-child, .manage-recall .action .col:first-child .manage-users-dropdown .selected:hover i:last-child, .manage-recall .action .col:first-child .manage-users-dropdown .item:hover i:last-child {
   color: #c39000;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .item {
+.manage-users .action .col:first-child .manage-users-dropdown .item, .manage-recall .action .col:first-child .manage-users-dropdown .item {
   color: #666666;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .item i:first-child {
+.manage-users .action .col:first-child .manage-users-dropdown .item i:first-child, .manage-recall .action .col:first-child .manage-users-dropdown .item i:first-child {
   font-size: 18px;
   margin-right: 5px;
 }
-.manage-users .action .col:first-child .manage-users-dropdown .item:hover {
+.manage-users .action .col:first-child .manage-users-dropdown .item:hover, .manage-recall .action .col:first-child .manage-users-dropdown .item:hover {
   color: #c39000;
 }
-.manage-users .action .col:first-child button {
+.manage-users .action .col:first-child button, .manage-recall .action .col:first-child button {
   background: none;
   border-color: #5c87ff;
 }
-.manage-users .action .col:first-child button i:first-child {
+.manage-users .action .col:first-child button i:first-child, .manage-recall .action .col:first-child button i:first-child {
   font-size: 18px;
   margin-right: 5px;
 }
-.manage-users .action .col:first-child button i:last-child {
+.manage-users .action .col:first-child button i:last-child, .manage-recall .action .col:first-child button i:last-child {
   margin-left: 20px;
   color: #5c87ff;
 }
-.manage-users .action .col:first-child button:hover {
+.manage-users .action .col:first-child button:hover, .manage-recall .action .col:first-child button:hover {
   box-shadow: inset 0 3px 5px -1px rgba(0, 0, 0, 0.04), inset 0 6px 6px rgba(0, 0, 0, 0.03), inset 0 1px 8px rgba(0, 0, 0, 0.02);
   background: none;
   color: #1247b3;
 }
-.manage-users .action .col:first-child button:hover i:last-child {
+.manage-users .action .col:first-child button:hover i:last-child, .manage-recall .action .col:first-child button:hover i:last-child {
   margin-left: 20px;
   color: #c39000;
 }
-.manage-users .action .col:nth-child(2) {
+.manage-users .action .col:nth-child(2), .manage-recall .action .col:nth-child(2) {
   margin-left: 15px;
   margin-right: 10px;
   flex-grow: 1;
 }
-.manage-users .action .col:nth-child(2).no-admin {
+.manage-users .action .col:nth-child(2).no-admin, .manage-recall .action .col:nth-child(2).no-admin {
   margin-left: 0px;
 }
-.manage-users .action .col input {
+.manage-users .action .col input, .manage-recall .action .col input {
   flex-grow: 1;
   font-family: "Raleway";
   font-size: 16px;
@@ -3255,52 +3257,52 @@ button::-moz-focus-inner {
   padding-left: 25px;
   transition: box-shadow 0.1s ease-in-out, border-color 0.1s ease-in-out;
 }
-.manage-users .action .col input::-webkit-input-placeholder {
+.manage-users .action .col input::-webkit-input-placeholder, .manage-recall .action .col input::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
   color: #bbbdbf;
 }
-.manage-users .action .col input:-moz-placeholder {
+.manage-users .action .col input:-moz-placeholder, .manage-recall .action .col input:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
   color: #bbbdbf;
   opacity: 1;
 }
-.manage-users .action .col input::-moz-placeholder {
+.manage-users .action .col input::-moz-placeholder, .manage-recall .action .col input::-moz-placeholder {
   /* Mozilla Firefox 19+ */
   color: #bbbdbf;
   opacity: 1;
 }
-.manage-users .action .col input:-ms-input-placeholder {
+.manage-users .action .col input:-ms-input-placeholder, .manage-recall .action .col input:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #bbbdbf;
 }
-.manage-users .action .col input::-ms-input-placeholder {
+.manage-users .action .col input::-ms-input-placeholder, .manage-recall .action .col input::-ms-input-placeholder {
   /* Microsoft Edge */
   color: #bbbdbf;
 }
-.manage-users .action .col input:focus {
+.manage-users .action .col input:focus, .manage-recall .action .col input:focus {
   border-color: #6699ff;
   box-shadow: 0 3px 5px -1px rgba(102, 153, 255, 0.15), 0 6px 10px rgba(102, 153, 255, 0.1), 0 1px 18px rgba(102, 153, 255, 0.08);
 }
-.manage-users .action .col button {
+.manage-users .action .col button, .manage-recall .action .col button {
   margin-left: 5px;
   padding-top: 0px;
   padding-bottom: 0px;
   box-sizing: border-box;
   height: 50px;
 }
-.manage-users .table-wrapper {
+.manage-users .table-wrapper, .manage-recall .table-wrapper {
   margin: 0 !important;
   background: #edeef0;
   padding: 20px 60px 40px;
   flex-grow: 1;
 }
-.manage-users .table-wrapper .table-container {
+.manage-users .table-wrapper .table-container, .manage-recall .table-wrapper .table-container {
   box-shadow: 2px 2px 6px 1px rgba(0, 0, 0, 0.15);
   border: 1px solid #d4d5d6;
   border-radius: 8px;
   background: #ffffff;
 }
-.manage-users .table-wrapper .table-container #table_wrapper {
+.manage-users .table-wrapper .table-container #table_wrapper, .manage-users .table-wrapper .table-container #table_recall_wrapper, .manage-recall .table-wrapper .table-container #table_wrapper, .manage-recall .table-wrapper .table-container #table_recall_wrapper {
   min-height: 623px;
   position: relative;
 }
@@ -3308,30 +3310,42 @@ button::-moz-focus-inner {
 .manage-users .table-wrapper .table-container #table_wrapper #table_info,
 .manage-users .table-wrapper .table-container #table_wrapper #table_length,
 .manage-users .table-wrapper .table-container #table_wrapper #table_paginate,
-.manage-users .table-wrapper .table-container #table_wrapper #table_processing {
+.manage-users .table-wrapper .table-container #table_wrapper #table_processing, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_filter,
+.manage-users .table-wrapper .table-container #table_recall_wrapper #table_info,
+.manage-users .table-wrapper .table-container #table_recall_wrapper #table_length,
+.manage-users .table-wrapper .table-container #table_recall_wrapper #table_paginate,
+.manage-users .table-wrapper .table-container #table_recall_wrapper #table_processing, .manage-recall .table-wrapper .table-container #table_wrapper #table_filter,
+.manage-recall .table-wrapper .table-container #table_wrapper #table_info,
+.manage-recall .table-wrapper .table-container #table_wrapper #table_length,
+.manage-recall .table-wrapper .table-container #table_wrapper #table_paginate,
+.manage-recall .table-wrapper .table-container #table_wrapper #table_processing, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_filter,
+.manage-recall .table-wrapper .table-container #table_recall_wrapper #table_info,
+.manage-recall .table-wrapper .table-container #table_recall_wrapper #table_length,
+.manage-recall .table-wrapper .table-container #table_recall_wrapper #table_paginate,
+.manage-recall .table-wrapper .table-container #table_recall_wrapper #table_processing {
   display: none;
   visibility: hidden;
   position: absolute;
   height: 0;
 }
-.manage-users .table-wrapper .table-container #table_wrapper .dataTables_empty {
+.manage-users .table-wrapper .table-container #table_wrapper .dataTables_empty, .manage-users .table-wrapper .table-container #table_recall_wrapper .dataTables_empty, .manage-recall .table-wrapper .table-container #table_wrapper .dataTables_empty, .manage-recall .table-wrapper .table-container #table_recall_wrapper .dataTables_empty {
   height: 15px !important;
   padding-top: 15px !important;
   padding-bottom: 10px !important;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table {
+.manage-users .table-wrapper .table-container #table_wrapper #table, .manage-users .table-wrapper .table-container #table_wrapper #table_recall, .manage-users .table-wrapper .table-container #table_recall_wrapper #table, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall, .manage-recall .table-wrapper .table-container #table_wrapper #table, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall {
   width: 100% !important;
   font-family: "Raleway";
   font-size: 14px;
   color: #404040;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead, .manage-recall .table-wrapper .table-container #table_wrapper #table thead, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead {
   border-bottom: 1px solid #cccccc;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr {
   padding-right: 50px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th {
   cursor: pointer;
   font-weight: 700;
   padding-top: 13px;
@@ -3340,144 +3354,145 @@ button::-moz-focus-inner {
   padding-left: 15px;
   padding-right: 10px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th i {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th i, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th i, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th i, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th i, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th i, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th i, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th i, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th i {
   color: #cccccc;
   float: right;
   margin-top: -2px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th i.fa-caret-down {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th i.fa-caret-down, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th i.fa-caret-down, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th i.fa-caret-down, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th i.fa-caret-down {
   display: none;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_asc i.fa-caret-down {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_asc i.fa-caret-down, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th.sorting_asc i.fa-caret-down, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th.sorting_asc i.fa-caret-down, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.sorting_asc i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_asc i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th.sorting_asc i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th.sorting_asc i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.sorting_asc i.fa-caret-down {
   color: #404040;
   display: none;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_asc i.fa-caret-up {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_asc i.fa-caret-up, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th.sorting_asc i.fa-caret-up, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th.sorting_asc i.fa-caret-up, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.sorting_asc i.fa-caret-up, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_asc i.fa-caret-up, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th.sorting_asc i.fa-caret-up, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th.sorting_asc i.fa-caret-up, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.sorting_asc i.fa-caret-up {
   color: #404040;
   display: block;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_desc i.fa-caret-up {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_desc i.fa-caret-up, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th.sorting_desc i.fa-caret-up, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th.sorting_desc i.fa-caret-up, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.sorting_desc i.fa-caret-up, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_desc i.fa-caret-up, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th.sorting_desc i.fa-caret-up, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th.sorting_desc i.fa-caret-up, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.sorting_desc i.fa-caret-up {
   color: #404040;
   display: none;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_desc i.fa-caret-down {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_desc i.fa-caret-down, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th.sorting_desc i.fa-caret-down, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th.sorting_desc i.fa-caret-down, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.sorting_desc i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th.sorting_desc i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th.sorting_desc i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th.sorting_desc i.fa-caret-down, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.sorting_desc i.fa-caret-down {
   color: #404040;
   display: block;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th:first-child {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th:first-child, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th:first-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th:first-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th:first-child, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th:first-child, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th:first-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th:first-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th:first-child {
   width: 5px !important;
   padding: 5px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th:nth-child(2) {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th:nth-child(2), .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th:nth-child(2), .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th:nth-child(2), .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th:nth-child(2), .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th:nth-child(2), .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th:nth-child(2), .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th:nth-child(2), .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th:nth-child(2) {
   border-left: 0;
   padding-left: 47px;
   min-width: 250px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th:nth-child(3) {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th:nth-child(3), .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th:nth-child(3), .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th:nth-child(3), .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th:nth-child(3), .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th:nth-child(3), .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th:nth-child(3), .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th:nth-child(3), .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th:nth-child(3) {
   min-width: 300px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th:last-child {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th:last-child, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th:last-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th:last-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th:last-child, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th:last-child, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th:last-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th:last-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th:last-child {
   border-left: 0;
   width: 5px !important;
   padding: 0;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.table-action {
+.manage-users .table-wrapper .table-container #table_wrapper #table thead tr th.table-action, .manage-users .table-wrapper .table-container #table_wrapper #table_recall thead tr th.table-action, .manage-users .table-wrapper .table-container #table_recall_wrapper #table thead tr th.table-action, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.table-action, .manage-recall .table-wrapper .table-container #table_wrapper #table thead tr th.table-action, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall thead tr th.table-action, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table thead tr th.table-action, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall thead tr th.table-action {
   text-align: center;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr {
   border-bottom: 1px solid #f2f2f2;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr:last-child {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr:last-child, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr:last-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr:last-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr:last-child, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr:last-child, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr:last-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr:last-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr:last-child {
   border: none;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr:last-child td {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr:last-child td, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr:last-child td, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr:last-child td, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr:last-child td, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr:last-child td, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr:last-child td, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr:last-child td, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr:last-child td {
   padding-bottom: 10px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr:hover {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr:hover, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr:hover, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr:hover, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr:hover, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr:hover, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr:hover, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr:hover, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr:hover {
   background: #f5f5f5;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr.checked td {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr.checked td, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr.checked td, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr.checked td, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr.checked td, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr.checked td, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr.checked td, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr.checked td, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr.checked td {
   color: #c39000;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr.checked td i {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr.checked td i, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr.checked td i, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr.checked td i, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr.checked td i, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr.checked td i, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr.checked td i, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr.checked td i, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr.checked td i {
   color: #404040;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td {
   font-weight: 500;
   border-left: 1px solid #f2f2f2;
   padding: 3px 10px 0px 15px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td.dataTables_empty {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td.dataTables_empty, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td.dataTables_empty, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td.dataTables_empty, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td.dataTables_empty, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td.dataTables_empty, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td.dataTables_empty, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td.dataTables_empty, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td.dataTables_empty {
   text-align: center;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td input {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td input, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td input, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td input, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td input, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td input, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td input, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td input, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td input {
   position: absolute;
   margin-right: 15px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td label {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td label, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td label, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td label, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td label, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td label, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td label, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td label, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td label {
   top: -6px;
   margin-right: 5px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td i {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td i, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td i, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td i, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td i, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td i, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td i, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td i, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td i {
   font-size: 16px;
   cursor: pointer;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td i:hover {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td i:hover, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td i:hover, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td i:hover, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td i:hover, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td i:hover, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td i:hover, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td i:hover, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td i:hover {
   color: #c39000;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td i:hover.fa-trash-o {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td i:hover.fa-trash-o, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td i:hover.fa-trash-o, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td i:hover.fa-trash-o, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td i:hover.fa-trash-o, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td i:hover.fa-trash-o, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td i:hover.fa-trash-o, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td i:hover.fa-trash-o, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td i:hover.fa-trash-o {
   color: #ff3019;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td:first-child {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td:first-child, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td:first-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td:first-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td:first-child, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td:first-child, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td:first-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td:first-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td:first-child {
   width: 5px;
   padding: 0;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td:last-child {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td:last-child, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td:last-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td:last-child, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td:last-child, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td:last-child, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td:last-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td:last-child, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td:last-child {
   border-left: 0;
   width: 5px;
   padding: 0;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td:nth-child(2) {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td:nth-child(2), .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td:nth-child(2), .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td:nth-child(2), .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td:nth-child(2), .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td:nth-child(2), .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td:nth-child(2), .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td:nth-child(2), .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td:nth-child(2) {
   border-left: 0;
   padding-top: 8px;
 }
-.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td.table-action {
+.manage-users .table-wrapper .table-container #table_wrapper #table tbody tr td.table-action, .manage-users .table-wrapper .table-container #table_wrapper #table_recall tbody tr td.table-action, .manage-users .table-wrapper .table-container #table_recall_wrapper #table tbody tr td.table-action, .manage-users .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td.table-action, .manage-recall .table-wrapper .table-container #table_wrapper #table tbody tr td.table-action, .manage-recall .table-wrapper .table-container #table_wrapper #table_recall tbody tr td.table-action, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table tbody tr td.table-action, .manage-recall .table-wrapper .table-container #table_recall_wrapper #table_recall tbody tr td.table-action {
   text-align: center;
   padding-top: 3px;
 }
-.manage-users .table-wrapper .table-action-bottom {
+.manage-users .table-wrapper .table-action-bottom, .manage-recall .table-wrapper .table-action-bottom {
   padding-top: 30px;
   font-family: "Raleway";
   font-size: 18px;
   font-weight: 500;
   padding-left: 80px;
 }
-.manage-users .table-wrapper .table-action-bottom .table-pagination {
+.manage-users .table-wrapper .table-action-bottom .table-pagination, .manage-recall .table-wrapper .table-action-bottom .table-pagination {
   float: left;
 }
-.manage-users .table-wrapper .table-action-bottom .table-pagination .page-size {
+.manage-users .table-wrapper .table-action-bottom .table-pagination .page-size, .manage-recall .table-wrapper .table-action-bottom .table-pagination .page-size {
   padding-left: 5px;
   padding-right: 5px;
   cursor: pointer;
   color: #999999;
 }
-.manage-users .table-wrapper .table-action-bottom .table-pagination .page-size.active, .manage-users .table-wrapper .table-action-bottom .table-pagination .page-size:hover {
+.manage-users .table-wrapper .table-action-bottom .table-pagination .page-size.active, .manage-users .table-wrapper .table-action-bottom .table-pagination .page-size:hover, .manage-recall .table-wrapper .table-action-bottom .table-pagination .page-size.active, .manage-recall .table-wrapper .table-action-bottom .table-pagination .page-size:hover {
   color: #c39000;
 }
-.manage-users .table-wrapper .table-action-bottom .table-pages {
+.manage-users .table-wrapper .table-action-bottom .table-pages, .manage-recall .table-wrapper .table-action-bottom .table-pages {
   color: #999999;
   float: right;
 }
-.manage-users .table-wrapper .table-action-bottom .table-pages .pages-current {
+.manage-users .table-wrapper .table-action-bottom .table-pages .pages-current, .manage-recall .table-wrapper .table-action-bottom .table-pages .pages-current {
   color: #404040;
   padding-right: 3px;
 }
-.manage-users .table-wrapper .table-action-bottom .table-pages .pages-total {
+.manage-users .table-wrapper .table-action-bottom .table-pages .pages-total, .manage-recall .table-wrapper .table-action-bottom .table-pages .pages-total {
   padding-left: 3px;
   padding-right: 5px;
 }
 .manage-users .table-wrapper .table-action-bottom .table-pages .next-page,
-.manage-users .table-wrapper .table-action-bottom .table-pages .prev-page {
+.manage-users .table-wrapper .table-action-bottom .table-pages .prev-page, .manage-recall .table-wrapper .table-action-bottom .table-pages .next-page,
+.manage-recall .table-wrapper .table-action-bottom .table-pages .prev-page {
   color: #999999;
   border: 1px solid #e1e2e5;
   box-shadow: 2px 2px 6px 1px rgba(0, 0, 0, 0.15);
@@ -3487,7 +3502,8 @@ button::-moz-focus-inner {
   cursor: pointer;
 }
 .manage-users .table-wrapper .table-action-bottom .table-pages .next-page:hover,
-.manage-users .table-wrapper .table-action-bottom .table-pages .prev-page:hover {
+.manage-users .table-wrapper .table-action-bottom .table-pages .prev-page:hover, .manage-recall .table-wrapper .table-action-bottom .table-pages .next-page:hover,
+.manage-recall .table-wrapper .table-action-bottom .table-pages .prev-page:hover {
   color: #c39000;
   box-shadow: 2px 2px 6px 1px rgba(0, 0, 0, 0.2);
 }
