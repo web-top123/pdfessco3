@@ -89,6 +89,7 @@ export default {
                     this.$store.commit('dashboard/successStateMutation', true);
                     setTimeout(this.submitSave, 300);
                     this.$emit('close');
+                    this.$store.commit('dashboard/successStateMutation', false);
                 }
                 else
                 {

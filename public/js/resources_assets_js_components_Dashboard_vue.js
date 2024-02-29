@@ -12221,6 +12221,7 @@ __webpack_require__.r(__webpack_exports__);
           this.$store.commit('dashboard/successStateMutation', true);
           setTimeout(this.submitSave, 300);
           this.$emit('close');
+          this.$store.commit('dashboard/successStateMutation', false);
         } else {
           this.$store.commit('dashboard/successStateMutation', false);
           this.$store.commit('dashboard/failStateMutation', true);
