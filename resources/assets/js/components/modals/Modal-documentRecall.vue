@@ -148,6 +148,7 @@ export default {
                 this.updateModalsSave('addFooter', document_history.footer);
                 this.updateModalsSave('addCover', document_history.cover);
                 this.updateModalsSave('addOperation', document_history.operation);
+                this.$emit('close');
             }
         },
 
