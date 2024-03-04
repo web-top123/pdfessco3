@@ -11131,11 +11131,13 @@ window.Store.registerModule('dashboard', {
     },
     removeNumbering: true,
     successState: false,
+    recallState: false,
     failState: false,
     itemSelected: {},
     filePath: "",
     selectedFiles: [],
-    selectedPages: []
+    selectedPages: [],
+    oldDocumentLink: ''
   },
   mutations: {
     addPages: function addPages(state, value) {
@@ -12947,6 +12949,9 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
         this.updateModalsSave('addFooter', document_history.footer);
         this.updateModalsSave('addCover', document_history.cover);
         this.updateModalsSave('addOperation', document_history.operation);
+        this.$store.state.dashboard.recallState = true;
+        var document_path = document.document_path.replace('public', 'storage');
+        this.$store.state.dashboard.oldDocumentLink = document_path;
         this.$emit('close');
       }
     },
@@ -13069,7 +13074,8 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
         that.openEdit({
           id: $(this).data('id'),
           name: $(this).data('name'),
-          document_history: $(this).data('history')
+          document_history: $(this).data('history'),
+          document_path: $(this).data('path')
         });
       });
       $(document).on('click', '.delete-user', function () {
@@ -13814,7 +13820,13 @@ var render = function render() {
     }
   }, [_vm._v(_vm._s(_vm.operationState) + " O & M")])]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-action-list"
-  }, [_c("div", {
+  }, [_vm.st.recallState == true ? _c("a", {
+    staticClass: "recall-preview",
+    attrs: {
+      href: _vm.st.oldDocumentLink,
+      target: "_blank"
+    }
+  }, [_vm._v("Preview")]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "list-title"
   }, [_c("p", [_vm._v("New Document"), _c("span", [_vm._v(_vm._s(_vm.filesCount)), _c("span", [_vm._v("Files Added")])])])]), _vm._v("\n                " + _vm._s(_vm.expandedList) + "\n                "), _c("div", {
     ref: "listScrollbar",
@@ -16598,7 +16610,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* custom colors */\n/* text color */\n/* bg color */\n/* decoration color */\n.toggle-right {\n  display: none;\n  margin-left: 15px;\n  margin-right: 3px;\n}\n@media (max-width: 1545px) {\n.toggle-right {\n    display: block;\n}\n}\n.toggle-left {\n  display: none;\n}\n@media (max-width: 1024px) {\n.toggle-left {\n    display: block;\n    margin-right: 15px;\n}\n}\n.columns {\n  display: flex;\n}\n.ps__scrollbar-y-rail {\n  margin-right: 3px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number {\n  margin: 12px 40px;\n  text-align: center;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .field > span:hover {\n  color: red;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .field > span:hover label:before {\n  border: 1px solid #c39000;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label {\n  font-size: 14px;\n  float: none;\n  width: 25px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label:before {\n  height: 16px;\n  width: 16px;\n  margin-top: 0;\n  margin-right: 5px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label:after {\n  top: 8px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb {\n  color: #404040;\n  padding: 0;\n  font-weight: 500;\n  font-size: 14px;\n  cursor: pointer;\n  line-height: 1.2;\n  letter-spacing: 0;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb:hover, .dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb.active {\n  color: #c39000;\n}\n.dashboard-action .dashboard-action-buttons {\n  margin: 20px 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  flex-wrap: wrap;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* custom colors */\n/* text color */\n/* bg color */\n/* decoration color */\n.toggle-right {\n  display: none;\n  margin-left: 15px;\n  margin-right: 3px;\n}\n@media (max-width: 1545px) {\n.toggle-right {\n    display: block;\n}\n}\n.toggle-left {\n  display: none;\n}\n@media (max-width: 1024px) {\n.toggle-left {\n    display: block;\n    margin-right: 15px;\n}\n}\n.columns {\n  display: flex;\n}\n.ps__scrollbar-y-rail {\n  margin-right: 3px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number {\n  margin: 12px 40px;\n  text-align: center;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .field > span:hover {\n  color: red;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .field > span:hover label:before {\n  border: 1px solid #c39000;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label {\n  font-size: 14px;\n  float: none;\n  width: 25px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label:before {\n  height: 16px;\n  width: 16px;\n  margin-top: 0;\n  margin-right: 5px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label:after {\n  top: 8px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb {\n  color: #404040;\n  padding: 0;\n  font-weight: 500;\n  font-size: 14px;\n  cursor: pointer;\n  line-height: 1.2;\n  letter-spacing: 0;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb:hover, .dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb.active {\n  color: #c39000;\n}\n.recall-preview {\n  text-align: center;\n  width: 100%;\n  display: block;\n  margin: 10px 20px;\n  text-decoration: underline;\n  font-family: \"Raleway\";\n  font-weight: 500;\n  font-size: 16px;\n  color: #404040 !important;\n}\n.dashboard-action .dashboard-action-buttons {\n  margin: 20px 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  flex-wrap: wrap;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

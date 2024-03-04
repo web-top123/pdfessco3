@@ -174,7 +174,7 @@
                 </div>
 
                 <div class="dashboard-action-list">
-
+                    <a class="recall-preview" v-if="st.recallState == true" :href="st.oldDocumentLink" target="_blank">Preview</a>
                     <div class="list-title">
                         <p>New Document<span>{{ filesCount }}<span>Files Added</span></span> </p>
                     </div>
@@ -328,11 +328,13 @@ window.Store.registerModule('dashboard', {
         },
         removeNumbering: true,
         successState: false,
+        recallState: false,
         failState: false,
         itemSelected: {},
         filePath: "",
         selectedFiles: [],
         selectedPages: [],
+        oldDocumentLink: '',
 
     },
     mutations: {
@@ -1008,7 +1010,17 @@ export default {
     }
 
 }
-
+.recall-preview {
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin: 10px 20px;
+    text-decoration: underline;
+    font-family: "Raleway";
+    font-weight: 500;
+    font-size: 16px;
+    color: #404040 !important;
+}
 .dashboard-action .dashboard-action-buttons {
     margin: 20px 30px;
     display: flex;

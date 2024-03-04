@@ -148,6 +148,9 @@ export default {
                 this.updateModalsSave('addFooter', document_history.footer);
                 this.updateModalsSave('addCover', document_history.cover);
                 this.updateModalsSave('addOperation', document_history.operation);
+                this.$store.state.dashboard.recallState = true;
+                var document_path =  document.document_path.replace('public', 'storage');
+                this.$store.state.dashboard.oldDocumentLink = document_path;
                 this.$emit('close');
             }
         },
@@ -291,6 +294,7 @@ export default {
                         id: $(this).data('id'),
                         name: $(this).data('name'),
                         document_history: $(this).data('history'),
+                        document_path: $(this).data('path'),
                     }
                 );
             });
