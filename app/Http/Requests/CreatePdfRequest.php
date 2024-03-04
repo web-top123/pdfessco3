@@ -25,7 +25,7 @@ class CreatePdfRequest extends FormRequest
     {
         return [
             'cover' => 'sometimes|required|max:110',
-            'header' => 'sometimes|required|max:60',
+            'header' => 'sometimes|required|max:60',    
             'footer' => 'sometimes|required|max:60',
             'items' => 'required|array|pdf_files_exist',
         ];

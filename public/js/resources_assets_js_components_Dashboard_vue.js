@@ -11099,7 +11099,7 @@ window.Store.registerModule('dashboard', {
         exists: false,
         content: {
           project: "",
-          projectType: "OPERATION AND MAINTENANCE MANUAL",
+          projectType: "",
           customer: "",
           job: ""
         },
@@ -11623,6 +11623,8 @@ window.Store.registerModule('dashboard', {
       }
     },
     recallPdf: function recallPdf() {
+      console.log("state", this.$store.state.dashboard.selectedFiles);
+      console.log("state", this.$store.state.dashboard.modals.addCover.content);
       this.$store.commit('dashboard/openModal', 'documentRecall');
     },
     startOver: function startOver() {
@@ -12569,6 +12571,52 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=script&lang=js":
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=script&lang=js ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Modal.vue */ "./resources/assets/js/components/modals/Modal.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    show: {
+      type: Boolean,
+      required: true,
+      "default": false
+    },
+    document: {
+      type: Number,
+      "default": 0 // Set a default value of 0 for the document prop
+    }
+  },
+  components: {
+    Modal: _Modal_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  methods: {
+    request: function request() {
+      var _this = this;
+      axios["delete"]('/dashboard/deleteDocFile', {
+        data: {
+          document: [this.document]
+        }
+      }).then(function () {
+        _this.$emit('delete');
+      })["catch"](function (response) {
+        console.log(response);
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-deleteCover.vue?vue&type=script&lang=js":
 /*!**************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-deleteCover.vue?vue&type=script&lang=js ***!
@@ -12758,11 +12806,14 @@ __webpack_require__.r(__webpack_exports__);
       postBody.items = this.$store.state.dashboard.selectedFiles.map(function (item) {
         return item.type === "divider" ? {
           type: item.type,
+          name: item.name,
+          content: item.content,
           text: item.content
         } : {
           type: item.type,
           id: item.id,
-          pages: item.pages ? item.pages : []
+          pages: item.pages ? item.pages : [],
+          name: item.name
         };
       });
       axios.post('/dashboard/createNameFile', postBody, {
@@ -12797,10 +12848,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Modal.vue */ "./resources/assets/js/components/modals/Modal.vue");
+/* harmony import */ var _Modal_delete_document_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Modal-delete-document.vue */ "./resources/assets/js/components/modals/Modal-delete-document.vue");
 try {
   window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 } catch (e) {}
 __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jquery.dataTables.mjs");
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -12822,12 +12875,19 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
       urlUsers: '/admin/manage-users/data',
       urlAdmins: '/admin/manage-admins/data',
       admin: false,
-      width: 0
+      width: 0,
+      coverContent: {
+        projectType: this.$store.state.dashboard.modals.addCover.content.projectType,
+        project: this.$store.state.dashboard.modals.addCover.content.project,
+        customer: this.$store.state.dashboard.modals.addCover.content.customer,
+        job: this.$store.state.dashboard.modals.addCover.content.job
+      }
     };
   },
   computed: {},
   components: {
-    Modal: _Modal_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Modal: _Modal_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ModalDeleteDocument: _Modal_delete_document_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   methods: {
     setRefresh: function setRefresh(callback) {
@@ -12868,10 +12928,25 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
       this.modals.deleteId = undefined;
       this.modals["delete"] = false;
     },
-    openEdit: function openEdit(user) {
-      if (user) {
-        this.modals.editUser = user;
-        return this.modals.edit = true;
+    updateModalsSave: function updateModalsSave(modalName, data) {
+      if (data.length !== 0) {
+        this.$store.state.dashboard.modals[modalName].content = data;
+        this.$store.state.dashboard.modals[modalName].show = false;
+        this.$store.state.dashboard.modals[modalName].exists = true;
+        this.$store.state.successState = false;
+        this.$emit('close');
+      }
+    },
+    openEdit: function openEdit(document) {
+      if (document) {
+        var document_history = JSON.parse(document.document_history.replace(/'/g, '"').replace(/null/g, '""'));
+        console.log("selectedFiles", this.$store.state.dashboard.selectedFiles);
+        console.log("docselectedFiles", document_history.items);
+        this.$store.state.dashboard.selectedFiles = document_history.items;
+        this.updateModalsSave('addHeader', document_history.header);
+        this.updateModalsSave('addFooter', document_history.footer);
+        this.updateModalsSave('addCover', document_history.cover);
+        this.updateModalsSave('addOperation', document_history.operation);
       }
     },
     finishedEdit: function finishedEdit() {
@@ -12915,7 +12990,7 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
         serverSide: true,
         pageLength: 20,
         ajax: '/dashboard/manage-recall/data',
-        order: [[1, "desc"]],
+        order: [[2, "desc"]],
         bScrollCollapse: true,
         columns: [{
           data: null,
@@ -12937,7 +13012,8 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
           "bSearchable": false,
           "orderable": false,
           render: function render(data, type, full) {
-            return '<i class="fa fa-pencil-square-o edit-user" aria-hidden="true" data-id="' + full.id + '" data-name="' + full.name + '" data-path="' + full.path + '"></i>';
+            console.log(full.document_history.replace(/&quot;/g, '"'));
+            return '<i class="fa fa-pencil-square-o edit-user" aria-hidden="true" data-id="' + full.id + '" data-name="' + full.name + '" data-path="' + full.path + '"  data-history="' + full.document_history.replace(/&quot;/g, "'") + '"></i>';
           }
         }, {
           data: null,
@@ -12964,13 +13040,13 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
         dt.ajax.url(url).load();
       });
       $(document).on('change', '.table-checkbox', function () {
-        var id = $(that).data('id');
-        var val = $(that).prop('checked');
+        var id = $(this).data('id');
+        var val = $(this).prop('checked');
         if (val) {
-          $(that).parent().parent().addClass('checked');
+          $(this).parent().parent().addClass('checked');
           that.select(id);
         } else {
-          $(that).parent().parent().removeClass('checked');
+          $(this).parent().parent().removeClass('checked');
           that.deselect(id);
         }
       });
@@ -12980,7 +13056,7 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
         $('.checked').removeClass('checked');
       });
       $(document).on('keyup', '#users-search', function () {
-        dt.search($(that).val()).draw();
+        dt.search($(this).val()).draw();
       });
       $(document).on('click', '#prev-page', function () {
         dt.page('previous').draw('page');
@@ -12990,20 +13066,20 @@ __webpack_require__(/*! datatables.net */ "./node_modules/datatables.net/js/jque
       });
       $(document).on('click', '.edit-user', function () {
         that.openEdit({
-          id: $(that).data('id'),
-          name: $(that).data('name'),
-          email: $(that).data('email')
+          id: $(this).data('id'),
+          name: $(this).data('name'),
+          document_history: $(this).data('history')
         });
       });
       $(document).on('click', '.delete-user', function () {
-        that.openDelete($(that).data('id'));
+        that.openDelete($(this).data('id'));
       });
       dt.on('draw.dt', function () {
         that.setCurrentPage(dt.page.info().page + 1);
         that.setTotalPages(dt.page.info().pages);
         $('.table-checkbox').each(function () {
-          if ($(that).prop('checked')) {
-            $(that).parent().parent().addClass('checked');
+          if ($(this).prop('checked')) {
+            $(this).parent().parent().addClass('checked');
           }
         });
       });
@@ -15338,7 +15414,7 @@ var render = function render() {
     },
     attrs: {
       type: "text",
-      placeholder: "Submittal #1",
+      placeholder: "OPERATION AND MAINTENANCE MANUAL",
       id: "operation-type"
     },
     domProps: {
@@ -15582,6 +15658,67 @@ var render = function render() {
       "aria-hidden": "true"
     }
   })]) : _vm._e()])], 1)])], 2);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=template&id=7152a36b":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=template&id=7152a36b ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* binding */ render),
+/* harmony export */   staticRenderFns: () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("modal", {
+    staticClass: "modal default-modal",
+    attrs: {
+      show: _vm.show
+    },
+    on: {
+      close: function close($event) {
+        return _vm.$emit("close");
+      }
+    }
+  }, [_c("template", {
+    slot: "header"
+  }, [_c("p", {
+    staticClass: "modal-card-title",
+    attrs: {
+      slot: "header"
+    },
+    slot: "header"
+  }, [_vm._v("Delete "), _c("span", {
+    staticStyle: {
+      "text-transform": "capitalize"
+    }
+  }, [_vm._v("Document")]), _vm._v("?")])]), _vm._v(" "), [_c("div", {
+    staticClass: "field"
+  }, [_c("p", [_vm._v(" Are you sure? This action will permanently delete the document. ")])])], _vm._v(" "), _c("template", {
+    slot: "footer"
+  }, [_c("button", {
+    staticClass: "button cancel-btn",
+    on: {
+      click: function click($event) {
+        return _vm.$emit("close");
+      }
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c("button", {
+    staticClass: "button is-info",
+    on: {
+      click: _vm.request
+    }
+  }, [_vm._v("Delete")])])], 2);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -16059,7 +16196,23 @@ var render = function render() {
     staticClass: "fa fa-chevron-right"
   })])])])])])], _vm._v(" "), _c("template", {
     slot: "footer"
-  })], 2);
+  }), _vm._v(" "), _c("transition", {
+    attrs: {
+      name: "fade",
+      mode: "out-in"
+    }
+  }, [_vm.modals["delete"] ? _c("modal-delete-document", {
+    attrs: {
+      show: _vm.modals["delete"],
+      document: _vm.modals.deleteId
+    },
+    on: {
+      close: function close($event) {
+        _vm.modals["delete"] = false;
+      },
+      "delete": _vm.finishedDelete
+    }
+  }) : _vm._e()], 1)], 2);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -16565,6 +16718,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "/* custom colors */\n/* text color */\n/* bg color */\n/* decoration color */\n.field.is-grouped.remember-me {\n  margin-top: 25px;\n  justify-content: space-between;\n}\n.field.is-grouped.remember-me .styled-checkbox + label {\n  width: 25px;\n}\n.field.is-grouped.remember-me .styled-checkbox + label:before {\n  height: 16px;\n  width: 16px;\n  margin-top: 0;\n}\n.field.is-grouped.remember-me .styled-checkbox + label:after {\n  top: 9px;\n}\n.field.is-grouped.remember-me .rmb, .field.is-grouped.remember-me a {\n  color: #c39000;\n  padding: 0;\n  font-weight: 500;\n  cursor: pointer;\n  border-bottom: 2px solid transparent;\n}\n.field.is-grouped.remember-me .rmb:hover, .field.is-grouped.remember-me .rmb.active, .field.is-grouped.remember-me a:hover, .field.is-grouped.remember-me a.active {\n  color: #1247b3;\n  border-bottom: 2px solid #1247b3;\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".modal .modal-card {\n  width: 460px;\n}\n.modal .modal-card .modal-card-body .field p:not(.help) {\n  text-align: center;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21976,6 +22153,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_style_index_0_id_7152a36b_lang_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_style_index_0_id_7152a36b_lang_scss__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_style_index_0_id_7152a36b_lang_scss__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-deleteCover.vue?vue&type=style&index=0&id=c6bf1e8c&lang=scss":
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-deleteCover.vue?vue&type=style&index=0&id=c6bf1e8c&lang=scss ***!
@@ -22573,6 +22780,47 @@ component.options.__file = "resources/assets/js/components/modals/Modal-addOpera
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/modals/Modal-delete-document.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/assets/js/components/modals/Modal-delete-document.vue ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Modal_delete_document_vue_vue_type_template_id_7152a36b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Modal-delete-document.vue?vue&type=template&id=7152a36b */ "./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=template&id=7152a36b");
+/* harmony import */ var _Modal_delete_document_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Modal-delete-document.vue?vue&type=script&lang=js */ "./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=script&lang=js");
+/* harmony import */ var _Modal_delete_document_vue_vue_type_style_index_0_id_7152a36b_lang_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss */ "./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _Modal_delete_document_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Modal_delete_document_vue_vue_type_template_id_7152a36b__WEBPACK_IMPORTED_MODULE_0__.render,
+  _Modal_delete_document_vue_vue_type_template_id_7152a36b__WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/modals/Modal-delete-document.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/modals/Modal-deleteCover.vue":
 /*!*********************************************************************!*\
   !*** ./resources/assets/js/components/modals/Modal-deleteCover.vue ***!
@@ -23096,6 +23344,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=script&lang=js":
+/*!*************************************************************************************************!*\
+  !*** ./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=script&lang=js ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Modal-delete-document.vue?vue&type=script&lang=js */ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=script&lang=js");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/modals/Modal-deleteCover.vue?vue&type=script&lang=js":
 /*!*********************************************************************************************!*\
   !*** ./resources/assets/js/components/modals/Modal-deleteCover.vue?vue&type=script&lang=js ***!
@@ -23410,6 +23674,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=template&id=7152a36b":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=template&id=7152a36b ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   render: () => (/* reexport safe */ _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_template_id_7152a36b__WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   staticRenderFns: () => (/* reexport safe */ _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_template_id_7152a36b__WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_template_id_7152a36b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Modal-delete-document.vue?vue&type=template&id=7152a36b */ "./node_modules/laravel-mix/node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=template&id=7152a36b");
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/modals/Modal-deleteCover.vue?vue&type=template&id=c6bf1e8c":
 /*!***************************************************************************************************!*\
   !*** ./resources/assets/js/components/modals/Modal-deleteCover.vue?vue&type=template&id=c6bf1e8c ***!
@@ -23637,6 +23918,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_addFooter_vue_vue_type_style_index_0_id_5ba7130a_lang_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Modal-addFooter.vue?vue&type=style&index=0&id=5ba7130a&lang=scss */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-addFooter.vue?vue&type=style&index=0&id=5ba7130a&lang=scss");
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss":
+/*!**********************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss ***!
+  \**********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_delete_document_vue_vue_type_style_index_0_id_7152a36b_lang_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12.use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/assets/js/components/modals/Modal-delete-document.vue?vue&type=style&index=0&id=7152a36b&lang=scss");
 
 
 /***/ }),

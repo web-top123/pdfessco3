@@ -10,7 +10,7 @@
                 <label class="label is-small" for="operation-type">PROJECT TYPE <span class="char-counter"><span class="current-char" :class="{'is-danger':operationContent.projectType.length>maxChar.projectType}">{{operationContent.projectType.length}}</span> / <span class="max-char"></span>{{maxChar.projectType}}</span></label>
                 <div class="control">
                     <input type="text"
-                            placeholder="Submittal #1" 
+                            placeholder="OPERATION AND MAINTENANCE MANUAL" 
                             class="input is-medium" 
                             :class="{'is-danger' : (operationContent.projectType.length > maxChar.projectType || errors.projectType.length !== 0), 'is-success': successState === true, 'bounce-enter-active': failState === true}" 
                             id="operation-type" 

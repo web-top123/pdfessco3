@@ -106,6 +106,7 @@ Route::middleware('auth')->group(function () {
         Route::get('page-count/{id}', [DocumentController::class, 'index']);
         Route::post('create', [DocumentController::class, 'store']);
         Route::post('createNameFile', [DocumentController::class, 'storeNameFile']);
+        Route::delete('deleteDocFile', [DocumentController::class, 'deleteDocFile']);
         Route::get('manage-recall/data', [DocumentController::class, 'data']);
         Route::get('categories', [CategoriesMenuController::class, 'index']);
         Route::post('email', function () {

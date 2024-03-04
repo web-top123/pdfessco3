@@ -1,6 +1,5 @@
 <template>
-    <modal @close="$emit('close')" class="document-recall-confirmation">
-
+    <modal @close="$emit('close')" class="document-recall-confirmation">            
         <template slot="header">
             <p slot="header" class="modal-card-title">Document Recall</p>
         </template>
@@ -32,12 +31,16 @@
                     </div>
                 </div>
             </div>
+            
         </template>
 
         <template slot="footer">
         </template>
-
+        <transition name="fade" mode="out-in">
+            <modal-delete-document v-if="modals.delete" :show="modals.delete" :document="modals.deleteId" @close="modals.delete = false" @delete="finishedDelete"></modal-delete-document>
+        </transition>
     </modal>
+
 </template>
 
 <script>
@@ -47,6 +50,7 @@ try {
 require('datatables.net');
 
 import Modal from './Modal.vue';
+import ModalDeleteDocument from './Modal-delete-document.vue';
 
 export default {
     data() {
@@ -69,6 +73,12 @@ export default {
             urlAdmins: '/admin/manage-admins/data',
             admin: false,
             width: 0,
+            coverContent: { 
+                projectType: this.$store.state.dashboard.modals.addCover.content.projectType,
+                project:this.$store.state.dashboard.modals.addCover.content.project, 
+                customer: this.$store.state.dashboard.modals.addCover.content.customer, 
+                job: this.$store.state.dashboard.modals.addCover.content.job
+            }
         };
     },
     computed: {
@@ -76,6 +86,7 @@ export default {
     },
     components: {
         Modal,
+        ModalDeleteDocument,
     },
     methods: {
         setRefresh(callback) {
@@ -117,12 +128,29 @@ export default {
             this.modals.deleteId = undefined;
             this.modals.delete = false;
         },
-        openEdit(user) {
-            if (user) {
-                this.modals.editUser = user;
-                return this.modals.edit = true;
+        updateModalsSave(modalName, data) {
+            if(data.length !== 0) {
+                this.$store.state.dashboard.modals[modalName].content = data;
+                this.$store.state.dashboard.modals[modalName].show = false;
+                this.$store.state.dashboard.modals[modalName].exists = true;
+                this.$store.state.successState = false;
+                this.$emit('close');
             }
         },
+        openEdit(document) {
+            
+            if (document) {
+                var document_history = JSON.parse(document.document_history.replace(/'/g, '"').replace(/null/g, '""'));
+                console.log("selectedFiles", this.$store.state.dashboard.selectedFiles);
+                console.log("docselectedFiles", document_history.items);
+                this.$store.state.dashboard.selectedFiles = document_history.items;
+                this.updateModalsSave('addHeader', document_history.header);
+                this.updateModalsSave('addFooter', document_history.footer);
+                this.updateModalsSave('addCover', document_history.cover);
+                this.updateModalsSave('addOperation', document_history.operation);
+            }
+        },
+
         finishedEdit() {
             this.refresh();
             this.modals.editUser = undefined;
@@ -163,7 +191,7 @@ export default {
                 serverSide: true,
                 pageLength: 20,
                 ajax: '/dashboard/manage-recall/data',
-                order: [[1, "desc"]],
+                order: [[2, "desc"]],
                 bScrollCollapse: true,
                 columns: [
                     {
@@ -189,7 +217,8 @@ export default {
                         "bSearchable": false,
                         "orderable": false,
                         render: function (data, type, full) {
-                            return '<i class="fa fa-pencil-square-o edit-user" aria-hidden="true" data-id="' + full.id + '" data-name="' + full.name + '" data-path="' + full.path + '"></i>';
+                            console.log(full.document_history.replace(/&quot;/g, '"'));
+                            return '<i class="fa fa-pencil-square-o edit-user" aria-hidden="true" data-id="' + full.id + '" data-name="' + full.name + '" data-path="' + full.path + '"  data-history="'+full.document_history.replace(/&quot;/g, "'")+'"></i>';
                         },
                     },
                     {
@@ -221,17 +250,17 @@ export default {
             });
 
             $(document).on('change', '.table-checkbox', function () {
-                const id = $(that).data('id');
-                const val = $(that).prop('checked');
+                const id = $(this).data('id');
+                const val = $(this).prop('checked');
 
                 if (val) {
 
-                    $(that).parent().parent().addClass('checked');
+                    $(this).parent().parent().addClass('checked');
                     that.select(id);
 
                 } else {
 
-                    $(that).parent().parent().removeClass('checked');
+                    $(this).parent().parent().removeClass('checked');
                     that.deselect(id);
                 }
 
@@ -244,7 +273,7 @@ export default {
             });
 
             $(document).on('keyup', '#users-search', function () {
-                dt.search($(that).val()).draw();
+                dt.search($(this).val()).draw();
             });
 
             $(document).on('click', '#prev-page', function () {
@@ -258,15 +287,15 @@ export default {
             $(document).on('click', '.edit-user', function () {
                 that.openEdit(
                     {
-                        id: $(that).data('id'),
-                        name: $(that).data('name'),
-                        email: $(that).data('email'),
+                        id: $(this).data('id'),
+                        name: $(this).data('name'),
+                        document_history: $(this).data('history'),
                     }
                 );
             });
 
             $(document).on('click', '.delete-user', function () {
-                that.openDelete($(that).data('id'));
+                that.openDelete($(this).data('id'));
             });
 
             dt.on('draw.dt', function () {
@@ -275,8 +304,8 @@ export default {
                 that.setTotalPages(dt.page.info().pages);
 
                 $('.table-checkbox').each(function () {
-                    if ($(that).prop('checked')) {
-                        $(that).parent().parent().addClass('checked');
+                    if ($(this).prop('checked')) {
+                        $(this).parent().parent().addClass('checked');
                     }
                 });
 

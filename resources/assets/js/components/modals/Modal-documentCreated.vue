@@ -57,7 +57,6 @@
             <a class="button-base is-info dl-file" :href="filePath" :download="newFileName">Download</a>
             <button class="button-base" @click="createFile">Create and Save</button>
         </template>
-
     </modal>
 </template>
 
@@ -172,7 +171,7 @@ export default {
 
             postBody.items = this.$store.state.dashboard.selectedFiles.map(
                 (item) => {
-                    return (item.type === "divider") ? { type: item.type, text: item.content } : { type: item.type, id: item.id, pages: item.pages ? item.pages : [] }
+                    return (item.type === "divider") ? { type: item.type, name: item.name, content:item.content, text: item.content} : { type: item.type, id: item.id, pages: item.pages ? item.pages : [], name: item.name }
                 }
             );           
             axios.post('/dashboard/createNameFile', postBody, {

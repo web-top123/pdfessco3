@@ -312,7 +312,7 @@ window.Store.registerModule('dashboard', {
             addHeader: { show: false, exists: false, content: "", verb: "Add" },
             addFooter: { show: false, exists: false, content: "", verb: "Add" },
             addCover: { show: false, exists: false, content: { project: "", projectType: "", customer: "", job: "" }, verb: "Add" },
-            addOperation: { show: false, exists: false, content: { project: "", projectType: "OPERATION AND MAINTENANCE MANUAL", customer: "", job: "" }, verb: "Add" },
+            addOperation: { show: false, exists: false, content: { project: "", projectType: "", customer: "", job: "" }, verb: "Add" },
             addDivider: { show: false, exists: false, data: { name: "", content: "" } },
             uploadFileDashboard: { show: false, exists: false, data: {} },
             myAccount: false,
@@ -402,7 +402,7 @@ window.Store.registerModule('dashboard', {
         },
         saveHFC: (state, modal) => {
             state.modals[modal.name].content = modal.data;
-            state.modals[modal.name].show = false;
+            state.modals[modal.name].show = false;  
             state.modals[modal.name].exists = true;
             state.successState = false;
         },
@@ -768,7 +768,7 @@ export default {
                 }
                 postBody.items = this.$store.state.dashboard.selectedFiles.map(
                     (item) => {
-                        return (item.type === "divider") ? { type: item.type, text: item.content } : { type: item.type, id: item.id, pages: item.pages ? item.pages : [] }
+                        return (item.type === "divider") ? { type: item.type, text: item.content} : { type: item.type, id: item.id, pages: item.pages ? item.pages : [] }
                     }
                 );
                 var that = this;
@@ -794,6 +794,8 @@ export default {
 
         },
         recallPdf() {
+            console.log("state", this.$store.state.dashboard.selectedFiles);
+            console.log("state", this.$store.state.dashboard.modals.addCover.content);
             this.$store.commit('dashboard/openModal', 'documentRecall');
         },
         startOver() {

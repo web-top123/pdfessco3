@@ -12,6 +12,7 @@ class Document extends Model
         'path',
         'user_id',
         'name',
+        'document_history',
     ];
     public function user()
     {

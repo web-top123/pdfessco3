@@ -1527,7 +1527,7 @@ button::-moz-focus-inner {
   }
 }
 .dashboard-action .dashboard-list-main-action {
-  margin: 20px 30px 0;
+  margin: 30px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
