@@ -325,7 +325,7 @@ export default {
 <style lang="scss">
 @import "resources/assets/sass/variables";
 @import "resources/assets/sass/mixins";
-.document-recall-confirmation .modal-card {width: 1200px !important;}
+.document-recall-confirmation .modal-card {width: 80% !important;}
 .manage-recall .table-wrapper {
     padding: 0px;
     background: white;
