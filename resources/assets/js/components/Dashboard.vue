@@ -160,7 +160,7 @@
             <div id="dashboard-action" class="dashboard-action manage-upload">
                 <div class="dashboard-action-buttons close" @click="toggleRight">
                     <!-- <button type="button" @click="toggleRight" class="button-base fill toggle-right">Close Document List</button> -->
-                    <p> Close Document List <i class="fa fa-arrow-right" aria-hidden="true"></i></p>
+                    <p><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
                 </div>
                 <div class="dashboard-action-buttons">
                     <button type="button" class="button-base" :class="{ borderless: st.modals.addHeader.exists }"
@@ -918,7 +918,6 @@ export default {
 
         },
     }
-
 }
 </script>
 
@@ -1027,5 +1026,25 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
-}</style>
+}
+@media(max-width: 1545px) {
+    .dashboard-action .dashboard-action-buttons.close i {
+        margin-left: 0px;
+    }
+    .dashboard-action .dashboard-action-buttons.close {
+        position: absolute;
+        transform: translateX(-100%);
+        top: 30%;
+        background: #c39000;
+        color: white;
+        border-bottom: 0px;
+        width: 50px;
+        height: 50px;
+        padding: 0px;
+        margin: 0px;
+        display: flex;
+        align-items: center;
+    }
+}
+</style>
 
