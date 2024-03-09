@@ -295,10 +295,6 @@
             // top: -50px;
             top:0;
             @include transition(all .1s ease-in-out);
-            &:hover {
-                background: $color-dark;
-                color: #fff;
-            }
             p {
                 margin-bottom: 0;
                 margin-top: 0;
@@ -711,7 +707,7 @@
         margin:20px 30px;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: center;
 
         &.close {
             display: none;
@@ -728,13 +724,6 @@
                 margin-right: 2px;
                 padding-top: 0;
                 padding-bottom: 0;
-                &:first-child {
-                    margin-left: 0;
-                }
-                &:last-child {
-                    margin-right: 0;
-                    margin-left: 2px;
-                }
             }
         }
         button {

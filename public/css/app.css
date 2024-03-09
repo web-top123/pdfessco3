@@ -991,10 +991,6 @@ button::-moz-focus-inner {
     top: 0;
     transition: all 0.1s ease-in-out;
   }
-  .dashboard-categories-menu .dashboard-action-buttons.close:hover {
-    background: #1247b3;
-    color: #fff;
-  }
   .dashboard-categories-menu .dashboard-action-buttons.close p {
     margin-bottom: 0;
     margin-top: 0;
@@ -1353,7 +1349,7 @@ button::-moz-focus-inner {
   margin: 20px 30px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 }
 .dashboard-action .dashboard-action-buttons.close {
   display: none;
@@ -1371,13 +1367,6 @@ button::-moz-focus-inner {
     margin-right: 2px;
     padding-top: 0;
     padding-bottom: 0;
-  }
-  .dashboard-action .dashboard-action-buttons button:first-child {
-    margin-left: 0;
-  }
-  .dashboard-action .dashboard-action-buttons button:last-child {
-    margin-right: 0;
-    margin-left: 2px;
   }
 }
 .dashboard-action .dashboard-action-buttons button {

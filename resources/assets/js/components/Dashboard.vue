@@ -3,7 +3,7 @@
         <div class="columns">
             <div id="dashboard-categories-menu" class="column is-2 dashboard-categories-menu">
                 <div class="dashboard-action-buttons close" @click="toggleLeft">
-                    <p><i class="fa fa-arrow-left" aria-hidden="true"></i> Close Categories </p>
+                    <p><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
                 </div>
                 <div class="title">Browse Categories</div>
 
@@ -160,7 +160,7 @@
             <div id="dashboard-action" class="dashboard-action manage-upload">
                 <div class="dashboard-action-buttons close" @click="toggleRight">
                     <!-- <button type="button" @click="toggleRight" class="button-base fill toggle-right">Close Document List</button> -->
-                    <p><i class="fa fa-arrow-right" aria-hidden="true"></i></p>
+                    <p><i class="fa fa-arrow-left" aria-hidden="true"></i></p>
                 </div>
                 <div class="dashboard-action-buttons">
                     <button type="button" class="button-base" :class="{ borderless: st.modals.addHeader.exists }"
@@ -1024,7 +1024,7 @@ export default {
     margin: 20px 30px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
 }
 @media(max-width: 1545px) {
@@ -1045,6 +1045,38 @@ export default {
         display: flex;
         align-items: center;
     }
+    
 }
+@media (max-width: 1024px) {
+    .dashboard-categories-menu .dashboard-action-buttons.close {
+        position: absolute;
+        transform: translateX(102%);
+        top: 30%;
+        background: #c39000;
+        color: white;
+        border-bottom: 0px;
+        width: 50px;
+        height: 50px;
+        padding: 0px;
+        margin: 0px;
+        display: flex;
+        align-items: center;
+        right: 0px;
+    }
+}
+@media screen and (max-width: 500px) {
+    .dashboard-action.active .dashboard-action-buttons.close {
+        transform: translateX(0%);
+    }
+    .dashboard-categories-menu.active .dashboard-action-buttons.close {
+        transform: translateX(0%);
+        z-index: 1;
+    }
+    .dashboard-categories-menu.active + div + div .dashboard-action-buttons.close {
+        display: none;
+    }
+}
+
+
 </style>
 
