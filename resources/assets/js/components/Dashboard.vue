@@ -1062,6 +1062,7 @@ export default {
         display: flex;
         align-items: center;
         right: 0px;
+        z-index: 10;
     }
 }
 @media screen and (max-width: 500px) {
