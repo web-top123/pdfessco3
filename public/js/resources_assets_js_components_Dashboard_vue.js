@@ -11652,7 +11652,7 @@ window.Store.registerModule('dashboard', {
       this.selected.id = val.id;
       this.selected.breadcrumb = val.breadcrumb;
       this.refresh();
-      this.$refs.menuScrollbar.scrollTop = 0;
+      // this.$refs.menuScrollbar.scrollTop = 0;
       this.MPs.update(this.$refs.menuScrollbar);
     },
     updateScrollbar: function updateScrollbar(val) {
