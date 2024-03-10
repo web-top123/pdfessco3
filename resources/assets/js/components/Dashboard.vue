@@ -143,7 +143,7 @@
                         </div>
 
 
-                        <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="100">
+                        <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="100" v-if="loadMoreEnabled">
                             <span slot="no-more">
                                 No more results
                             </span>
@@ -583,6 +583,7 @@ export default {
             hoverRmb: false,
             width: 0,
             selectedPages: [],
+            loadMoreEnabled: false,
         }
     },
     computed: {
@@ -815,6 +816,7 @@ export default {
             this.searchTimeout = setTimeout(() => { this.refresh() }, 200);
         },
         select(val) {
+            this.loadMoreEnabled = true;
             this.selected.id = val.id;
             this.selected.breadcrumb = val.breadcrumb;
             this.refresh();

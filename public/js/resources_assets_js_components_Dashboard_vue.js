@@ -11403,7 +11403,8 @@ window.Store.registerModule('dashboard', {
       emptyState: false,
       hoverRmb: false,
       width: 0,
-      selectedPages: []
+      selectedPages: [],
+      loadMoreEnabled: false
     };
   },
   computed: {
@@ -11649,6 +11650,7 @@ window.Store.registerModule('dashboard', {
       }, 200);
     },
     select: function select(val) {
+      this.loadMoreEnabled = true;
       this.selected.id = val.id;
       this.selected.breadcrumb = val.breadcrumb;
       this.refresh();
@@ -13736,7 +13738,7 @@ var render = function render() {
         }
       }
     });
-  }), 1)]) : _vm._e(), _vm._v(" "), _c("infinite-loading", {
+  }), 1)]) : _vm._e(), _vm._v(" "), _vm.loadMoreEnabled ? _c("infinite-loading", {
     ref: "infiniteLoading",
     attrs: {
       distance: 100
@@ -13754,7 +13756,7 @@ var render = function render() {
       slot: "no-results"
     },
     slot: "no-results"
-  }, [_vm._v("\n                            No results found\n                        ")])])], 1)], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                            No results found\n                        ")])]) : _vm._e()], 1)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-action manage-upload",
     attrs: {
       id: "dashboard-action"
