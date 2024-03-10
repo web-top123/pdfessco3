@@ -243,9 +243,15 @@ export default {
         overflow: visible!important;
 
         .modal-card-foot {
+            flex-wrap: wrap;
             .button {
                 font-weight: 500;
                 padding: 10px;
+                width:200px !important;
+                margin: 10px 10px;
+                :not(:last-child) {
+                    margin-right: unset;
+                }
             }
 
             .button.is-info {
