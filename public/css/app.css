@@ -1023,7 +1023,7 @@ button::-moz-focus-inner {
 }
 @media (max-width: 1024px) {
   .dashboard-main .dashboard-search .start-over {
-    display: none;
+    display: block;
   }
 }
 .dashboard-main .dashboard-search .search-icon {
