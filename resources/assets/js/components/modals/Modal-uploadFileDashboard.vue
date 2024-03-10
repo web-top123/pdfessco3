@@ -240,7 +240,7 @@ export default {
     .modal-card {
         width: 520px;
         max-width: 100%;
-        overflow: visible!important;
+        overflow: auto !important;
 
         .modal-card-foot {
             flex-wrap: wrap;
