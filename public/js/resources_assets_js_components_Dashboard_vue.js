@@ -13736,25 +13736,7 @@ var render = function render() {
         }
       }
     });
-  }), 1)]) : _vm._e(), _vm._v(" "), _c("infinite-loading", {
-    ref: "infiniteLoading",
-    attrs: {
-      distance: 100
-    },
-    on: {
-      infinite: _vm.loadMore
-    }
-  }, [_c("span", {
-    attrs: {
-      slot: "no-more"
-    },
-    slot: "no-more"
-  }, [_vm._v("\n                            No more results\n                        ")]), _vm._v(" "), _c("span", {
-    attrs: {
-      slot: "no-results"
-    },
-    slot: "no-results"
-  }, [_vm._v("\n                            No results found\n                        ")])])], 1)], 1)]), _vm._v(" "), _c("div", {
+  }), 1)]) : _vm._e()], 1)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-action manage-upload",
     attrs: {
       id: "dashboard-action"

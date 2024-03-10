@@ -143,14 +143,14 @@
                         </div>
 
 
-                        <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="100">
+                        <!-- <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="100">
                             <span slot="no-more">
                                 No more results
                             </span>
                             <span slot="no-results">
                                 No results found
                             </span>
-                        </infinite-loading>
+                        </infinite-loading> -->
 
                     </div>
 
