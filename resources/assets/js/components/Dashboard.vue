@@ -143,14 +143,14 @@
                         </div>
 
 
-                        <!-- <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="100">
+                        <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="100">
                             <span slot="no-more">
                                 No more results
                             </span>
                             <span slot="no-results">
                                 No results found
                             </span>
-                        </infinite-loading> -->
+                        </infinite-loading>
 
                     </div>
 
@@ -815,7 +815,6 @@ export default {
             this.searchTimeout = setTimeout(() => { this.refresh() }, 200);
         },
         select(val) {
-
             this.selected.id = val.id;
             this.selected.breadcrumb = val.breadcrumb;
             this.refresh();
