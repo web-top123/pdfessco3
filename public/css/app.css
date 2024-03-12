@@ -350,7 +350,7 @@ button::-moz-focus-inner {
 .button-base:hover {
   background: #c39000;
   border-color: #c39000;
-  color: #ffffff;
+  color: #ffffff !important;
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.22), 0 6px 10px rgba(0, 0, 0, 0.08), 0 1px 18px rgba(0, 0, 0, 0.06);
 }
 .button-base:active {
