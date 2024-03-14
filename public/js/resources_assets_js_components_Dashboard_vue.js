@@ -11702,7 +11702,13 @@ window.Store.registerModule('dashboard', {
           // that.filePath = data;
           // that.pathView = true;
           that.previewPath = data;
-          window.open(that.previewPath, '_blank');
+          // window.open(that.previewPath, '_blank');
+          fetch(that.previewPath).then(function (response) {
+            return response.blob();
+          }).then(function (blob) {
+            var url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+          });
           console.log(data);
         })["catch"](function (error) {
           console.error(error);
