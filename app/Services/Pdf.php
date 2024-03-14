@@ -301,7 +301,12 @@ class Pdf extends Fpdi
         $basePath = 'public/' . config('pdf.folder') . '/';
 
         if ($fileName) {
-            return $basePath . preg_replace('/[^A-Za-z0-9_\-\s.]/', '', $fileName) . '_'.Str::random(10).'.pdf';
+            if($fileName ="preview") {
+                return $basePath . preg_replace('/[^A-Za-z0-9_\-\s.]/', '', $fileName).'.pdf';
+            } else {
+                return $basePath . preg_replace('/[^A-Za-z0-9_\-\s.]/', '', $fileName) . '_'.Str::random(10).'.pdf';
+            }
+            
         } else {
             return $basePath . Str::random(10) . '.pdf';
         }

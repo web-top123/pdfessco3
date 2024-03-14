@@ -105,13 +105,15 @@ class DocumentController extends Controller
         ];
 
         $document_history =json_encode($document_historyArray);
-          
-        Document::create([
-            'path' => $path,
-            'user_id' => auth()->user()->id,
-            'name' => $fileName,
-            'document_history' => $document_history,
-        ]);
+        
+        if ($fileName !== "preview") {
+            Document::create([
+                'path' => $path,
+                'user_id' => auth()->user()->id,
+                'name' => $fileName,
+                'document_history' => $document_history,
+            ]);
+        }
         // $documentsQuery = Document::select('document_history')
         //                     ->where('id', 1403)
         //                     ->get();

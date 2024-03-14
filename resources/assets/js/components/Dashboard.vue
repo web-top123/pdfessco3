@@ -174,7 +174,9 @@
                 </div>
 
                 <div class="dashboard-action-list">
-                    <a class="recall-preview" v-if="st.recallState == true" :href="st.oldDocumentLink" target="_blank">Preview</a>
+                    <!-- <a class="recall-preview" v-if="st.recallState == true" :href="st.oldDocumentLink" target="_blank"
+                        :click="previewPdf">Preview</a> -->
+                    <a class="recall-preview"  @click="previewPdf">Preview</a>
                     <div class="list-title">
                         <p>New Document<span>{{ filesCount }}<span>Files Added</span></span> </p>
                     </div>
@@ -222,7 +224,8 @@
                 <div class="dashboard-list-main-action">
                     <button type="button" class="button-base fill">
                         <transition name="fade" mode="out-in">
-                            <div class="save-button" v-if="documentState === false" key="editing" @click="mergePdf">Create New Document</div>
+                            <div class="save-button" v-if="documentState === false" key="editing" @click="mergePdf">Create
+                                New Document</div>
                             <div class="ok-button" v-if="documentState === true" key="saved">Creating Document</div>
                         </transition>
                     </button>
@@ -255,8 +258,7 @@
                 @close="$store.commit('dashboard/closeModal', 'documentCreated')"
                 :key="'docCreate'"></modal-document-created>
             <modal-document-recall v-if="modals.documentRecall" @save="$store.commit('dashboard/closeModal')"
-                @close="$store.commit('dashboard/closeModal', 'documentRecall')"
-                :key="'docRecall'"></modal-document-recall>
+                @close="$store.commit('dashboard/closeModal', 'documentRecall')" :key="'docRecall'"></modal-document-recall>
             <modal-delete-header v-if="modals.deleteHeader" @save="$store.commit('dashboard/deleteHFC', 'addHeader')"
                 @close="$store.commit('dashboard/closeModal', 'deleteHeader')" :key="'delheader'"></modal-delete-header>
             <modal-delete-footer v-if="modals.deleteFooter" @save="$store.commit('dashboard/deleteHFC', 'addFooter')"
@@ -404,7 +406,7 @@ window.Store.registerModule('dashboard', {
         },
         saveHFC: (state, modal) => {
             state.modals[modal.name].content = modal.data;
-            state.modals[modal.name].show = false;  
+            state.modals[modal.name].show = false;
             state.modals[modal.name].exists = true;
             state.successState = false;
         },
@@ -584,6 +586,7 @@ export default {
             width: 0,
             selectedPages: [],
             loadMoreEnabled: false,
+            previewPath:'',
         }
     },
     computed: {
@@ -771,7 +774,7 @@ export default {
                 }
                 postBody.items = this.$store.state.dashboard.selectedFiles.map(
                     (item) => {
-                        return (item.type === "divider") ? { type: item.type, text: item.content} : { type: item.type, id: item.id, pages: item.pages ? item.pages : [] }
+                        return (item.type === "divider") ? { type: item.type, text: item.content } : { type: item.type, id: item.id, pages: item.pages ? item.pages : [] }
                     }
                 );
                 var that = this;
@@ -795,6 +798,86 @@ export default {
 
             }
 
+        },
+        previewPdf() {
+            if (!this.$store.state.dashboard.selectedFiles.length) {
+                this.emptyState = true;
+                var that = this;
+                setTimeout(() => { that.emptyState = false }, 200)
+            } else {
+
+                let totalPages = 0;
+                let dividersCount = 0;
+
+                for (let k = 0; k < this.$store.state.dashboard.selectedFiles.length; k++) {
+
+                    if (this.$store.state.dashboard.selectedFiles[k].type === 'file' && this.$store.state.dashboard.selectedFiles[k].pages.length > 0) {
+                        totalPages++;
+                        break;
+
+                    } else if (this.$store.state.dashboard.selectedFiles[k].type === 'divider') {
+                        dividersCount++;
+                        break;
+                    }
+                }
+
+                if (dividersCount === 0 && totalPages === 0) {
+
+                    this.emptyState = true;
+                    var that = this;
+                    setTimeout(() => { that.emptyState = false }, 200)
+                    return;
+
+                }
+
+                this.documentState = true;
+                this.loadingState = true;
+                this.percent = 0;
+
+                var that = this;
+                var token = document.head.querySelector('meta[name="csrf-token"]');
+                var postBody = {
+                    _token: token.content,
+                    removeNumbering: this.$store.state.dashboard.removeNumbering,
+                }
+                if (this.$store.state.dashboard.removeNumbering) {
+                    postBody.removeNumbering = this.$store.state.dashboard.removeNumbering;
+                }
+                if (this.$store.state.dashboard.modals.addHeader.content.length) {
+                    postBody.header = this.$store.state.dashboard.modals.addHeader.content;
+                }
+                if (this.$store.state.dashboard.modals.addCover.content.project.length || this.$store.state.dashboard.modals.addCover.content.customer.length || this.$store.state.dashboard.modals.addCover.content.projectType.length) {
+                    postBody.cover = this.$store.state.dashboard.modals.addCover.content;
+                }
+                if (this.$store.state.dashboard.modals.addOperation.content.project.length || this.$store.state.dashboard.modals.addOperation.content.customer.length || this.$store.state.dashboard.modals.addOperation.content.projectType.length) {
+                    postBody.operation = this.$store.state.dashboard.modals.addOperation.content;
+                }
+                if (this.$store.state.dashboard.modals.addFooter.content.length) {
+                    postBody.footer = this.$store.state.dashboard.modals.addFooter.content;
+                }
+
+                postBody.newFileName = "preview";
+                postBody.items = this.$store.state.dashboard.selectedFiles.map(
+                    (item) => {
+                        return (item.type === "divider") ? { type: item.type, name: item.name, content: item.content, text: item.content } : { type: item.type, id: item.id, pages: item.pages ? item.pages : [], name: item.name }
+                    }
+                );
+                axios.post('/dashboard/createNameFile', postBody, {
+                    onUploadProgress: ev => {
+                        that.percent = parseInt(ev.loaded * 100 / ev.total);
+                    }
+                }).then(function ({ data }) {
+                    // that.loadingState = false;
+                    // that.percent = 0;
+                    // that.filePath = data;
+                    // that.pathView = true;
+                    that.previewPath = data;
+                    window.open(that.previewPath, '_blank');
+                    console.log(data);
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
         },
         recallPdf() {
             console.log("state", this.$store.state.dashboard.selectedFiles);
@@ -1010,6 +1093,7 @@ export default {
     }
 
 }
+
 .recall-preview {
     text-align: center;
     width: 100%;
@@ -1021,6 +1105,7 @@ export default {
     font-size: 16px;
     color: #404040 !important;
 }
+
 .dashboard-action .dashboard-action-buttons {
     margin: 20px 30px;
     display: flex;
@@ -1028,18 +1113,22 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
 }
+
 @media (max-width: 550px) {
     .dashboard-action.active .dashboard-action-buttons.close {
         transform: translateX(0%);
     }
+
     .dashboard-categories-menu.active .dashboard-action-buttons.close {
         transform: translateX(0%);
         z-index: 1;
     }
-    .dashboard-categories-menu.active + div + div {
+
+    .dashboard-categories-menu.active+div+div {
         display: none;
     }
 }
+
 @media (max-width: 1024px) {
     .dashboard-categories-menu .dashboard-action-buttons.close {
         position: absolute;
@@ -1063,6 +1152,7 @@ export default {
     .dashboard-action .dashboard-action-buttons.close i {
         margin-left: 0px;
     }
+
     .dashboard-action .dashboard-action-buttons.close {
         position: absolute;
         transform: translateX(-100%);
@@ -1078,9 +1168,7 @@ export default {
         align-items: center;
         z-index: 3;
     }
-    
+
 }
-
-
 </style>
 

@@ -11404,7 +11404,8 @@ window.Store.registerModule('dashboard', {
       hoverRmb: false,
       width: 0,
       selectedPages: [],
-      loadMoreEnabled: false
+      loadMoreEnabled: false,
+      previewPath: ''
     };
   },
   computed: {
@@ -11625,6 +11626,89 @@ window.Store.registerModule('dashboard', {
         // });
       }
     },
+    previewPdf: function previewPdf() {
+      if (!this.$store.state.dashboard.selectedFiles.length) {
+        this.emptyState = true;
+        var that = this;
+        setTimeout(function () {
+          that.emptyState = false;
+        }, 200);
+      } else {
+        var totalPages = 0;
+        var dividersCount = 0;
+        for (var k = 0; k < this.$store.state.dashboard.selectedFiles.length; k++) {
+          if (this.$store.state.dashboard.selectedFiles[k].type === 'file' && this.$store.state.dashboard.selectedFiles[k].pages.length > 0) {
+            totalPages++;
+            break;
+          } else if (this.$store.state.dashboard.selectedFiles[k].type === 'divider') {
+            dividersCount++;
+            break;
+          }
+        }
+        if (dividersCount === 0 && totalPages === 0) {
+          this.emptyState = true;
+          var that = this;
+          setTimeout(function () {
+            that.emptyState = false;
+          }, 200);
+          return;
+        }
+        this.documentState = true;
+        this.loadingState = true;
+        this.percent = 0;
+        var that = this;
+        var token = document.head.querySelector('meta[name="csrf-token"]');
+        var postBody = {
+          _token: token.content,
+          removeNumbering: this.$store.state.dashboard.removeNumbering
+        };
+        if (this.$store.state.dashboard.removeNumbering) {
+          postBody.removeNumbering = this.$store.state.dashboard.removeNumbering;
+        }
+        if (this.$store.state.dashboard.modals.addHeader.content.length) {
+          postBody.header = this.$store.state.dashboard.modals.addHeader.content;
+        }
+        if (this.$store.state.dashboard.modals.addCover.content.project.length || this.$store.state.dashboard.modals.addCover.content.customer.length || this.$store.state.dashboard.modals.addCover.content.projectType.length) {
+          postBody.cover = this.$store.state.dashboard.modals.addCover.content;
+        }
+        if (this.$store.state.dashboard.modals.addOperation.content.project.length || this.$store.state.dashboard.modals.addOperation.content.customer.length || this.$store.state.dashboard.modals.addOperation.content.projectType.length) {
+          postBody.operation = this.$store.state.dashboard.modals.addOperation.content;
+        }
+        if (this.$store.state.dashboard.modals.addFooter.content.length) {
+          postBody.footer = this.$store.state.dashboard.modals.addFooter.content;
+        }
+        postBody.newFileName = "preview";
+        postBody.items = this.$store.state.dashboard.selectedFiles.map(function (item) {
+          return item.type === "divider" ? {
+            type: item.type,
+            name: item.name,
+            content: item.content,
+            text: item.content
+          } : {
+            type: item.type,
+            id: item.id,
+            pages: item.pages ? item.pages : [],
+            name: item.name
+          };
+        });
+        axios.post('/dashboard/createNameFile', postBody, {
+          onUploadProgress: function onUploadProgress(ev) {
+            that.percent = parseInt(ev.loaded * 100 / ev.total);
+          }
+        }).then(function (_ref4) {
+          var data = _ref4.data;
+          // that.loadingState = false;
+          // that.percent = 0;
+          // that.filePath = data;
+          // that.pathView = true;
+          that.previewPath = data;
+          window.open(that.previewPath, '_blank');
+          console.log(data);
+        })["catch"](function (error) {
+          console.error(error);
+        });
+      }
+    },
     recallPdf: function recallPdf() {
       console.log("state", this.$store.state.dashboard.selectedFiles);
       console.log("state", this.$store.state.dashboard.modals.addCover.content);
@@ -11728,8 +11812,8 @@ window.Store.registerModule('dashboard', {
           cat: this.selected.id,
           page: this.page
         }
-      }).then(function (_ref4) {
-        var data = _ref4.data;
+      }).then(function (_ref5) {
+        var data = _ref5.data;
         callback(data);
       })["catch"](function (error) {
         console.error(error);
@@ -13822,13 +13906,12 @@ var render = function render() {
     }
   }, [_vm._v(_vm._s(_vm.operationState) + " O & M")])]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-action-list"
-  }, [_vm.st.recallState == true ? _c("a", {
+  }, [_c("a", {
     staticClass: "recall-preview",
-    attrs: {
-      href: _vm.st.oldDocumentLink,
-      target: "_blank"
+    on: {
+      click: _vm.previewPdf
     }
-  }, [_vm._v("Preview")]) : _vm._e(), _vm._v(" "), _c("div", {
+  }, [_vm._v("Preview")]), _vm._v(" "), _c("div", {
     staticClass: "list-title"
   }, [_c("p", [_vm._v("New Document"), _c("span", [_vm._v(_vm._s(_vm.filesCount)), _c("span", [_vm._v("Files Added")])])])]), _vm._v("\n                " + _vm._s(_vm.expandedList) + "\n                "), _c("div", {
     ref: "listScrollbar",
@@ -13979,7 +14062,7 @@ var render = function render() {
     on: {
       click: _vm.mergePdf
     }
-  }, [_vm._v("Create New Document")]) : _vm._e(), _vm._v(" "), _vm.documentState === true ? _c("div", {
+  }, [_vm._v("Create\n                            New Document")]) : _vm._e(), _vm._v(" "), _vm.documentState === true ? _c("div", {
     key: "saved",
     staticClass: "ok-button"
   }, [_vm._v("Creating Document")]) : _vm._e()])], 1), _vm._v(" "), _c("button", {
