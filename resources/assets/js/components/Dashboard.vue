@@ -719,7 +719,7 @@ export default {
             }
         },
         mergePdf() {
-            if (this.$store.state.dashboard.selectedFiles.length) {
+            if (!this.$store.state.dashboard.selectedFiles.length) {
                 this.emptyState = true;
                 var that = this;
                 setTimeout(() => { that.emptyState = false }, 200)
@@ -867,9 +867,15 @@ export default {
                         that.percent = parseInt(ev.loaded * 100 / ev.total);
                     }
                 }).then(function ({ data }) {
+                    // that.loadingState = false;
+                    // that.percent = 0;
+                    // that.filePath = data;
+                    // that.pathView = true;
+
                     that.loadingState = false;
                     that.percent = 0;
                     that.documentState = false;
+
                     that.previewPath = data;
                     // window.open(that.previewPath, '_blank');
                     fetch(that.previewPath)

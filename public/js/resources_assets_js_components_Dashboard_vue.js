@@ -11547,7 +11547,7 @@ window.Store.registerModule('dashboard', {
       }
     },
     mergePdf: function mergePdf() {
-      if (this.$store.state.dashboard.selectedFiles.length) {
+      if (!this.$store.state.dashboard.selectedFiles.length) {
         this.emptyState = true;
         var that = this;
         setTimeout(function () {
@@ -11697,6 +11697,11 @@ window.Store.registerModule('dashboard', {
           }
         }).then(function (_ref4) {
           var data = _ref4.data;
+          // that.loadingState = false;
+          // that.percent = 0;
+          // that.filePath = data;
+          // that.pathView = true;
+
           that.loadingState = false;
           that.percent = 0;
           that.documentState = false;
