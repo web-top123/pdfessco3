@@ -1129,6 +1129,11 @@ export default {
     }
 }
 
+@media (max-width: 738px) {
+    .iframe-preview {
+        display: none;
+    }
+}
 @media (max-width: 1024px) {
     .dashboard-categories-menu .dashboard-action-buttons.close {
         position: absolute;
