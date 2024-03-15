@@ -8,18 +8,20 @@
             <div class="columns manage-recall">
                 <div class="table-wrapper">
                     <div class="table-container">
-                        <table id="table_recall">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Document Name <i class="fa fa-caret-up"></i><i class="fa fa-caret-down"></i></th>
-                                    <th>Created At <i class="fa fa-caret-up"></i><i class="fa fa-caret-down"></i></th>
-                                    <th class="table-action">Edit</th>
-                                    <th class="table-action">Delete</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                        </table>
+                        <div class="table-body-wrapper">
+                            <table id="table_recall">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Document Name <i class="fa fa-caret-up"></i><i class="fa fa-caret-down"></i></th>
+                                        <th>Created At <i class="fa fa-caret-up"></i><i class="fa fa-caret-down"></i></th>
+                                        <th class="table-action">Edit</th>
+                                        <th class="table-action">Delete</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                     <div class="table-action-bottom">
                         <div class="table-pages">
@@ -392,6 +394,9 @@ table {
 }
 .dataTables_length {
     display: none;
+}
+.manage-recall .table-body-wrapper {
+    overflow-x: auto;
 }
 </style>
 
