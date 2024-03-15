@@ -11707,13 +11707,23 @@ window.Store.registerModule('dashboard', {
           that.documentState = false;
           that.previewPath = data;
           // window.open(that.previewPath, '_blank');
+
+          // fetch(that.previewPath)
+          // .then(response => response.blob())
+          // .then(blob => {
+          //     const url = URL.createObjectURL(blob);
+          //     window.open(url, '_blank');
+          // });
+          // console.log(data);
+
           fetch(that.previewPath).then(function (response) {
             return response.blob();
           }).then(function (blob) {
             var url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
+            window.location.href = url;
+          })["catch"](function (error) {
+            console.error('Error opening file:', error);
           });
-          console.log(data);
         })["catch"](function (error) {
           console.error(error);
         });
