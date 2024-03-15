@@ -157,86 +157,88 @@
                 </div>
 
             </div>
-            <div id="dashboard-action" class="dashboard-action manage-upload">
+            <div id="dashboard-action" class="dashboard-action manage-upload"  @mouseenter.native="updateScrollbar('mainScrollbar')">
                 <div class="dashboard-action-buttons close" @click="toggleRight">
                     <!-- <button type="button" @click="toggleRight" class="button-base fill toggle-right">Close Document List</button> -->
                     <p><i class="fa fa-arrow-left" aria-hidden="true"></i></p>
                 </div>
-                <div class="dashboard-action-buttons">
-                    <button type="button" class="button-base" :class="{ borderless: st.modals.addHeader.exists }"
-                        @click="$store.commit('dashboard/openModal', 'addHeader')">{{ headerState }} Header</button>
-                    <button type="button" class="button-base" :class="{ borderless: st.modals.addFooter.exists }"
-                        @click="$store.commit('dashboard/openModal', 'addFooter')">{{ footerState }} Footer</button>
-                    <button type="button" class="button-base" :class="{ borderless: st.modals.addCover.exists }"
-                        @click="$store.commit('dashboard/openModal', 'addCover')">{{ coverState }} Cover</button>
-                    <button type="button" class="button-base" :class="{ borderless: st.modals.addOperation.exists }"
-                        @click="$store.commit('dashboard/openModal', 'addOperation')">{{ operationState }} O & M</button>
-                </div>
-
-                <div class="dashboard-action-list">
-                    <!-- <a class="recall-preview" v-if="st.recallState == true" :href="st.oldDocumentLink" target="_blank"
-                        :click="previewPdf">Preview</a> -->
-                    <a class="recall-preview"  @click="previewPdf">Preview</a>
-                    <div class="list-title">
-                        <p>New Document<span>{{ filesCount }}<span>Files Added</span></span> </p>
-                    </div>
-                    {{ expandedList }}
-                    <div class="dashboard-list" ref="listScrollbar">
-                        <draggable v-model="st.selectedFiles" :options="{ draggable: '.is-closed' }">
-                            <transition-group name="divider">
-                                <file-list-item :pages="selectedPages[index]" :data="item" :index="index"
-                                    @remove="$store.commit('dashboard/removeItemConfirm')"
-                                    v-for="(item, index) in selectedFiles" :key="index"></file-list-item>
-                            </transition-group>
-                        </draggable>
-                        <div v-if="st.selectedFiles.length === 0" class="empty-filelist-msg"
-                            :class="{ 'is-danger': emptyState === true }">Please select the files you want to merge into a
-                            new
-                            document</div>
+                <div class="upload-scroll-wrapper">
+                    <div class="dashboard-action-buttons">
+                        <button type="button" class="button-base" :class="{ borderless: st.modals.addHeader.exists }"
+                            @click="$store.commit('dashboard/openModal', 'addHeader')">{{ headerState }} Header</button>
+                        <button type="button" class="button-base" :class="{ borderless: st.modals.addFooter.exists }"
+                            @click="$store.commit('dashboard/openModal', 'addFooter')">{{ footerState }} Footer</button>
+                        <button type="button" class="button-base" :class="{ borderless: st.modals.addCover.exists }"
+                            @click="$store.commit('dashboard/openModal', 'addCover')">{{ coverState }} Cover</button>
+                        <button type="button" class="button-base" :class="{ borderless: st.modals.addOperation.exists }"
+                            @click="$store.commit('dashboard/openModal', 'addOperation')">{{ operationState }} O & M</button>
                     </div>
 
-                    <div class="dashboard-list-action">
-                        <button class="button-base simple flex-button"
-                            @click="$store.commit('dashboard/openModal', 'addDivider')">Insert Divider</button>
-                        <button class="button-base simple flex-button button-base__upload-file"
-                            @click="$store.commit('dashboard/openModal', 'uploadFileDashboard')"><i
-                                class="pdfglue-icon upload-file"></i></button>
-                        <!-- <button v-if="width > 550" class="button-base simple flex-button" @click="$store.commit('dashboard/removeItemsConfirm')">Remove</button> -->
-                        <!-- <button class="button-base simple flex-button button-base__remove-selected" @click="$store.commit('dashboard/removeItemsConfirm')"><i class="fa fa-trash-o"></i></button> -->
-                        <button class="button-base simple button-icon flex-button" @click="moveDown"><i
-                                class="fa fa-arrow-down"></i></button>
-                        <button class="button-base simple button-icon flex-button" @click="moveUp"><i
-                                class="fa fa-arrow-up"></i></button>
-                    </div>
-                    <div class="list-title insert-page-number">
-                        <div class="field">
-                            <span>
-                                <input type="checkbox" v-model="removeNumbering" class="styled-checkbox" id="rmv"
-                                    ref="rmbMe"></input>
-                                <label for="rmv" @mouseenter="hoverRmb = true" @mouseleave="hoverRmb = false"></label>
-                                <span class="rmb" :class="{ 'active': hoverRmb }" @click="$refs.rmbMe.click()">Apply page
-                                    numbering</span>
-                            </span>
+                    <div class="dashboard-action-list">
+                        <!-- <a class="recall-preview" v-if="st.recallState == true" :href="st.oldDocumentLink" target="_blank"
+                            :click="previewPdf">Preview</a> -->
+                        <a class="recall-preview"  @click="previewPdf">Preview</a>
+                        <div class="list-title">
+                            <p>New Document<span>{{ filesCount }}<span>Files Added</span></span> </p>
+                        </div>
+                        {{ expandedList }}
+                        <div class="dashboard-list" ref="listScrollbar">
+                            <draggable v-model="st.selectedFiles" :options="{ draggable: '.is-closed' }">
+                                <transition-group name="divider">
+                                    <file-list-item :pages="selectedPages[index]" :data="item" :index="index"
+                                        @remove="$store.commit('dashboard/removeItemConfirm')"
+                                        v-for="(item, index) in selectedFiles" :key="index"></file-list-item>
+                                </transition-group>
+                            </draggable>
+                            <div v-if="st.selectedFiles.length === 0" class="empty-filelist-msg"
+                                :class="{ 'is-danger': emptyState === true }">Please select the files you want to merge into a
+                                new
+                                document</div>
+                        </div>
+
+                        <div class="dashboard-list-action">
+                            <button class="button-base simple flex-button"
+                                @click="$store.commit('dashboard/openModal', 'addDivider')">Insert Divider</button>
+                            <button class="button-base simple flex-button button-base__upload-file"
+                                @click="$store.commit('dashboard/openModal', 'uploadFileDashboard')"><i
+                                    class="pdfglue-icon upload-file"></i></button>
+                            <!-- <button v-if="width > 550" class="button-base simple flex-button" @click="$store.commit('dashboard/removeItemsConfirm')">Remove</button> -->
+                            <!-- <button class="button-base simple flex-button button-base__remove-selected" @click="$store.commit('dashboard/removeItemsConfirm')"><i class="fa fa-trash-o"></i></button> -->
+                            <button class="button-base simple button-icon flex-button" @click="moveDown"><i
+                                    class="fa fa-arrow-down"></i></button>
+                            <button class="button-base simple button-icon flex-button" @click="moveUp"><i
+                                    class="fa fa-arrow-up"></i></button>
+                        </div>
+                        <div class="list-title insert-page-number">
+                            <div class="field">
+                                <span>
+                                    <input type="checkbox" v-model="removeNumbering" class="styled-checkbox" id="rmv"
+                                        ref="rmbMe"></input>
+                                    <label for="rmv" @mouseenter="hoverRmb = true" @mouseleave="hoverRmb = false"></label>
+                                    <span class="rmb" :class="{ 'active': hoverRmb }" @click="$refs.rmbMe.click()">Apply page
+                                        numbering</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="dashboard-list-main-action">
-                    <button type="button" class="button-base fill">
-                        <transition name="fade" mode="out-in">
-                            <div class="save-button" v-if="documentState === false" key="editing" @click="mergePdf">Create
-                                New Document</div>
-                            <div class="ok-button" v-if="documentState === true" key="saved">Creating Document</div>
-                        </transition>
-                    </button>
-                    <button type="button" class="button-base fill">
-                        <transition name="fade" mode="out-in">
-                            <div class="" key="recalling" @click="recallPdf">Recall Document</div>
-                        </transition>
-                    </button>
+                    <div class="dashboard-list-main-action">
+                        <button type="button" class="button-base fill">
+                            <transition name="fade" mode="out-in">
+                                <div class="save-button" v-if="documentState === false" key="editing" @click="mergePdf">Create
+                                    New Document</div>
+                                <div class="ok-button" v-if="documentState === true" key="saved">Creating Document</div>
+                            </transition>
+                        </button>
+                        <button type="button" class="button-base fill">
+                            <transition name="fade" mode="out-in">
+                                <div class="" key="recalling" @click="recallPdf">Recall Document</div>
+                            </transition>
+                        </button>
+                    </div>
+                    <span class="dashboard-action-background" @click="toggleRight">
+                    </span>
                 </div>
-                <span class="dashboard-action-background" @click="toggleRight">
-                </span>
             </div>
         </div>
         <transition-group name="fade" mode="out-in">
@@ -1124,7 +1126,11 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
 }
-
+.upload-scroll-wrapper {
+    overflow: hidden;
+    height: 100%;
+    overflow-y: scroll;
+}
 @media (max-width: 550px) {
     .dashboard-action.active .dashboard-action-buttons.close {
         transform: translateX(0%);

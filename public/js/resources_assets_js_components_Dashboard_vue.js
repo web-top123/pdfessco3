@@ -13854,6 +13854,11 @@ var render = function render() {
     staticClass: "dashboard-action manage-upload",
     attrs: {
       id: "dashboard-action"
+    },
+    nativeOn: {
+      mouseenter: function mouseenter($event) {
+        return _vm.updateScrollbar("mainScrollbar");
+      }
     }
   }, [_c("div", {
     staticClass: "dashboard-action-buttons close",
@@ -13861,6 +13866,8 @@ var render = function render() {
       click: _vm.toggleRight
     }
   }, [_vm._m(1)]), _vm._v(" "), _c("div", {
+    staticClass: "upload-scroll-wrapper"
+  }, [_c("div", {
     staticClass: "dashboard-action-buttons"
   }, [_c("button", {
     staticClass: "button-base",
@@ -13923,7 +13930,7 @@ var render = function render() {
     }
   }, [_vm._v("Preview")]), _vm._v(" "), _c("div", {
     staticClass: "list-title"
-  }, [_c("p", [_vm._v("New Document"), _c("span", [_vm._v(_vm._s(_vm.filesCount)), _c("span", [_vm._v("Files Added")])])])]), _vm._v("\n                " + _vm._s(_vm.expandedList) + "\n                "), _c("div", {
+  }, [_c("p", [_vm._v("New Document"), _c("span", [_vm._v(_vm._s(_vm.filesCount)), _c("span", [_vm._v("Files Added")])])])]), _vm._v("\n                    " + _vm._s(_vm.expandedList) + "\n                    "), _c("div", {
     ref: "listScrollbar",
     staticClass: "dashboard-list"
   }, [_c("draggable", {
@@ -13962,7 +13969,7 @@ var render = function render() {
     "class": {
       "is-danger": _vm.emptyState === true
     }
-  }, [_vm._v("Please select the files you want to merge into a\n                        new\n                        document")]) : _vm._e()], 1), _vm._v(" "), _c("div", {
+  }, [_vm._v("Please select the files you want to merge into a\n                            new\n                            document")]) : _vm._e()], 1), _vm._v(" "), _c("div", {
     staticClass: "dashboard-list-action"
   }, [_c("button", {
     staticClass: "button-base simple flex-button",
@@ -14054,7 +14061,7 @@ var render = function render() {
         return _vm.$refs.rmbMe.click();
       }
     }
-  }, [_vm._v("Apply page\n                                numbering")])])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Apply page\n                                    numbering")])])])])]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-list-main-action"
   }, [_c("button", {
     staticClass: "button-base fill",
@@ -14072,7 +14079,7 @@ var render = function render() {
     on: {
       click: _vm.mergePdf
     }
-  }, [_vm._v("Create\n                            New Document")]) : _vm._e(), _vm._v(" "), _vm.documentState === true ? _c("div", {
+  }, [_vm._v("Create\n                                New Document")]) : _vm._e(), _vm._v(" "), _vm.documentState === true ? _c("div", {
     key: "saved",
     staticClass: "ok-button"
   }, [_vm._v("Creating Document")]) : _vm._e()])], 1), _vm._v(" "), _c("button", {
@@ -14095,7 +14102,7 @@ var render = function render() {
     on: {
       click: _vm.toggleRight
     }
-  })])]), _vm._v(" "), _c("transition-group", {
+  })])])]), _vm._v(" "), _c("transition-group", {
     attrs: {
       name: "fade",
       mode: "out-in"
@@ -16705,7 +16712,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* custom colors */\n/* text color */\n/* bg color */\n/* decoration color */\n.toggle-right {\n  display: none;\n  margin-left: 15px;\n  margin-right: 3px;\n}\n@media (max-width: 1545px) {\n.toggle-right {\n    display: block;\n}\n}\n.toggle-left {\n  display: none;\n}\n@media (max-width: 1024px) {\n.toggle-left {\n    display: block;\n    margin-right: 15px;\n}\n}\n.columns {\n  display: flex;\n}\n.ps__scrollbar-y-rail {\n  margin-right: 3px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number {\n  margin: 12px 40px;\n  text-align: center;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .field > span:hover {\n  color: red;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .field > span:hover label:before {\n  border: 1px solid #c39000;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label {\n  font-size: 14px;\n  float: none;\n  width: 25px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label:before {\n  height: 16px;\n  width: 16px;\n  margin-top: 0;\n  margin-right: 5px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label:after {\n  top: 8px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb {\n  color: #404040;\n  padding: 0;\n  font-weight: 500;\n  font-size: 14px;\n  cursor: pointer;\n  line-height: 1.2;\n  letter-spacing: 0;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb:hover, .dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb.active {\n  color: #c39000;\n}\n.recall-preview {\n  text-align: center;\n  width: 100%;\n  display: block;\n  margin: 10px 20px;\n  text-decoration: underline;\n  font-family: \"Raleway\";\n  font-weight: 500;\n  font-size: 16px;\n  color: #404040 !important;\n}\n.dashboard-action .dashboard-action-buttons {\n  margin: 20px 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n@media (max-width: 550px) {\n.dashboard-action.active .dashboard-action-buttons.close {\n    transform: translateX(0%);\n}\n.dashboard-categories-menu.active .dashboard-action-buttons.close {\n    transform: translateX(0%);\n    z-index: 1;\n}\n.dashboard-categories-menu.active + div + div {\n    display: none;\n}\n}\n@media (max-width: 738px) {\n.iframe-preview {\n    display: none;\n}\n}\n@media (max-width: 1024px) {\n.dashboard-categories-menu .dashboard-action-buttons.close {\n    position: absolute;\n    transform: translateX(102%);\n    top: 30%;\n    background: #c39000;\n    color: white;\n    border-bottom: 0px;\n    width: 50px;\n    height: 50px;\n    padding: 0px;\n    margin: 0px;\n    display: flex;\n    align-items: center;\n    right: 0px;\n    z-index: 10;\n}\n}\n@media (max-width: 1545px) {\n.dashboard-action .dashboard-action-buttons.close i {\n    margin-left: 0px;\n}\n.dashboard-action .dashboard-action-buttons.close {\n    position: absolute;\n    transform: translateX(-100%);\n    top: 30%;\n    background: #c39000;\n    color: white;\n    border-bottom: 0px;\n    width: 50px;\n    height: 50px;\n    padding: 0px;\n    margin: 0px;\n    display: flex;\n    align-items: center;\n    z-index: 3;\n}\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* custom colors */\n/* text color */\n/* bg color */\n/* decoration color */\n.toggle-right {\n  display: none;\n  margin-left: 15px;\n  margin-right: 3px;\n}\n@media (max-width: 1545px) {\n.toggle-right {\n    display: block;\n}\n}\n.toggle-left {\n  display: none;\n}\n@media (max-width: 1024px) {\n.toggle-left {\n    display: block;\n    margin-right: 15px;\n}\n}\n.columns {\n  display: flex;\n}\n.ps__scrollbar-y-rail {\n  margin-right: 3px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number {\n  margin: 12px 40px;\n  text-align: center;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .field > span:hover {\n  color: red;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .field > span:hover label:before {\n  border: 1px solid #c39000;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label {\n  font-size: 14px;\n  float: none;\n  width: 25px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label:before {\n  height: 16px;\n  width: 16px;\n  margin-top: 0;\n  margin-right: 5px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .styled-checkbox + label:after {\n  top: 8px;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb {\n  color: #404040;\n  padding: 0;\n  font-weight: 500;\n  font-size: 14px;\n  cursor: pointer;\n  line-height: 1.2;\n  letter-spacing: 0;\n}\n.dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb:hover, .dashboard-action .dashboard-action-list .list-title.insert-page-number .rmb.active {\n  color: #c39000;\n}\n.recall-preview {\n  text-align: center;\n  width: 100%;\n  display: block;\n  margin: 10px 20px;\n  text-decoration: underline;\n  font-family: \"Raleway\";\n  font-weight: 500;\n  font-size: 16px;\n  color: #404040 !important;\n}\n.dashboard-action .dashboard-action-buttons {\n  margin: 20px 30px;\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n.upload-scroll-wrapper {\n  overflow: hidden;\n  height: 100%;\n  overflow-y: scroll;\n}\n@media (max-width: 550px) {\n.dashboard-action.active .dashboard-action-buttons.close {\n    transform: translateX(0%);\n}\n.dashboard-categories-menu.active .dashboard-action-buttons.close {\n    transform: translateX(0%);\n    z-index: 1;\n}\n.dashboard-categories-menu.active + div + div {\n    display: none;\n}\n}\n@media (max-width: 738px) {\n.iframe-preview {\n    display: none;\n}\n}\n@media (max-width: 1024px) {\n.dashboard-categories-menu .dashboard-action-buttons.close {\n    position: absolute;\n    transform: translateX(102%);\n    top: 30%;\n    background: #c39000;\n    color: white;\n    border-bottom: 0px;\n    width: 50px;\n    height: 50px;\n    padding: 0px;\n    margin: 0px;\n    display: flex;\n    align-items: center;\n    right: 0px;\n    z-index: 10;\n}\n}\n@media (max-width: 1545px) {\n.dashboard-action .dashboard-action-buttons.close i {\n    margin-left: 0px;\n}\n.dashboard-action .dashboard-action-buttons.close {\n    position: absolute;\n    transform: translateX(-100%);\n    top: 30%;\n    background: #c39000;\n    color: white;\n    border-bottom: 0px;\n    width: 50px;\n    height: 50px;\n    padding: 0px;\n    margin: 0px;\n    display: flex;\n    align-items: center;\n    z-index: 3;\n}\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
