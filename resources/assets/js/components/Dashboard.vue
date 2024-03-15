@@ -889,11 +889,29 @@ export default {
                     // });
                     // console.log(data);
 
+                    // fetch(that.previewPath)
+                    // .then(response => response.blob())
+                    // .then(blob => {
+                    //     const url = URL.createObjectURL(blob);
+                    //     window.location.href = url;
+                    // })
+                    // .catch(error => {
+                    //     console.error('Error opening file:', error);
+                    // });
+
                     fetch(that.previewPath)
                     .then(response => response.blob())
                     .then(blob => {
                         const url = URL.createObjectURL(blob);
-                        window.location.href = url;
+                        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                        
+                        if (isMobile) {
+                            // Open the file on mobile devices
+                            window.location.href = url;
+                        } else {
+                            // Handle opening the file differently for desktop users
+                            window.open(url, '_blank');
+                        }
                     })
                     .catch(error => {
                         console.error('Error opening file:', error);
