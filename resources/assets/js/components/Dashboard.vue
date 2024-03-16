@@ -59,10 +59,16 @@
 
                         <span v-show="width <= 738" class="search-small">
                             <div class="dashboard-search">
-                                <button type="button" @click="toggleLeft" class="button-base toggle-left">View
-                                    Categories</button>
-                                <button type="button" @click="toggleRight" class="button-base fill toggle-right">View
-                                    Document</button>
+                                <div>
+                                    <button type="button" @click="toggleLeft" class="button-base toggle-left">View
+                                        Categories</button>
+                                    <button type="button" @click="toggleRight" class="button-base fill toggle-right">View
+                                        Document</button>
+                                </div>
+                                <div class="mobile_start_over">
+                                    <button type="button" @click="$store.commit('dashboard/openModal', 'startOver')"
+                                        class="button-base is-danger start-over">Start Over</button>
+                                </div>
                             </div>
                             <div class="dashboard-search" :class="{ focus: focus }">
                                 <span class="fa fa-search search-icon" @click="() => { if (queryString) search() }"></span>
@@ -71,6 +77,7 @@
                                 <input @focus="focus = true" @blur="focus = false" v-model="queryString"
                                     :placeholder="searchPlaceholder" type="text" @keyup="search">
                             </div>
+
                         </span>
 
                         <breadcrumb v-if="width <= 738" @select="select($event)" :breadcrumb="selected.breadcrumb">
@@ -157,7 +164,8 @@
                 </div>
 
             </div>
-            <div id="dashboard-action" class="dashboard-action manage-upload"  @mouseenter.native="updateScrollbar('mainScrollbar')">
+            <div id="dashboard-action" class="dashboard-action manage-upload"
+                @mouseenter.native="updateScrollbar('mainScrollbar')">
                 <div class="dashboard-action-buttons close" @click="toggleRight">
                     <!-- <button type="button" @click="toggleRight" class="button-base fill toggle-right">Close Document List</button> -->
                     <p><i class="fa fa-arrow-left" aria-hidden="true"></i></p>
@@ -171,13 +179,14 @@
                         <button type="button" class="button-base" :class="{ borderless: st.modals.addCover.exists }"
                             @click="$store.commit('dashboard/openModal', 'addCover')">{{ coverState }} Cover</button>
                         <button type="button" class="button-base" :class="{ borderless: st.modals.addOperation.exists }"
-                            @click="$store.commit('dashboard/openModal', 'addOperation')">{{ operationState }} O & M</button>
+                            @click="$store.commit('dashboard/openModal', 'addOperation')">{{ operationState }} O &
+                            M</button>
                     </div>
 
                     <div class="dashboard-action-list">
                         <!-- <a class="recall-preview" v-if="st.recallState == true" :href="st.oldDocumentLink" target="_blank"
                             :click="previewPdf">Preview</a> -->
-                        <a class="recall-preview"  @click="previewPdf">Preview</a>
+                        <a class="recall-preview" @click="previewPdf">Preview</a>
                         <div class="list-title">
                             <p>New Document<span>{{ filesCount }}<span>Files Added</span></span> </p>
                         </div>
@@ -191,7 +200,8 @@
                                 </transition-group>
                             </draggable>
                             <div v-if="st.selectedFiles.length === 0" class="empty-filelist-msg"
-                                :class="{ 'is-danger': emptyState === true }">Please select the files you want to merge into a
+                                :class="{ 'is-danger': emptyState === true }">Please select the files you want to merge into
+                                a
                                 new
                                 document</div>
                         </div>
@@ -215,7 +225,8 @@
                                     <input type="checkbox" v-model="removeNumbering" class="styled-checkbox" id="rmv"
                                         ref="rmbMe"></input>
                                     <label for="rmv" @mouseenter="hoverRmb = true" @mouseleave="hoverRmb = false"></label>
-                                    <span class="rmb" :class="{ 'active': hoverRmb }" @click="$refs.rmbMe.click()">Apply page
+                                    <span class="rmb" :class="{ 'active': hoverRmb }" @click="$refs.rmbMe.click()">Apply
+                                        page
                                         numbering</span>
                                 </span>
                             </div>
@@ -225,7 +236,8 @@
                     <div class="dashboard-list-main-action">
                         <button type="button" class="button-base fill">
                             <transition name="fade" mode="out-in">
-                                <div class="save-button" v-if="documentState === false" key="editing" @click="mergePdf">Create
+                                <div class="save-button" v-if="documentState === false" key="editing" @click="mergePdf">
+                                    Create
                                     New Document</div>
                                 <div class="ok-button" v-if="documentState === true" key="saved">Creating Document</div>
                             </transition>
@@ -588,7 +600,7 @@ export default {
             width: 0,
             selectedPages: [],
             loadMoreEnabled: false,
-            previewPath:'',
+            previewPath: '',
         }
     },
     computed: {
@@ -900,22 +912,22 @@ export default {
                     // });
 
                     fetch(that.previewPath)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        const url = URL.createObjectURL(blob);
-                        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                        
-                        if (isMobile) {
-                            // Open the file on mobile devices
-                            window.location.href = url;
-                        } else {
-                            // Handle opening the file differently for desktop users
-                            window.open(url, '_blank');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error opening file:', error);
-                    });
+                        .then(response => response.blob())
+                        .then(blob => {
+                            const url = URL.createObjectURL(blob);
+                            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+                            if (isMobile) {
+                                // Open the file on mobile devices
+                                window.location.href = url;
+                            } else {
+                                // Handle opening the file differently for desktop users
+                                window.open(url, '_blank');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error opening file:', error);
+                        });
                 }).catch((error) => {
                     console.error(error);
                 });
@@ -1155,11 +1167,27 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
 }
+
 .upload-scroll-wrapper {
     overflow: hidden;
     height: 100%;
     overflow-y: scroll;
 }
+
+.search-small {
+    .dashboard-search {
+        display: flex;
+        flex-direction: column;
+        & > div {
+            display: flex;
+            &.mobile_start_over {
+                margin-top: 20px;
+                justify-content: center;
+            }
+        }
+    }
+}
+
 @media (max-width: 550px) {
     .dashboard-action.active .dashboard-action-buttons.close {
         transform: translateX(0%);
@@ -1180,6 +1208,7 @@ export default {
         display: none;
     }
 }
+
 @media (max-width: 1024px) {
     .dashboard-categories-menu .dashboard-action-buttons.close {
         position: absolute;
@@ -1220,6 +1249,5 @@ export default {
         z-index: 3;
     }
 
-}
-</style>
+}</style>
 
