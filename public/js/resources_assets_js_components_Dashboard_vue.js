@@ -11557,7 +11557,8 @@ window.Store.registerModule('dashboard', {
         var totalPages = 0;
         var dividersCount = 0;
         for (var k = 0; k < this.$store.state.dashboard.selectedFiles.length; k++) {
-          if (this.$store.state.dashboard.selectedFiles[k].type === 'file' && this.$store.state.dashboard.selectedFiles[k].pages.length > 0) {
+          var _this$$store$state$da;
+          if (this.$store.state.dashboard.selectedFiles[k].type === 'file' && ((_this$$store$state$da = this.$store.state.dashboard.selectedFiles[k].pages) === null || _this$$store$state$da === void 0 ? void 0 : _this$$store$state$da.length) > 0) {
             totalPages++;
             break;
           } else if (this.$store.state.dashboard.selectedFiles[k].type === 'divider') {
@@ -11637,7 +11638,8 @@ window.Store.registerModule('dashboard', {
         var totalPages = 0;
         var dividersCount = 0;
         for (var k = 0; k < this.$store.state.dashboard.selectedFiles.length; k++) {
-          if (this.$store.state.dashboard.selectedFiles[k].type === 'file' && this.$store.state.dashboard.selectedFiles[k].pages.length > 0) {
+          var _this$$store$state$da2;
+          if (this.$store.state.dashboard.selectedFiles[k].type === 'file' && ((_this$$store$state$da2 = this.$store.state.dashboard.selectedFiles[k].pages) === null || _this$$store$state$da2 === void 0 ? void 0 : _this$$store$state$da2.length) > 0) {
             totalPages++;
             break;
           } else if (this.$store.state.dashboard.selectedFiles[k].type === 'divider') {

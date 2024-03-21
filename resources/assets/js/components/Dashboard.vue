@@ -744,10 +744,12 @@ export default {
 
                 for (let k = 0; k < this.$store.state.dashboard.selectedFiles.length; k++) {
 
-                    if (this.$store.state.dashboard.selectedFiles[k].type === 'file' && this.$store.state.dashboard.selectedFiles[k].pages.length > 0) {
+                    if (
+                        this.$store.state.dashboard.selectedFiles[k].type === 'file' &&
+                        this.$store.state.dashboard.selectedFiles[k].pages?.length > 0
+                    ) {
                         totalPages++;
                         break;
-
                     } else if (this.$store.state.dashboard.selectedFiles[k].type === 'divider') {
                         dividersCount++;
                         break;
@@ -825,10 +827,12 @@ export default {
 
                 for (let k = 0; k < this.$store.state.dashboard.selectedFiles.length; k++) {
 
-                    if (this.$store.state.dashboard.selectedFiles[k].type === 'file' && this.$store.state.dashboard.selectedFiles[k].pages.length > 0) {
+                    if (
+                        this.$store.state.dashboard.selectedFiles[k].type === 'file' &&
+                        this.$store.state.dashboard.selectedFiles[k].pages?.length > 0
+                    ) {
                         totalPages++;
                         break;
-
                     } else if (this.$store.state.dashboard.selectedFiles[k].type === 'divider') {
                         dividersCount++;
                         break;
@@ -1178,8 +1182,10 @@ export default {
     .dashboard-search {
         display: flex;
         flex-direction: column;
-        & > div {
+
+        &>div {
             display: flex;
+
             &.mobile_start_over {
                 margin-top: 20px;
                 justify-content: center;
@@ -1249,5 +1255,6 @@ export default {
         z-index: 3;
     }
 
-}</style>
+}
+</style>
 
