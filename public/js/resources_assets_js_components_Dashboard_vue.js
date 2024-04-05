@@ -13766,7 +13766,7 @@ var render = function render() {
         return _vm.select($event);
       }
     }
-  }) : _vm._e(), _vm._v(" "), _vm.width > 880 && _vm.loadMoreEnabled ? _c("div", {
+  }) : _vm._e(), _vm._v(" "), _vm.width > 880 ? _c("div", {
     staticClass: "columns files-row large"
   }, [_c("div", {
     staticClass: "column files-column"

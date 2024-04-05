@@ -83,7 +83,7 @@
                         <breadcrumb v-if="width <= 738" @select="select($event)" :breadcrumb="selected.breadcrumb">
                         </breadcrumb>
 
-                        <div v-if="width > 880 && loadMoreEnabled" class="columns files-row large">
+                        <div v-if="width > 880" class="columns files-row large">
                             <div class="column files-column">
 
                                 <file-item ref="mainfiles" v-if="getColumnIndex(index) === 0" v-for="(file, index) in files"
