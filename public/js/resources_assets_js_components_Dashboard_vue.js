@@ -11346,6 +11346,7 @@ window.Store.registerModule('dashboard', {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     var _this2 = this;
+    this.pageRefreshed = true;
     this.Ps = new perfect_scrollbar__WEBPACK_IMPORTED_MODULE_3__["default"](this.$refs.mainScrollbar, {
       suppressScrollX: true
     });
@@ -11405,7 +11406,8 @@ window.Store.registerModule('dashboard', {
       width: 0,
       selectedPages: [],
       loadMoreEnabled: false,
-      previewPath: ''
+      previewPath: '',
+      pageRefreshed: false
     };
   },
   computed: {
@@ -11465,6 +11467,9 @@ window.Store.registerModule('dashboard', {
     },
     expandList: function expandList() {
       this.MPs.update(this.$refs.menuScrollbar);
+    },
+    getColumnIndex: function getColumnIndex(index) {
+      return index % 3;
     },
     removeItem: function removeItem(data) {
       if (!data.id) {
@@ -11839,6 +11844,19 @@ window.Store.registerModule('dashboard', {
           }
         }
         _this8.files = _this8.files.concat(data.data);
+
+        // this.files = data.data;
+        // const newData = data.data;
+
+        // // Filter out duplicates from 'newData' based on some unique identifier (e.g., 'id')
+        // const uniqueNewData = newData.filter(newItem => {
+        //     // Check if the item already exists in 'this.files' based on its unique identifier
+        //     return !this.files.some(existingItem => existingItem.id === newItem.id);
+        // });
+
+        // // Concatenate the unique data to 'this.files'
+        // this.files = this.files.concat(uniqueNewData);
+
         $state.loaded();
         _this8.page = data.current_page;
         _this8.Ps.update(_this8.$refs.mainScrollbar);
@@ -13753,7 +13771,7 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "column files-column"
   }, _vm._l(_vm.files, function (file, index) {
-    return index % 3 === 0 ? _c("file-item", {
+    return _vm.getColumnIndex(index) === 0 ? _c("file-item", {
       key: file.id,
       ref: "mainfiles",
       refInFor: true,
@@ -13773,7 +13791,7 @@ var render = function render() {
   }), 1), _vm._v(" "), _c("div", {
     staticClass: "column files-column"
   }, _vm._l(_vm.files, function (file, index) {
-    return index % 3 === 1 ? _c("file-item", {
+    return _vm.getColumnIndex(index) == 1 ? _c("file-item", {
       key: file.id,
       ref: "mainfiles",
       refInFor: true,
@@ -13793,7 +13811,7 @@ var render = function render() {
   }), 1), _vm._v(" "), _c("div", {
     staticClass: "column files-column"
   }, _vm._l(_vm.files, function (file, index) {
-    return index % 3 === 2 ? _c("file-item", {
+    return _vm.getColumnIndex(index) == 2 ? _c("file-item", {
       key: file.id,
       ref: "mainfiles",
       refInFor: true,
@@ -13873,7 +13891,7 @@ var render = function render() {
         }
       }
     });
-  }), 1)]) : _vm._e(), _vm._v(" "), _vm.loadMoreEnabled ? _c("infinite-loading", {
+  }), 1)]) : _vm._e(), _vm._v(" "), _c("infinite-loading", {
     ref: "infiniteLoading",
     attrs: {
       distance: 100
@@ -13891,7 +13909,7 @@ var render = function render() {
       slot: "no-results"
     },
     slot: "no-results"
-  }, [_vm._v("\n                            No results found\n                        ")])]) : _vm._e()], 1)], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n                            No results found\n                        ")])])], 1)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-action manage-upload",
     attrs: {
       id: "dashboard-action"

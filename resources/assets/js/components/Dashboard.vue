@@ -86,7 +86,15 @@
                         <div v-if="width > 880" class="columns files-row large">
                             <div class="column files-column">
 
-                                <file-item ref="mainfiles" v-if="index % 3 === 0" v-for="(file, index) in files"
+                                <file-item ref="mainfiles" v-if="getColumnIndex(index) === 0" v-for="(file, index) in files"
+                                    :key="file.id" :ind="index" :data="file"
+                                    @select="$store.commit('dashboard/selectFile', file)"
+                                    @deselect="$store.commit('dashboard/deselectFile', file)"></file-item>
+                            </div>
+
+                            <div class="column files-column">
+
+                                <file-item ref="mainfiles" v-if="getColumnIndex(index) == 1" v-for="(file, index) in files"
                                     :key="file.id" :ind="index" :data="file"
                                     @select="$store.commit('dashboard/selectFile', file)"
                                     @deselect="$store.commit('dashboard/deselectFile', file)"></file-item>
@@ -95,16 +103,7 @@
 
                             <div class="column files-column">
 
-                                <file-item ref="mainfiles" v-if="index % 3 === 1" v-for="(file, index) in files"
-                                    :key="file.id" :ind="index" :data="file"
-                                    @select="$store.commit('dashboard/selectFile', file)"
-                                    @deselect="$store.commit('dashboard/deselectFile', file)"></file-item>
-
-                            </div>
-
-                            <div class="column files-column">
-
-                                <file-item ref="mainfiles" v-if="index % 3 === 2" v-for="(file, index) in files"
+                                <file-item ref="mainfiles" v-if="getColumnIndex(index) == 2" v-for="(file, index) in files"
                                     :key="file.id" :ind="index" :data="file"
                                     @select="$store.commit('dashboard/selectFile', file)"
                                     @deselect="$store.commit('dashboard/deselectFile', file)"></file-item>
@@ -150,7 +149,7 @@
                         </div>
 
 
-                        <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="100" v-if="loadMoreEnabled">
+                        <infinite-loading @infinite="loadMore" ref="infiniteLoading" :distance="100">
                             <span slot="no-more">
                                 No more results
                             </span>
@@ -351,7 +350,6 @@ window.Store.registerModule('dashboard', {
         selectedFiles: [],
         selectedPages: [],
         oldDocumentLink: '',
-
     },
     mutations: {
         addPages: (state, value) => {
@@ -538,6 +536,8 @@ window.Store.registerModule('dashboard', {
 
 export default {
     mounted() {
+
+        this.pageRefreshed = true;
         this.Ps = new PerfectScrollbar(this.$refs.mainScrollbar, {
             suppressScrollX: true,
         });
@@ -601,6 +601,7 @@ export default {
             selectedPages: [],
             loadMoreEnabled: false,
             previewPath: '',
+            pageRefreshed: false,
         }
     },
     computed: {
@@ -655,6 +656,9 @@ export default {
         },
         expandList() {
             this.MPs.update(this.$refs.menuScrollbar);
+        },
+        getColumnIndex(index) {
+            return index % 3;
         },
         removeItem(data) {
             if (!data.id) {
@@ -978,6 +982,7 @@ export default {
                         data.data[indexul].selected = true;
                     }
                 }
+
                 this.files = data.data;
                 this.page = data.current_page;
                 this.$refs.mainScrollbar.scrollTop = 0;
@@ -1016,6 +1021,20 @@ export default {
                     }
                 }
                 this.files = this.files.concat(data.data);
+
+
+                // this.files = data.data;
+                // const newData = data.data;
+
+                // // Filter out duplicates from 'newData' based on some unique identifier (e.g., 'id')
+                // const uniqueNewData = newData.filter(newItem => {
+                //     // Check if the item already exists in 'this.files' based on its unique identifier
+                //     return !this.files.some(existingItem => existingItem.id === newItem.id);
+                // });
+
+                // // Concatenate the unique data to 'this.files'
+                // this.files = this.files.concat(uniqueNewData);
+
                 $state.loaded();
                 this.page = data.current_page;
                 this.Ps.update(this.$refs.mainScrollbar);
