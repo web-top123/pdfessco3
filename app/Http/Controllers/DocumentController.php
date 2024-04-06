@@ -18,17 +18,18 @@ use Illuminate\Support\Facades\Storage;
 class DocumentController extends Controller
 {
 
-   public function index($id) {
-       try{
-        $pdfImporter = new Fpdi();
-        $file = File::findOrFail($id);
-        $mainpath = storage_path() .'/app' .'/public/uploaded/'  . basename($file->getOriginal()["path"]);
-        $pageCount = $pdfImporter->setSourceFile($mainpath);
-        return response()->json(['count' => $pageCount]);
+    public function index($id)
+    {
+        try {
+            $pdfImporter = new Fpdi();
+            $file = File::findOrFail($id);
+            $mainpath = storage_path() . '/app' . '/public/uploaded/' . basename($file->getOriginal()["path"]);
+            $pageCount = $pdfImporter->setSourceFile($mainpath);
+            return response()->json(['count' => $pageCount]);
         } catch (\Exception $e) {
-            return response()->json(['status' => false ,'error' => $e->getMessage()], 200);
+            return response()->json(['status' => false, 'error' => $e->getMessage()], 200);
         }
-    } 
+    }
     public function store(CreatePdfRequest $request)
     {
         $document = new Pdf;
@@ -38,22 +39,24 @@ class DocumentController extends Controller
         $document->addHeader($request->header);
         $document->addFooter($request->footer);
 
-        if($request->cover){
+        if ($request->cover) {
             $document->addCover($request->cover);
         }
 
-        if($request->operation['project']) {            
+        if ($request->operation['project']) {
             $document->addOperation($request->operation);
         }
 
-        foreach($request->items as $item) {
+        foreach ($request->items as $item) {
 
             if ($item['type'] === 'file') {
                 $pages = array_key_exists('pages', $item) ? $item['pages'] : [];
                 $document->addFile(File::findOrFail($item['id']), $pages);
             }
-            if ($item['type'] === 'divider') {$document->addDivider($item['text']);}
-            
+            if ($item['type'] === 'divider') {
+                $document->addDivider($item['text']);
+            }
+
         }
 
         $path = $document->save();
@@ -65,7 +68,8 @@ class DocumentController extends Controller
 
         return url(\Storage::url($path));
     }
-    public function storeNameFile(CreatePdfRequest $request) {
+    public function storeNameFile(CreatePdfRequest $request)
+    {
         $document = new Pdf;
         if ($request->removeNumbering) {
             $document->removeNumbering();
@@ -73,28 +77,30 @@ class DocumentController extends Controller
         $document->addHeader($request->header);
         $document->addFooter($request->footer);
 
-        if($request->cover){
+        if ($request->cover) {
             $document->addCover($request->cover);
         }
 
-        if($request->operation) {            
+        if ($request->operation) {
             $document->addOperation($request->operation);
         }
 
-        foreach($request->items as $item) {
+        foreach ($request->items as $item) {
 
             if ($item['type'] === 'file') {
                 $pages = array_key_exists('pages', $item) ? $item['pages'] : [];
                 $document->addFile(File::findOrFail($item['id']), $pages);
             }
-            if ($item['type'] === 'divider') {$document->addDivider($item['text']);}
-            
+            if ($item['type'] === 'divider') {
+                $document->addDivider($item['text']);
+            }
+
         }
-        $fileName = $request->newFileName??"Pdfessco-Document";
+        $fileName = $request->newFileName ?? "Pdfessco-Document";
         $path = $document->save($fileName);
 
         $document_historyArray = [
-            "_token" => $request->_token, 
+            "_token" => $request->_token,
             "removeNumbering" => $request->removeNumbering,
             "header" => $request->header,
             "cover" => $request->cover,
@@ -104,8 +110,8 @@ class DocumentController extends Controller
             "items" => $request->items
         ];
 
-        $document_history =json_encode($document_historyArray);
-        
+        $document_history = json_encode($document_historyArray);
+
         if ($fileName !== "preview") {
             Document::create([
                 'path' => $path,
@@ -128,7 +134,11 @@ class DocumentController extends Controller
 
         if ($user) {
             // Retrieve the documents belonging to the user
-            $documentsQuery = Document::where('user_id', $user->id);
+            if ($user->roles[0]->pivot->role_id == 1 && $user->roles[0]->pivot->role_id == 2) {
+                $documentsQuery = Document::all();
+            } else {
+                $documentsQuery = Document::where('user_id', $user->id);
+            }
             // $documentsQuery = Document::where('user_id', $user->id)
             //                 ->orderBy('created_at', 'desc')
             //                 ->get();
@@ -141,10 +151,10 @@ class DocumentController extends Controller
 
     public function deleteDocFile(Request $request)
     {
-        $documents = Document::query(); 
-        $documentFilePath = str_replace('public/','',Document::find($request->document[0])->path);
+        $documents = Document::query();
+        $documentFilePath = str_replace('public/', '', Document::find($request->document[0])->path);
         Storage::disk('public')->delete($documentFilePath);
-        $documents->whereIn('id', $request->document)->delete(); 
+        $documents->whereIn('id', $request->document)->delete();
         return response()->json('Document deleted');
     }
 }
