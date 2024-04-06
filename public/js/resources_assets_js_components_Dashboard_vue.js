@@ -11479,8 +11479,8 @@ window.Store.registerModule('dashboard', {
           return item.data.id === data.id;
         });
         if (typeof this.$refs.mainfiles[indexul] !== "undefined") {
-          this.$refs.mainfiles[indexul].deSelected();
           this.$store.state.dashboard.selectedFiles.splice(data.index, 1);
+          // this.$refs.mainfiles[indexul].deSelected();
         } else {
           this.$store.state.dashboard.selectedFiles.splice(data.index, 1);
         }
