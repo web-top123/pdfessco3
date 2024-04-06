@@ -7,12 +7,12 @@ export default new Vuex.Store({
     state: {
         listScrollbar: undefined,
         modals: {
-            addHeader: {show:false, exists:false, content:"", verb:"Add"},
-            addFooter: {show:false, exists:false, content:"", verb:"Add"},
-            addCover: {show:false, exists:false, content:{project:"",projectType:"",customer:"",job:""}, verb:"Add"},
-            addOperation: {show:false, exists:false, content:{project:"",projectType:"OPERATION AND MAINTENANCE MANUAL",customer:"",job:""}, verb:"Add"},
-            addDivider: {show:false, exists:false, data:{name:"",content:""}},
-            uploadFileDashboard: {show: false, exists: false, data:{}},
+            addHeader: { show: false, exists: false, content: "", verb: "Add" },
+            addFooter: { show: false, exists: false, content: "", verb: "Add" },
+            addCover: { show: false, exists: false, content: { project: "", projectType: "", customer: "", job: "" }, verb: "Add" },
+            addOperation: { show: false, exists: false, content: { project: "", projectType: "OPERATION AND MAINTENANCE MANUAL", customer: "", job: "" }, verb: "Add" },
+            addDivider: { show: false, exists: false, data: { name: "", content: "" } },
+            uploadFileDashboard: { show: false, exists: false, data: {} },
             myAccount: false,
             changePass: false,
             documentCreated: false,
@@ -69,46 +69,46 @@ export default new Vuex.Store({
 
 
         },
-        filePathMutation: (state, value) => {state.filePath = value},
-        updateSelectedFiles: (state, value) => {state.selectedFiles = value},
+        filePathMutation: (state, value) => { state.filePath = value },
+        updateSelectedFiles: (state, value) => { state.selectedFiles = value },
         updateSelectedItem: (state, obj) => { Vue.set(state.selectedFiles[obj.index], 'selectedItem', obj.value); },
         openModal: (state, value) => {
-            if(typeof state.modals[value].show !== 'undefined'){
+            if (typeof state.modals[value].show !== 'undefined') {
                 state.modals[value].show = true;
-            }else{
+            } else {
                 state.modals[value] = true;
             }
         },
         closeModal: (state, value) => {
-            if(typeof value !== 'undefined'){
-                if(typeof state.modals[value].show !== 'undefined'){
+            if (typeof value !== 'undefined') {
+                if (typeof state.modals[value].show !== 'undefined') {
                     state.modals[value].show = false;
-                }else{
+                } else {
                     state.modals[value] = false;
                 }
-            }else{
-                for(var sample in state.modals){
-                    if(typeof state.modals[sample].show !== 'undefined'){
+            } else {
+                for (var sample in state.modals) {
+                    if (typeof state.modals[sample].show !== 'undefined') {
                         state.modals[sample].show = false;
-                    }else{
+                    } else {
                         state.modals[sample] = false;
                     }
                 }
             }
         },
-        saveHFC:(state, modal)=>{
+        saveHFC: (state, modal) => {
             state.modals[modal.name].content = modal.data;
             state.modals[modal.name].show = false;
             state.modals[modal.name].exists = true;
             state.successState = false;
         },
-        deleteHFC: (state, modal) =>{
+        deleteHFC: (state, modal) => {
             state.successState = false;
-            if(typeof state.modals[modal].content === "object"){
-                for(var sample in state.modals[modal].content){
+            if (typeof state.modals[modal].content === "object") {
+                for (var sample in state.modals[modal].content) {
                     state.modals[modal].content[sample] = ""
                 }
-            }else{
+            } else {
                 state.modals[modal].content = "";
             }
             state.modals[modal].exists = false;
@@ -119,44 +119,44 @@ export default new Vuex.Store({
             state.modals.addDivider.show = true;
         },
         insertDivider: (state, data) => {
-            if(!data.content.length){
+            if (!data.content.length) {
                 return false;
-            }else{
-                if(typeof data.type !== 'undefined'){
+            } else {
+                if (typeof data.type !== 'undefined') {
                     state.selectedFiles[data.index].name = data.name;
                     state.selectedFiles[data.index].content = data.content;
-                }else{
+                } else {
                     var dividerObj = {};
                     dividerObj.name = data.name;
                     dividerObj.content = data.content;
-                    state.selectedFiles.push(Object.assign({}, dividerObj, {type: 'divider'}));
+                    state.selectedFiles.push(Object.assign({}, dividerObj, { type: 'divider' }));
                 }
                 Ps.update(state.listScrollbar);
-                state.modals.addDivider.data = {name:"", content:""};
+                state.modals.addDivider.data = { name: "", content: "" };
                 state.modals.addDivider.show = false;
                 state.successState = false;
             }
         },
-        failStateMutation: (state, data) => {state.failState = data },
+        failStateMutation: (state, data) => { state.failState = data },
         successStateMutation: (state, data) => { state.successState = data },
-        resetStatesMutation: (state) => { state.successState = false, state.failState = false;},
-        selectFile:(state, data) => {
-            if(state.selectedFiles.length>0){
-                for(var i=0;i<state.selectedFiles.length;i++){
-                    if(state.selectedFiles[i].id === data.id){
+        resetStatesMutation: (state) => { state.successState = false, state.failState = false; },
+        selectFile: (state, data) => {
+            if (state.selectedFiles.length > 0) {
+                for (var i = 0; i < state.selectedFiles.length; i++) {
+                    if (state.selectedFiles[i].id === data.id) {
                         return;
                     }
                 }
-                state.selectedFiles.push(Object.assign({}, data, {type: 'file'}));
-            }else{
-                state.selectedFiles.push(Object.assign({}, data, {type: 'file'}));
+                state.selectedFiles.push(Object.assign({}, data, { type: 'file' }));
+            } else {
+                state.selectedFiles.push(Object.assign({}, data, { type: 'file' }));
             }
             Ps.update(state.listScrollbar);
             // state.listScrollbar.scrollTop = state.listScrollbar.scrollHeight;
         },
-        deselectFile:(state, data) => {
-            if(data.outside !== true){
-                state.selectedFiles.splice(state.selectedFiles.findIndex( item => item.type === 'file' && item.id === data.id ), 1);
+        deselectFile: (state, data) => {
+            if (data.outside !== true) {
+                state.selectedFiles.splice(state.selectedFiles.findIndex(item => item.type === 'file' && item.id === data.id), 1);
             }
             Ps.update(state.listScrollbar);
         },
@@ -166,13 +166,13 @@ export default new Vuex.Store({
         },
         removeItem: (state, data) => {
             var that = this;
-            if(!data.id){
-                state.selectedFiles.splice(data.index,1);
-            }else{
-                var indexul = that.$refs.mainfiles.findIndex(item => item.data.id === data.id );
-                if(typeof that.$refs.mainfiles[indexul] !== "undefined"){
+            if (!data.id) {
+                state.selectedFiles.splice(data.index, 1);
+            } else {
+                var indexul = that.$refs.mainfiles.findIndex(item => item.data.id === data.id);
+                if (typeof that.$refs.mainfiles[indexul] !== "undefined") {
                     that.$refs.mainfiles[indexul].deSelected();
-                }else{
+                } else {
                     state.selectedFiles.splice(data.index, 1);
                 }
 
@@ -180,25 +180,25 @@ export default new Vuex.Store({
             // Ps.update(state.listScrollbar);
             state.modals.removeItem = false;
         },
-        removeItemsConfirm: (state, data)=>{
-            for(var i=0; i < state.selectedFiles.length; i++){
-                if(state.selectedFiles[i].selectedItem === true){
+        removeItemsConfirm: (state, data) => {
+            for (var i = 0; i < state.selectedFiles.length; i++) {
+                if (state.selectedFiles[i].selectedItem === true) {
                     state.modals.removeItems = true;
                 }
             }
         },
-        removeItems:(state)=>{
+        removeItems: (state) => {
             var newSearch = [];
             var that = this;
-            for(var i=0; i < state.selectedFiles.length; i++){
-                if(state.selectedFiles[i].selectedItem !== true){
+            for (var i = 0; i < state.selectedFiles.length; i++) {
+                if (state.selectedFiles[i].selectedItem !== true) {
                     newSearch.push(state.selectedFiles[i])
                 }
             }
-            for(var i=0; i < state.selectedFiles.length; i++){
-                if(state.selectedFiles[i].type === 'file' && state.selectedFiles[i].selectedItem === true){
-                    var indexul = that.$refs.mainfiles.findIndex(item => item.data.id === state.selectedFiles[i].id );
-                    if(typeof that.$refs.mainfiles[indexul]  !== "undefined"){
+            for (var i = 0; i < state.selectedFiles.length; i++) {
+                if (state.selectedFiles[i].type === 'file' && state.selectedFiles[i].selectedItem === true) {
+                    var indexul = that.$refs.mainfiles.findIndex(item => item.data.id === state.selectedFiles[i].id);
+                    if (typeof that.$refs.mainfiles[indexul] !== "undefined") {
                         that.$refs.mainfiles[indexul].deSelected(true);
                     }
                 }
@@ -206,10 +206,10 @@ export default new Vuex.Store({
             state.selectedFiles = newSearch;
             state.modals.removeItems = false;
         },
-        initListScrollbar: (state, obj) => {state.listScrollbar = obj;Ps.initialize(state.listScrollbar)},
+        initListScrollbar: (state, obj) => { state.listScrollbar = obj; Ps.initialize(state.listScrollbar) },
 
     },
     actions: {
-        resetStatesAction: ({commit}) => {commit('resetStatesMutation')},
+        resetStatesAction: ({ commit }) => { commit('resetStatesMutation') },
     }
 });

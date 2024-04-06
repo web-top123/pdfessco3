@@ -481,6 +481,7 @@ window.Store.registerModule('dashboard', {
             this.Ps.update(state.listScrollbar);
         },
         removeItemConfirm: (state, data) => {
+            console.log("remove", data);
             state.itemSelected = data;
             state.modals.removeItem = true;
         },
@@ -536,8 +537,6 @@ window.Store.registerModule('dashboard', {
 
 export default {
     mounted() {
-
-        this.pageRefreshed = true;
         this.Ps = new PerfectScrollbar(this.$refs.mainScrollbar, {
             suppressScrollX: true,
         });
@@ -667,6 +666,7 @@ export default {
                 var indexul = this.$refs.mainfiles.findIndex(item => item.data.id === data.id);
                 if (typeof this.$refs.mainfiles[indexul] !== "undefined") {
                     this.$refs.mainfiles[indexul].deSelected();
+                    this.$store.state.dashboard.selectedFiles.splice(data.index, 1);
                 } else {
                     this.$store.state.dashboard.selectedFiles.splice(data.index, 1);
                 }

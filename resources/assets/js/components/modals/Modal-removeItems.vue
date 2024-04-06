@@ -1,6 +1,6 @@
 <template>
     <modal @close="$emit('close')" class="delete-header-confirmation">
-        
+
         <template slot="header">
             <p slot="header" class="modal-card-title">Remove items?</p>
         </template>
@@ -26,15 +26,12 @@ export default {
     components: {
         Modal,
     },
-    methods:{
-        remove(){
+    methods: {
+        remove() {
             this.$store.commit('dashboard/removeItems')
         }
     }
 }
 </script>
 
-<style lang="scss">
-
-
-</style>
+<style lang="scss"></style>
