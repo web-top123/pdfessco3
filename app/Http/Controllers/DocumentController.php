@@ -133,18 +133,29 @@ class DocumentController extends Controller
         $user = Auth::user();
 
         if ($user) {
+            // if ($user->roles == []) {
+            //     return "here";
+            // }
+            // if (empty(User::with('roles')->find($user->id)->roles)) {
+            //     return "here";
+            // }
+            // $user = User::with('role_user')->find($user->id);
+
             // Retrieve the documents belonging to the user
-            if ($user->roles[0]->pivot->role_id == 1 && $user->roles[0]->pivot->role_id == 2) {
-                $documentsQuery = Document::all();
+            if ($user->hasRole('superadmin') || $user->hasRole('admin')) {
+                $documentsQuery = Document::query(); // Get a query builder instance
+                // $documentsQuery = Document::latest()->take(10)->get();
             } else {
                 $documentsQuery = Document::where('user_id', $user->id);
             }
+            //$documentsQuery = Document::where('user_id', $user->id);
             // $documentsQuery = Document::where('user_id', $user->id)
             //                 ->orderBy('created_at', 'desc')
             //                 ->get();
             // Loop through each document and decode the document_history
             // Return the response in DataTables' format
             // return $documentsQuery;
+            //return $documentsQuery;
             return DataTables::eloquent($documentsQuery)->make(true);
         }
     }
