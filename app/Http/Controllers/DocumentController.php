@@ -96,7 +96,7 @@ class DocumentController extends Controller
             }
 
         }
-        $fileName = $request->newFileName ?? "Pdfessco-Document";
+        $fileName = $request->newFileName ?? "esscosales-Document";
         $path = $document->save($fileName);
 
         $document_historyArray = [

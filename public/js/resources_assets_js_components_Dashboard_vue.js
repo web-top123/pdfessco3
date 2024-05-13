@@ -12854,7 +12854,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       emailString: '',
       emailSubject: '',
       emailList: [],
-      newFileName: 'Pdfessco-Document',
+      newFileName: 'esscosales-Document',
       emailSuccess: false,
       sending: false,
       pathView: false
@@ -16192,7 +16192,7 @@ var render = function render() {
     staticClass: "name-input",
     attrs: {
       type: "text",
-      placeholder: "Pdfessco-Document.pdf"
+      placeholder: "esscosales-Document.pdf"
     },
     domProps: {
       value: _vm.newFileName

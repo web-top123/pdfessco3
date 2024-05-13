@@ -7,7 +7,7 @@
 
         <template>
             <div class="document-info-body">
-                <input type="text" placeholder="Pdfessco-Document.pdf" class="name-input" v-model="newFileName">
+                <input type="text" placeholder="esscosales-Document.pdf" class="name-input" v-model="newFileName">
                 <span class="file-title" v-if="pathView"><a target="_blank" :href="filePath">View</a></span>
             </div>
 
@@ -78,7 +78,7 @@ export default {
             emailString: '',
             emailSubject: '',
             emailList: [],
-            newFileName: 'Pdfessco-Document',
+            newFileName: 'esscosales-Document',
             emailSuccess: false,
             sending: false,
             pathView: false,

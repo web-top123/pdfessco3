@@ -21,6 +21,7 @@ use App\Http\Controllers\CategoriesListController;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -115,7 +116,7 @@ Route::middleware('auth')->group(function () {
 
             $subject = request()->subject;
             $body = 'Here is Created Document';
-            
+
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
                 $pdfUrl = request()->url;
@@ -125,9 +126,9 @@ Route::middleware('auth')->group(function () {
                     ->subject($subject)
                     ->setBody($body);
                 // Attach the PDF file
-                $message->attachData($pdfContent, 'Pdfessco-Document.pdf');
+                $message->attachData($pdfContent, 'esscosales-document.pdf');
             });
-            return json_encode([ 'success' => true ]);
+            return json_encode(['success' => true]);
         });
 
     });
