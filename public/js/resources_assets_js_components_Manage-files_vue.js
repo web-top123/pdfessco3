@@ -2790,7 +2790,7 @@ var render = function render() {
       mode: "out-in"
     }
   }, [_c("div", [_c("div", {
-    staticClass: "category-wrapper",
+    staticClass: "category-wrapper x",
     style: "padding-left:" + _vm.padLeft
   }, [_c("div", {
     staticClass: "category-border-bottom columns",

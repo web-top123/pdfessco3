@@ -1,226 +1,142 @@
 <template>
     <transition name="fade-item" mode="out-in">
         <div>
-            <div class="category-wrapper" :style="'padding-left:' + padLeft">
-                <div
-                    class="category-border-bottom columns"
-                    :class="{
-                        main: topLevel,
-                        'no-items': noItems,
-                        'is-last': !topLevel && isLast,
-                        'not-expanded': !expanded,
-                    }"
-                >
+            <div class="category-wrapper x" :style="'padding-left:' + padLeft">
+                <div class="category-border-bottom columns" :class="{
+                    main: topLevel,
+                    'no-items': noItems,
+                    'is-last': !topLevel && isLast,
+                    'not-expanded': !expanded,
+                }">
                     <div class="column is-narrow left-action-col">
-                        <span
-                            class="expand-icon"
-                            :class="{
-                                'no-items':
-                                    !data.children_count && !data.files_count,
-                            }"
-                            @click="expandCat"
-                        >
-                            <i
-                                class="fa caret fa-caret-right fa-stack-1x"
-                                :class="{ expanded: expanded }"
-                            ></i>
+                        <span class="expand-icon" :class="{
+                            'no-items':
+                                !data.children_count && !data.files_count,
+                        }" @click="expandCat">
+                            <i class="fa caret fa-caret-right fa-stack-1x" :class="{ expanded: expanded }"></i>
                             <!-- <i v-if="expanded" class="fa caret fa-caret-down fa-stack-1x"></i> -->
                         </span>
 
-                        <input
-                            :id="checkId + '-d'"
-                            class="styled-checkbox"
-                            v-if="parentChecked"
-                            type="checkbox"
-                            checked
-                            disabled
-                        />
-                        <input
-                            :id="checkId + '-a'"
-                            class="styled-checkbox"
-                            v-if="!parentChecked"
-                            type="checkbox"
-                            :checked="checked"
-                            @click="toggle"
-                        />
-                        <label
-                            class="disabled"
-                            v-if="parentChecked"
-                            :for="checkId + '-d'"
-                        ></label>
-                        <label
-                            v-if="!parentChecked"
-                            :for="checkId + '-a'"
-                        ></label>
+                        <input :id="checkId + '-d'" class="styled-checkbox" v-if="parentChecked" type="checkbox" checked
+                            disabled />
+                        <input :id="checkId + '-a'" class="styled-checkbox" v-if="!parentChecked" type="checkbox"
+                            :checked="checked" @click="toggle" />
+                        <label class="disabled" v-if="parentChecked" :for="checkId + '-d'"></label>
+                        <label v-if="!parentChecked" :for="checkId + '-a'"></label>
                     </div>
                     <div class="column" @click="expandCat">
-                        <p
-                            class="category-name column"
-                            :class="{
-                                'is-file': isFile,
-                                checked: checked || parentChecked,
-                                expand: data.children_count || data.files_count,
-                            }"
-                            ref="categoryName"
-                        >
+                        <p class="category-name column" :class="{
+                            'is-file': isFile,
+                            checked: checked || parentChecked,
+                            expand: data.children_count || data.files_count,
+                        }" ref="categoryName">
                             {{ data.name }}
                         </p>
                     </div>
                     <div class="column is-narrow">
                         <div class="category-action">
-                            <a
-                                v-if="isFile && width > 1024"
-                                :href="data.path"
-                                target="_blank"
-                                ><i
-                                    class="fa fa-eye"
-                                    aria-hidden="true"
-                                    @mouseenter="openpreview(data.id)"
-                                    @mouseleave="hidepreview(data.id)"
-                                ></i
-                            ></a>
+                            <a v-if="isFile && width > 1024" :href="data.path" target="_blank"><i class="fa fa-eye"
+                                    aria-hidden="true" @mouseenter="openpreview(data.id)"
+                                    @mouseleave="hidepreview(data.id)"></i></a>
 
-                            <i
-                                v-if="!isFile && width > 1024"
-                                class="pdfglue-icon upload-file"
-                                aria-hidden="true"
-                                @click="
-                                    $store.commit('manageFiles/openModal', {
-                                        name: 'upload',
-                                        data: data,
-                                    })
-                                "
-                            ></i>
+                            <i v-if="!isFile && width > 1024" class="pdfglue-icon upload-file" aria-hidden="true" @click="
+                                $store.commit('manageFiles/openModal', {
+                                    name: 'upload',
+                                    data: data,
+                                })
+                                "></i>
 
-                            <i
-                                @click="toggleDropdown()"
-                                :data-id="dropdownId"
-                                class="pdfglue-icon context-menu"
-                                :class="{ active: menu }"
-                                aria-hidden="true"
-                            ></i>
+                            <i @click="toggleDropdown()" :data-id="dropdownId" class="pdfglue-icon context-menu"
+                                :class="{ active: menu }" aria-hidden="true"></i>
 
                             <div class="menu-icon"></div>
 
-                            <div
-                                v-if="menu"
-                                :id="dropdownId"
-                                class="drop-down-menu"
-                            >
-                                <div
-                                    v-if="!isFile && data.depth < 3"
-                                    class="drop-down-menu-item"
-                                    @click="
-                                        $store.commit('manageFiles/openModal', {
-                                            name: 'create',
-                                            data: data,
-                                        })
-                                    "
-                                >
+                            <div v-if="menu" :id="dropdownId" class="drop-down-menu">
+                                <div v-if="!isFile && data.depth < 3" class="drop-down-menu-item" @click="
+                                    $store.commit('manageFiles/openModal', {
+                                        name: 'create',
+                                        data: data,
+                                    })
+                                    ">
                                     <div class="drop-down-menu-item-wrapper">
                                         Add Category
                                     </div>
                                 </div>
 
-                                <div
-                                    v-if="!isFile && !topLevel"
-                                    class="drop-down-menu-item"
-                                    @click="moveUp"
-                                >
+                                <div v-if="!isFile && !topLevel" class="drop-down-menu-item" @click="moveUp">
                                     <div class="drop-down-menu-item-wrapper">
                                         Move Up
                                     </div>
                                 </div>
 
-                                <div
-                                    class="drop-down-menu-item"
-                                    @click="
-                                        $store.commit('manageFiles/openModal', {
-                                            name: 'move',
-                                            data: Object.assign(
-                                                { isFile: isFile },
-                                                data
-                                            ),
-                                        })
-                                    "
-                                >
+                                <div class="drop-down-menu-item" @click="
+                                    $store.commit('manageFiles/openModal', {
+                                        name: 'move',
+                                        data: Object.assign(
+                                            { isFile: isFile },
+                                            data
+                                        ),
+                                    })
+                                    ">
                                     <div class="drop-down-menu-item-wrapper">
                                         Move To
                                     </div>
                                 </div>
 
-                                <div
-                                    v-if="isFile"
-                                    class="drop-down-menu-item"
-                                    @click="
-                                        $store.commit('manageFiles/openModal', {
-                                            name: 'copy',
-                                            data: Object.assign(
-                                                { isFile: isFile },
-                                                data
-                                            ),
-                                        })
-                                    "
-                                >
+                                <div v-if="isFile" class="drop-down-menu-item" @click="
+                                    $store.commit('manageFiles/openModal', {
+                                        name: 'copy',
+                                        data: Object.assign(
+                                            { isFile: isFile },
+                                            data
+                                        ),
+                                    })
+                                    ">
                                     <div class="drop-down-menu-item-wrapper">
                                         Copy To
                                     </div>
                                 </div>
 
-                                <div
-                                    v-if="isFile && data.count > 1"
-                                    class="drop-down-menu-item"
-                                    @click="
-                                        $store.commit('manageFiles/openModal', {
-                                            name: 'explode',
-                                            data: data,
-                                        })
-                                    "
-                                >
+                                <div v-if="isFile && data.count > 1" class="drop-down-menu-item" @click="
+                                    $store.commit('manageFiles/openModal', {
+                                        name: 'explode',
+                                        data: data,
+                                    })
+                                    ">
                                     <div class="drop-down-menu-item-wrapper">
                                         Explode
                                     </div>
                                 </div>
 
-                                <div
-                                    class="drop-down-menu-item"
-                                    @click="
-                                        $store.commit('manageFiles/openModal', {
-                                            name: !isFile
-                                                ? 'edit-category'
-                                                : 'edit-pdf',
-                                            data: data,
-                                        })
-                                    "
-                                >
+                                <div class="drop-down-menu-item" @click="
+                                    $store.commit('manageFiles/openModal', {
+                                        name: !isFile
+                                            ? 'edit-category'
+                                            : 'edit-pdf',
+                                        data: data,
+                                    })
+                                    ">
                                     <div class="drop-down-menu-item-wrapper">
                                         Edit
                                     </div>
                                 </div>
 
-                                <div
-                                    v-if="isFile && width <= 1024"
-                                    class="drop-down-menu-item"
-                                >
+                                <div v-if="isFile && width <= 1024" class="drop-down-menu-item">
                                     <div class="drop-down-menu-item-wrapper">
-                                        <a :href="data.path" target="_blank"
-                                            >View File
+                                        <a :href="data.path" target="_blank">View File
                                         </a>
                                     </div>
                                 </div>
 
-                                <div
-                                    class="drop-down-menu-item danger"
-                                    @click="
-                                        $store.commit('manageFiles/openModal', {
-                                            name: 'delete',
-                                            data: Object.assign(
-                                                { isFile: isFile },
-                                                data
-                                            ),
-                                        })
-                                    "
-                                >
+                                <div class="drop-down-menu-item danger" @click="
+                                    $store.commit('manageFiles/openModal', {
+                                        name: 'delete',
+                                        data: Object.assign(
+                                            { isFile: isFile },
+                                            data
+                                        ),
+                                    })
+                                    ">
                                     <div class="drop-down-menu-item-wrapper">
                                         Delete
                                     </div>
@@ -229,37 +145,19 @@
                         </div>
                     </div>
                 </div>
-                <div
-                    :id="'iframe-' + this.data.id"
-                    class="iframe-preview file columns hide"
-                    v-if="data.path"
-                >
+                <div :id="'iframe-' + this.data.id" class="iframe-preview file columns hide" v-if="data.path">
                     <iframe :src="data.path" height="300"></iframe>
                 </div>
             </div>
             <div class="category-level" v-if="expanded">
-                <category-item
-                    v-if="category.hide !== true"
-                    v-for="(category, index) in data.children"
-                    :key="category.id"
-                    :data="category"
-                    :parent="data"
-                    :parent-checked="checked || parentChecked"
-                    :last="
-                        last &&
+                <category-item v-if="category.hide !== true" v-for="(category, index) in data.children" :key="category.id"
+                    :data="category" :parent="data" :parent-checked="checked || parentChecked" :last="last &&
                         index === data.children.length - 1 &&
                         (!data.files || !data.files.length)
-                    "
-                ></category-item>
-                <category-item
-                    v-for="(file, index) in data.files"
-                    :key="file.id"
-                    :data="file"
-                    :parent="data"
-                    :parent-checked="checked || parentChecked"
-                    :is-file="true"
-                    :last="last && index === data.files.length - 1"
-                ></category-item>
+                        "></category-item>
+                <category-item v-for="(file, index) in data.files" :key="file.id" :data="file" :parent="data"
+                    :parent-checked="checked || parentChecked" :is-file="true"
+                    :last="last && index === data.files.length - 1"></category-item>
             </div>
         </div>
     </transition>
@@ -286,7 +184,7 @@ export default {
         },
         parent: {
             type: Object,
-            default: () => {},
+            default: () => { },
         },
         last: {
             default: false,
@@ -356,7 +254,7 @@ export default {
             if (this.isFile) {
                 return (
                     this.padding *
-                        (this.parent.top ? 1 : this.parent.depth + 1) +
+                    (this.parent.top ? 1 : this.parent.depth + 1) +
                     "px"
                 );
             } else {
@@ -550,6 +448,7 @@ export default {
         background-color: #f5f5f5;
         border-radius: 8px;
     }
+
     padding-left: 20px;
 }
 
@@ -570,6 +469,7 @@ export default {
         padding-right: 20px;
         margin-right: 0;
         padding-bottom: 15px;
+
         &.not-expanded {
             border-bottom: 0;
         }
@@ -607,13 +507,16 @@ export default {
         color: $color-text-tertiary;
         width: 10px;
         height: 10px;
+
         &:hover {
             color: $color-primary;
         }
+
         .caret {
             @include transition(all 0.1s linear);
             transform: rotate(0deg);
         }
+
         .caret.expanded {
             transform: rotate(90deg);
             // left: 3px;
@@ -665,6 +568,7 @@ export default {
         cursor: pointer;
         font-size: 16px;
         color: $color-text-light;
+
         &:hover,
         &.active {
             color: $color-secondary;
@@ -689,7 +593,7 @@ export default {
             // top: 2px;
         }
 
-        &.upload-file + .context-menu {
+        &.upload-file+.context-menu {
             position: relative;
             // top: 0px;
             // left: -3px;
@@ -730,6 +634,7 @@ export default {
     min-width: 130px;
     right: -20px;
     top: 30px;
+
     .drop-down-menu-item {
         color: #4c4c4c;
         text-align: right;
@@ -746,23 +651,29 @@ export default {
                 padding-top: 10px;
                 padding-bottom: 10px;
             }
+
             a {
                 color: #4c4c4c;
             }
         }
     }
+
     .drop-down-menu-item:first-child {
         margin-top: 8px;
     }
+
     .drop-down-menu-item:last-child {
         .drop-down-menu-item-wrapper {
             border-bottom: none;
         }
+
         margin-bottom: 8px;
     }
+
     .drop-down-menu-item:hover {
         background: #f5f5f5;
         color: $color-primary;
+
         &.danger {
             color: #ff3019;
         }
@@ -783,6 +694,7 @@ export default {
         top: -9px;
         right: 25px;
     }
+
     &::before {
         position: absolute;
         content: "";
@@ -795,6 +707,7 @@ export default {
         right: 25px;
     }
 }
+
 .iframe-preview {
     align-content: center;
     align-items: center;
@@ -803,6 +716,7 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
 }
+
 .iframe-preview.hide {
     display: none;
 }
