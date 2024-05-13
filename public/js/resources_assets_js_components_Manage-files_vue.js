@@ -939,6 +939,7 @@ __webpack_require__.r(__webpack_exports__);
         return 0;
       }
       if (this.isFile) {
+        console.log("depth", this.parent.depth);
         return this.padding * (this.parent.top ? 1 : this.parent.depth + 1) + "px";
       } else {
         return (this.padding * this.data.depth || 0) + "px";

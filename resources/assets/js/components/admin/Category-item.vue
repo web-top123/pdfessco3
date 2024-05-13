@@ -252,6 +252,7 @@ export default {
                 return 0;
             }
             if (this.isFile) {
+                console.log("depth", this.parent.depth);
                 return (
                     this.padding *
                     (this.parent.top ? 1 : this.parent.depth + 1) +
