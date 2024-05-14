@@ -21,7 +21,6 @@ use App\Http\Controllers\CategoriesListController;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
-use Auth;
 
 /*
 |--------------------------------------------------------------------------
