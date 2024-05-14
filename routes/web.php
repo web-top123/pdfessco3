@@ -117,8 +117,7 @@ Route::middleware('auth')->group(function () {
             $subject = request()->subject;
 
             // $senderEmail = Auth::user()->email;
-            $senderEmail = auth()->user()->email;
-            $subject = $senderEmail;
+            //$senderEmail = auth()->user()->email;
             $body = 'Attached is the requested information';
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
