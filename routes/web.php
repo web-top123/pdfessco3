@@ -117,8 +117,8 @@ Route::middleware('auth')->group(function () {
 
             $subject = request()->subject;
 
-            $senderEmail = Auth::user()->email;
-            $body = 'Attached is the requested information' . $senderEmail;
+            // $senderEmail = Auth::user()->email;
+            $body = 'Attached is the requested information';
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
                 $pdfUrl = request()->url;
