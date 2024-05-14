@@ -21,6 +21,7 @@ use App\Http\Controllers\CategoriesListController;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
+use Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,8 +116,9 @@ Route::middleware('auth')->group(function () {
             // return json_encode([ 'success' => true ]);
 
             $subject = request()->subject;
-            $body = 'Attached is the requested information';
 
+            $senderEmail = Auth::user()->email;
+            $body = 'Attached is the requested information' . $senderEmail;
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
                 $pdfUrl = request()->url;
