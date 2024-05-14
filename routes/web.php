@@ -118,15 +118,14 @@ Route::middleware('auth')->group(function () {
 
             // $senderEmail = Auth::user()->email;
             $senderEmail = auth()->user()->email;
-            $senderEmail = 'seodavid65@gmail.com';
             $body = 'Attached is the requested information';
             // Send the email
-            Mail::send([], [], function ($message) use ($subject, $body, $senderEmail) {
+            Mail::send([], [], function ($message) use ($subject, $body) {
                 $pdfUrl = request()->url;
                 $pdfContent = Http::get($pdfUrl)->body();
 
                 $message->to(request()->to)
-                    ->subject($senderEmail)
+                    ->subject($subject)
                     ->setBody($body);
                 // Attach the PDF file
                 $message->attachData($pdfContent, 'esscosales-document.pdf');
