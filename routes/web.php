@@ -115,7 +115,7 @@ Route::middleware('auth')->group(function () {
             // return json_encode([ 'success' => true ]);
 
             $subject = request()->subject;
-            $body = 'Here is Created Document';
+            $body = 'Attached is the requested information';
 
             // Send the email
             Mail::send([], [], function ($message) use ($subject, $body) {
