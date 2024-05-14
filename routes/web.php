@@ -126,8 +126,9 @@ Route::middleware('auth')->group(function () {
 
                 $message->to(request()->to)
                     ->subject($subject)
-                    ->setBody($body)
-                    ->from($senderEmail);
+                    ->setBody($body);
+
+                $message->from($senderEmail);
                 // Attach the PDF file
                 $message->attachData($pdfContent, 'esscosales-document.pdf');
             });
