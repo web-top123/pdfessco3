@@ -37,7 +37,27 @@ class UserController extends Controller
         return response()->json('Password changed');
     }
 
-    public function create($admin = null, UserCreateRequest $request)
+    // public function create($admin = null, UserCreateRequest $request)
+    // {
+
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => bcrypt($request->password),
+    //     ]);
+
+    //     if($admin) {
+
+    //         $user->roles()->attach(Role::where('name', 'admin')->first()->id);
+
+    //     }
+
+    //     return response()->json('User created');
+
+    // }
+
+
+    public function create(UserCreateRequest $request)
     {
 
         $user = User::create([
@@ -45,18 +65,14 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-        
-        if($admin) {
 
-            $user->roles()->attach(Role::where('name', 'admin')->first()->id);
-
-        }
 
         return response()->json('User created');
 
     }
 
-    public function edit(UserEditRequest $request) {
+    public function edit(UserEditRequest $request)
+    {
 
         $user = User::findOrFail($request->id);
         $user->name = $request->name;
@@ -68,8 +84,8 @@ class UserController extends Controller
 
     public function delete(Request $request)
     {
-        $users = User::query(); 
-        $users->whereIn('id', $request->users)->delete(); 
+        $users = User::query();
+        $users->whereIn('id', $request->users)->delete();
         return response()->json('Users deleted');
     }
 }
