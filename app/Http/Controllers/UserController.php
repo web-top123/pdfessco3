@@ -89,10 +89,10 @@ class UserController extends Controller
         $user = User::findOrFail($request->id);
 
         // Verify the old password
-        if (!Hash::check($request->old_password, $user->password)) {
-            //return response()->json($request->old_password);
-            return response()->json(['errors' => ['old_password' => ['The old password is incorrect.']]], 422);
-        }
+        // if (!Hash::check($request->old_password, $user->password)) {
+        //     //return response()->json($request->old_password);
+        //     return response()->json(['errors' => ['old_password' => ['The old password is incorrect.']]], 422);
+        // }
 
         // Update the user details
         $user->name = $request->name;

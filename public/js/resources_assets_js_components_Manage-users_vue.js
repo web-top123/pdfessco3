@@ -11986,41 +11986,6 @@ var render = function render() {
     }
   }), _vm._v(_vm._s(_vm.errors.email))])]), _vm._v(" "), _c("div", {
     staticClass: "form-group"
-  }, [_c("label", [_vm._v("Old Password")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.edit.old_password,
-      expression: "edit.old_password"
-    }],
-    attrs: {
-      type: "password",
-      placeholder: ""
-    },
-    domProps: {
-      value: _vm.edit.old_password
-    },
-    on: {
-      keyup: function keyup($event) {
-        _vm.errors.old_password = "";
-      },
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.edit, "old_password", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _c("p", {
-    staticClass: "help is-danger",
-    "class": {
-      "is-hidden": !_vm.errors.old_password.length
-    }
-  }, [_c("i", {
-    staticClass: "fa fa-exclamation-circle",
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }), _vm._v(_vm._s(_vm.errors.old_password))])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group"
   }, [_c("label", [_vm._v("New Password")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",

@@ -21,12 +21,12 @@
                         aria-hidden="true"></i>{{ errors.email }}</p>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label>Old Password</label>
                 <input v-model="edit.old_password" type="password" placeholder="" @keyup="errors.old_password = ''">
                 <p class="help is-danger" :class="{ 'is-hidden': !errors.old_password.length }"><i
                         class="fa fa-exclamation-circle" aria-hidden="true"></i>{{ errors.old_password }}</p>
-            </div>
+            </div> -->
 
             <div class="form-group">
                 <label>New Password</label>
