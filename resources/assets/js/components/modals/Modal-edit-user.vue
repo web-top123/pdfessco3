@@ -1,33 +1,49 @@
 
 <template>
-<modal :show="show" @close="$emit('close')" class="move-modal">
+    <modal :show="show" @close="$emit('close')" class="move-modal">
 
-    <template slot="header">
+        <template slot="header">
             <p slot="header" class="modal-card-title has-text-centered">Edit User</p>
-    </template>
+        </template>
 
-    <template>
-        <div class="form-group">
-            <label>Name</label>
-            <input v-model="edit.name" type="text" placeholder="Firstname Lastname" @keyup="errors.name = ''">
-            <p class="help is-danger" :class="{'is-hidden' : !errors.name.length}"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>{{errors.name}}</p>
-        </div>
+        <template>
+            <div class="form-group">
+                <label>Name</label>
+                <input v-model="edit.name" type="text" placeholder="Firstname Lastname" @keyup="errors.name = ''">
+                <p class="help is-danger" :class="{ 'is-hidden': !errors.name.length }"><i class="fa fa-exclamation-circle"
+                        aria-hidden="true"></i>{{ errors.name }}</p>
+            </div>
 
-        <div class="form-group">
-            <label>Email</label>
-            <input v-model="edit.email" type="text" placeholder="example@domain.com" @keyup="errors.email = ''">
-            <p class="help is-danger" :class="{'is-hidden' : !errors.email.length}"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>{{errors.email}}</p>
-        </div>
-    </template>
+            <div class="form-group">
+                <label>Email</label>
+                <input v-model="edit.email" type="text" placeholder="example@domain.com" @keyup="errors.email = ''">
+                <p class="help is-danger" :class="{ 'is-hidden': !errors.email.length }"><i class="fa fa-exclamation-circle"
+                        aria-hidden="true"></i>{{ errors.email }}</p>
+            </div>
 
-    <template slot="footer">
-        <div class="buttons">
-            <button class="button" @click="$emit('close')">Cancel</button>
-            <button class="button is-info" @click="save">Save</button>
-        </div>
-    </template>
+            <div class="form-group">
+                <label>Old Password</label>
+                <input v-model="edit.old_password" type="password" placeholder="" @keyup="errors.old_password = ''">
+                <p class="help is-danger" :class="{ 'is-hidden': !errors.old_password.length }"><i
+                        class="fa fa-exclamation-circle" aria-hidden="true"></i>{{ errors.old_password }}</p>
+            </div>
 
-</modal>
+            <div class="form-group">
+                <label>New Password</label>
+                <input v-model="edit.new_password" type="password" placeholder="" @keyup="errors.new_password = ''">
+                <p class="help is-danger" :class="{ 'is-hidden': !errors.new_password.length }"><i
+                        class="fa fa-exclamation-circle" aria-hidden="true"></i>{{ errors.new_password }}</p>
+            </div>
+        </template>
+
+        <template slot="footer">
+            <div class="buttons">
+                <button class="button" @click="$emit('close')">Cancel</button>
+                <button class="button is-info" @click="save">Save</button>
+            </div>
+        </template>
+
+    </modal>
 </template>
 
 <script>
@@ -49,30 +65,45 @@ export default {
             edit: {
                 name: '',
                 email: '',
+                old_password: '',
+                new_password: '',
             },
-            errors:{
-                name:'',
-                email:''
+            errors: {
+                name: '',
+                email: '',
+                old_password: '',
+                new_password: '',
             }
         }
     },
     mounted() {
-        this.edit  = Object.assign({}, this.user);
+        this.edit = Object.assign({}, this.user);
     },
     components: {
         Modal,
     },
     methods: {
-        save(){
-            axios.patch('/admin/user/' + this.edit.id, {'name' : this.edit.name, 'email' : this.edit.email}).then(({data}) => {
+        save() {
+            axios.patch('/admin/user/' + this.edit.id, {
+                'name': this.edit.name,
+                'email': this.edit.email,
+                'old_password': this.edit.old_password,
+                'password': this.edit.new_password
+            }).then(({ data }) => {
                 this.$emit('edit', data);
                 this.$emit('close');
-            }).catch(({response}) => {
-                if(response.data.errors && response.data.errors.name) {
+            }).catch(({ response }) => {
+                if (response.data.errors && response.data.errors.name) {
                     this.errors.name = response.data.errors.name[0];
                 }
-                if(response.data.errors && response.data.errors.email) {
+                if (response.data.errors && response.data.errors.email) {
                     this.errors.email = response.data.errors.email[0];
+                }
+                if (response.data.errors && response.data.errors.old_password) {
+                    this.errors.old_password = response.data.errors.old_password[0];
+                }
+                if (response.data.errors && response.data.errors.password) {
+                    this.errors.password = response.data.errors.password[0];
                 }
             });
         }
@@ -83,6 +114,7 @@ export default {
 <style lang="scss">
 @import "resources/assets/sass/variables";
 @import "resources/assets/sass/mixins";
+
 .move-modal {
     .modal-card {
         width: auto;
@@ -90,21 +122,22 @@ export default {
         max-width: 510px;
 
         .modal-card-body {
-            .field{
-                margin-bottom: 25px!important;
+            .field {
+                margin-bottom: 25px !important;
 
             }
+
             input {
                 @include box-sizing(border-box);
-                height: 50px!important;
+                height: 50px !important;
                 // margin-bottom: -5px!important;
             }
         }
 
         .modal-card-foot {
 
-            padding-top: 10px!important;
-padding-bottom: 60px!important;
+            padding-top: 10px !important;
+            padding-bottom: 60px !important;
             flex-direction: column;
 
             .buttons {
@@ -112,6 +145,7 @@ padding-bottom: 60px!important;
                 display: flex;
 
             }
+
             .separator {
                 margin-top: 25px;
                 border-top: 1px solid #bbbdbf;
@@ -129,6 +163,7 @@ padding-bottom: 60px!important;
             padding-top: 0;
 
         }
+
         .column.fields {
             padding-left: 30px;
             display: flex;
@@ -184,6 +219,7 @@ padding-bottom: 60px!important;
         .upload-area,
         input,
         textarea {
+
             &.drag,
             &:focus {
                 @include drop-shadow(0px, 2px, 5px, 1px, rgba(102, 153, 255, 0.15));
@@ -201,6 +237,7 @@ padding-bottom: 60px!important;
             align-items: center;
             justify-content: center;
             background: #f7f7f7;
+
             &.drag {
                 @include fine-border($color-tertiary);
                 border-width: 2px;
@@ -210,6 +247,7 @@ padding-bottom: 60px!important;
             &:hover {
                 @include fine-border($color-tertiary);
                 border-width: 2px;
+
                 .has-upload,
                 .no-upload {
                     pointer-events: all;

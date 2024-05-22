@@ -9,6 +9,7 @@ use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -71,12 +72,37 @@ class UserController extends Controller
 
     }
 
+    // public function edit(UserEditRequest $request)
+    // {
+
+    //     $user = User::findOrFail($request->id);
+    //     $user->name = $request->name;
+    //     $user->email = $request->email;
+    //     $user->save();
+
+    //     return response()->json('User updated');
+    // }
+
+
     public function edit(UserEditRequest $request)
     {
-
         $user = User::findOrFail($request->id);
+
+        // Verify the old password
+        if (!Hash::check($request->old_password, $user->password)) {
+            //return response()->json($request->old_password);
+            return response()->json(['errors' => ['old_password' => ['The old password is incorrect.']]], 422);
+        }
+
+        // Update the user details
         $user->name = $request->name;
         $user->email = $request->email;
+
+        // Update the password if a new password is provided
+        if ($request->has('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
         $user->save();
 
         return response()->json('User updated');
