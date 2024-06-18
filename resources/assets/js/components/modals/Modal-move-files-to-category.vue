@@ -1,31 +1,33 @@
 <template>
-<modal @close="closeModal" class="move-modal">
+    <modal @close="closeModal" class="move-modal">
 
-    <template slot="header">
+        <template slot="header">
             <p slot="header" class="modal-card-title has-text-centered">Move {{ title }} To</p>
-    </template>
+        </template>
 
-    <template>
-        <div class="form-group">
-            <label>Category</label>
-            <multiselect style="margin-bottom:-8px;" v-model="category" :show-labels="false" :max-height="250" placeholder="Select a category..." label="name" :options="listLimit">
-                <template slot="option" slot-scope="props">
-                    <div v-bind:style="{'margin-left': (props.option.depth * 20) + 'px', 'font-weight' : 700 - (props.option.depth * 100)}">
-                        {{props.option.name}}
-                    </div>
-                </template>
-            </multiselect>
-        </div>
-    </template>
+        <template>
+            <div class="form-group">
+                <label>Category</label>
+                <multiselect style="margin-bottom:-8px;" v-model="category" :show-labels="false" :max-height="250"
+                    placeholder="Select a category..." label="name" :options="listLimit">
+                    <template slot="option" slot-scope="props">
+                        <div
+                            v-bind:style="{ 'margin-left': (props.option.depth * 20) + 'px', 'font-weight': 700 - (props.option.depth * 100) }">
+                            {{ props.option.name }}
+                        </div>
+                    </template>
+                </multiselect>
+            </div>
+        </template>
 
-    <template slot="footer">
-        <div class="buttons">
-            <button class="button" @click="closeModal">Cancel</button>
-            <button class="button is-info" @click="save">Save</button>
-        </div>
-    </template>
+        <template slot="footer">
+            <div class="buttons">
+                <button class="button" @click="closeModal">Cancel</button>
+                <button class="button is-info" @click="save">Save</button>
+            </div>
+        </template>
 
-</modal>
+    </modal>
 </template>
 
 <script>
@@ -95,7 +97,7 @@ export default {
 
                     return 'Files';
 
-                } else if (this.selectedArr.files.length === 1){
+                } else if (this.selectedArr.files.length === 1) {
 
                     return 'File';
 
@@ -108,9 +110,9 @@ export default {
     },
     mounted() {
         if (this.data) {
-            // this.category = Object.assign({}, this.data);
+            this.category = Object.assign({}, this.data);
         }
-        axios.post('/admin/move-to/list', {categories: this.selectedArr.categories}).then( ({data}) => this.listLimit = this.list.map(item => Object.assign({'$isDisabled': item.depth > data}, item)).filter(item => this.$store.state.manageFiles.selected.categories.indexOf(item.id) < 0));
+        axios.post('/admin/move-to/list', { categories: this.selectedArr.categories }).then(({ data }) => this.listLimit = this.list.map(item => Object.assign({ '$isDisabled': item.depth > 30 }, item)).filter(item => this.$store.state.manageFiles.selected.categories.indexOf(item.id) < 0));
     },
     methods: {
         save() {
@@ -130,16 +132,16 @@ export default {
                 data.data.category = this.category.id;
             } else {
                 data.data = {
-                        categories: this.selectedArr.categories,
-                        files: this.selectedArr.files,
-                        category: this.category.id,
-                    }
+                    categories: this.selectedArr.categories,
+                    files: this.selectedArr.files,
+                    category: this.category.id,
+                }
             }
 
             axios.patch('/admin/move-to', data)
-                .then(({data}) => {
+                .then(({ data }) => {
 
-                    if(!this.data) {
+                    if (!this.data) {
                         this.$store.commit('manageFiles/clearSelected');
                     }
                     this.$store.dispatch('manageFiles/move', data);
@@ -159,9 +161,10 @@ export default {
 <style lang="scss">
 @import "resources/assets/sass/variables";
 @import "resources/assets/sass/mixins";
+
 .move-modal {
     .modal-card {
-        overflow: visible!important;
+        overflow: visible !important;
         max-width: 100%;
         width: 520px;
 
@@ -174,6 +177,7 @@ export default {
                 display: flex;
 
             }
+
             .separator {
                 margin-top: 25px;
                 border-top: 1px solid #bbbdbf;
@@ -191,6 +195,7 @@ export default {
             padding-top: 0;
 
         }
+
         .column.fields {
             @include flex;
             @include flex-direction-column;
@@ -257,6 +262,7 @@ export default {
         .upload-area,
         input,
         textarea {
+
             &.drag,
             &:focus {
                 @include drop-shadow(0px, 2px, 5px, 1px, rgba(102, 153, 255, 0.15));
@@ -274,6 +280,7 @@ export default {
             align-items: center;
             justify-content: center;
             background: #f7f7f7;
+
             &.drag {
                 @include fine-border($color-tertiary);
                 border-width: 2px;
@@ -283,6 +290,7 @@ export default {
             &:hover {
                 @include fine-border($color-tertiary);
                 border-width: 2px;
+
                 .has-upload,
                 .no-upload {
                     pointer-events: all;

@@ -941,7 +941,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.isFile) {
         console.log("depth", this.parent.depth);
         return (
-          // this.padding * (this.parent.top ? 1 : this.parent.depth + 1) + "px"
+          //this.padding * (this.parent.top ? 1 : this.parent.depth + 1) + "px"
           this.padding * this.parent.depth + this.padding + "px"
         );
       } else {
@@ -1781,7 +1781,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
     if (this.data) {
-      // this.category = Object.assign({}, this.data);
+      this.category = Object.assign({}, this.data);
     }
     axios.post('/admin/move-to/list', {
       categories: this.selectedArr.categories
@@ -1789,7 +1789,7 @@ __webpack_require__.r(__webpack_exports__);
       var data = _ref.data;
       return _this.listLimit = _this.list.map(function (item) {
         return Object.assign({
-          '$isDisabled': item.depth > data
+          '$isDisabled': item.depth > 30
         }, item);
       }).filter(function (item) {
         return _this.$store.state.manageFiles.selected.categories.indexOf(item.id) < 0;
@@ -3879,7 +3879,7 @@ var render = function render() {
             "margin-left": props.option.depth * 20 + "px",
             "font-weight": 700 - props.option.depth * 100
           }
-        }, [_vm._v("\r\n                        " + _vm._s(props.option.name) + "\r\n                    ")])];
+        }, [_vm._v("\n                        " + _vm._s(props.option.name) + "\n                    ")])];
       }
     }]),
     model: {
