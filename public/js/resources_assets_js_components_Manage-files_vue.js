@@ -1229,7 +1229,7 @@ __webpack_require__.r(__webpack_exports__);
       var data = _ref.data;
       return _this.listLimit = _this.list.map(function (item) {
         return Object.assign({
-          '$isDisabled': item.depth > data
+          '$isDisabled': item.depth > 30
         }, item);
       }).filter(function (item) {
         return _this.$store.state.manageFiles.selected.categories.indexOf(item.id) < 0;
@@ -3285,7 +3285,7 @@ var render = function render() {
             "margin-left": props.option.depth * 20 + "px",
             "font-weight": 700 - props.option.depth * 100
           }
-        }, [_vm._v("\r\n                        " + _vm._s(props.option.name) + "\r\n                    ")])];
+        }, [_vm._v("\n                        " + _vm._s(props.option.name) + "\n                    ")])];
       }
     }]),
     model: {
